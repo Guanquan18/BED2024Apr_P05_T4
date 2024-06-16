@@ -141,7 +141,7 @@ create table Review
 (
 	ReviewId					smallint Identity(1,1)	not null,
 	ReviewText					text					null,
-	Ratings						int						not null check(Ratings between 1 and 5),
+	Ratings						Decimal(3,2)						not null check(Ratings >= 0.0 and Ratings <= 5.0),
 	Review_Course				smallint				not null,
 	Review_Account				smallint				not null,
 	constraint PK_Review primary key (ReviewId),

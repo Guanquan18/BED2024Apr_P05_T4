@@ -44,7 +44,6 @@ create table Course
 	CourseTitle			varchar(150)			not null,
 	SmallDescription	varchar(200)			not null,
 	Description			Text					not null,
-	Price				decimal(10,2)			not null,
 	Label				varchar(100)			null,
 	Badge				varchar(100)			null,
 	Thumbnail			varchar(150)			not null,

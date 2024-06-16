@@ -48,7 +48,7 @@ create table Course
 	Badge				varchar(100)			null,
 	Thumbnail			varchar(150)			not null,
 	LastUpdated			smalldatetime			not null default(getdate()),
-	Creator				smallint				not null unique,
+	Creator				smallint				not null,
 	constraint PK_Course primary key (CourseId),
 	constraint FK_Course_Creator foreign key (Creator)
 		references Account (AccId)

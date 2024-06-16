@@ -91,12 +91,12 @@ create table Question
 )
 
 -- 8. Table (Option)
-create table Options
+create table [Option]
 (
 	OptionNo				smallint Identity(1,1)	not null,
 	OptionName				varchar(150)			not null,
 	Explanation				varchar(150)			null,
-	IsCorrectOption			char(1)					not null check(IsCorrectOption in ('Y','N')),
+	IsCorrectOption			BIT					not null check(IsCorrectOption in ('Y','N')),
 	Question_Option			smallint				not null,
 	Quiz_Option				smallint				not null,
 	constraint PK_Qption primary key (OptionNo,Question_Option),

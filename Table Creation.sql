@@ -1,7 +1,6 @@
-Create database BED_Draft
+--create database SpearAcademy_db
 
 -- 1. Table (Account)
-
 create table Account
 (
 	AccId		smallint Identity(1,1)		not null,
@@ -9,11 +8,13 @@ create table Account
 	DOB			date						not null CHECK(DOB <= getdate()),
 	Email		varchar(100)				not null unique,
 	ContactNo	char(8)						not null unique,
-	Password	varchar(150)				not null unique, 
+	Password	varchar(150)				not null, 
 	Photo		varchar(200)				null,
 	LinkedIn	varchar(150)				null, 
 	constraint PK_Account primary key (AccId)
 )
+
+
 -- 2. Table (Student)
 create table Student
 (
@@ -22,6 +23,7 @@ create table Student
 	constraint FK_Student_StudentId foreign key (StudentId)
 		references Account (AccId)
 )
+
 -- 3. Table (Educator)
 create table Educator
 (
@@ -29,7 +31,6 @@ create table Educator
 	Organisation		varchar(100)	null,
 	ProfessionalTitle	varchar(100)	null,
 	YearsOfExperience	int				null,
-	Institute			varchar(100)	null,
 	FieldOfStudy		varchar(100)	null,
 	HighestDegree		varchar(150)	not null,
 	constraint PK_Educator primary key (EducatorId),
@@ -37,6 +38,10 @@ create table Educator
 		references Account (AccId)
 )
 
+
+select * from Educator
+
+---
 -- 4. Table (Courses)
 create table Course
 (
@@ -179,3 +184,38 @@ create table QnA
 )
 
 
+insert into Account(FullName,DOB,Email,ContactNo,Password,Photo,LinkedIn)
+values 
+('Chang Guan Quan', '2000-01-01','changguanquan@gmail.com','12345678','1234','Photo','www.linkedin.com/changguanquan'),
+('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','1234','Photo','www.linkedin.com/mariagarcia'),
+('John Smith', '1988-12-22','john.smith@example.com','23456789','1234','Photo','www.linkedin.com/johnsmith'),
+('Aisha Khan', '1993-07-08','aisha.khan@example.com','34567890','1234','Photo','www.linkedin.com/aishakhan'),
+('David Brown', '1985-03-30','david.brown@example.com','45678901','1234','Photo','www.linkedin.com/davidbrown'),
+('Li Wei', '1999-09-19','li.wei@example.com','56789012','1234','Photo','www.linkedin.com/liwei'),
+('Anna Ivanova', '1992-11-11','anna.ivanova@example.com','67890123','1234','Photo','www.linkedin.com/annaivanova'),
+('Carlos Sanchez', '1990-02-20','carlos.sanchez@example.com','78901234','1234','Photo','www.linkedin.com/carlossanchez'),
+('Fatima Bint Ali', '1997-04-10','fatima.ali@example.com','89012345','1234','Photo','www.linkedin.com/fatimaali'),
+('Mohammed El-Sayed', '1986-08-25','mohammed.sayed@example.com','90123456','1234','Photo','www.linkedin.com/mohammedsayed'),
+('Elena Petrova', '1994-03-05','elena.petrova@example.com','11234567','1234','Photo','www.linkedin.com/elenapetrova'),
+('Robert Johnson', '1983-12-12','robert.johnson@example.com','22345678','1234','Photo','www.linkedin.com/robertjohnson'),
+('Sofia Martinez', '1996-07-18','sofia.martinez@example.com','33456789','1234','Photo','www.linkedin.com/sofiamartinez'),
+('Akira Yamamoto', '1989-06-14','akira.yamamoto@example.com','44567890','1234','Photo','www.linkedin.com/akirayamamoto'),
+('Isabella Rossi', '1991-09-28','isabella.rossi@example.com','55678901','1234','Photo','www.linkedin.com/isabellarossi'),
+('George Williams', '1987-05-17','george.williams@example.com','66789012','1234','Photo','www.linkedin.com/georgewilliams'),
+('Yuki Tanaka', '1998-10-04','yuki.tanaka@example.com','77890123','1234','Photo','www.linkedin.com/yukitanaka'),
+('Emma Dubois', '1984-01-22','emma.dubois@example.com','88901234','1234','Photo','www.linkedin.com/emmadubois'),
+('Hassan Ahmed', '1990-11-06','hassan.ahmed@example.com','99012345','1234','Photo','www.linkedin.com/hassanahmed'),
+('Laura Müller', '1993-02-18','laura.muller@example.com','10123456','1234','Photo','www.linkedin.com/lauramuller');
+
+insert into Educator(EducatorId,Organisation,ProfessionalTitle,YearsOfExperience,FieldOfStudy,HighestDegree)
+values 
+(1,'Ngee Ann Polytechnic','Professor',10,'Computer Science','PhD Degree'),
+(3,'Singapore Polytechnic','Professor',20,'Engineering','Master Degree'),
+(5,'Temasek Polytechnic','Senior Lecturer',15,'Information Technology','PhD Degree'),
+(7,'Republic Polytechnic','Associate Professor',12,'Mechanical Engineering','PhD Degree'),
+(9,'Nanyang Polytechnic','Lecturer',8,'Business Administration','Master Degree'),
+(11,'Institute of Technical Education','Professor',22,'Electrical Engineering','PhD Degree'),
+(13,'Singapore Management University','Assistant Professor',5,'Economics','PhD Degree'),
+(15,'National University of Singapore','Professor',30,'Biochemistry','PhD Degree'),
+(17,'Nanyang Technological University','Associate Professor',18,'Physics','PhD Degree'),
+(19,'Singapore University of Technology and Design','Senior Lecturer',14,'Architecture','Master Degree')

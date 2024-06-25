@@ -101,7 +101,7 @@ create table [Option]
 	OptionNo				smallint Identity(1,1)	not null,
 	OptionName				varchar(200)			not null,
 	Explanation				varchar(500)			null,
-	IsCorrectOption			BIT					not null check(IsCorrectOption in ('Y','N')),
+	IsCorrectOption			BIT					not null,
 	Question_Option			smallint				not null,
 	Quiz_Option				smallint				not null,
 	constraint PK_Qption primary key (OptionNo,Question_Option),

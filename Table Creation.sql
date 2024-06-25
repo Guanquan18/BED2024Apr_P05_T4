@@ -99,7 +99,7 @@ create table Question
 create table [Option]
 (
 	OptionNo				smallint Identity(1,1)	not null,
-	OptionName				varchar(150)			not null,
+	OptionName				varchar(200)			not null,
 	Explanation				varchar(500)			null,
 	IsCorrectOption			BIT					not null check(IsCorrectOption in ('Y','N')),
 	Question_Option			smallint				not null,

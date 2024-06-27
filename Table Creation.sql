@@ -126,7 +126,20 @@ create table Attempt
 		references Account (AccId)
 )
 
--- 10. Table (Enrollement )
+-- 10. Table (Leaderboard) 
+CREATE TABLE Leaderboard (
+    LeaderboardId INT PRIMARY KEY IDENTITY(1,1),
+    UserName VARCHAR(50) NOT NULL,
+    Score INT NOT NULL,
+    QuizId SMALLINT NOT NULL,
+    Section_Quiz SMALLINT NOT NULL,
+    AttemptId SMALLINT NOT NULL,
+    FOREIGN KEY (QuizId) REFERENCES Quiz(QuizId),
+    FOREIGN KEY (Section_Quiz) REFERENCES SectionDetails(SectionNo),
+    FOREIGN KEY (AttemptId) REFERENCES Attempts(AttemptId)
+)
+
+-- 11. Table (Enrollement )
 create table Enrollment
 (
 	EnrollmentNo				smallint Identity(1,1)	not null,
@@ -141,7 +154,7 @@ create table Enrollment
 		references Account (AccId)
 )
 
--- 11. Table (Review)
+-- 12. Table (Review)
 create table Review
 (
 	ReviewId					smallint Identity(1,1)	not null,
@@ -156,7 +169,7 @@ create table Review
 		references Account (AccId)
 )
 
--- 12. Table (Message)
+-- 13. Table (Message)
 create table Message
 (
 	MsgId					smallint Identity(1,1)		not null,
@@ -168,7 +181,7 @@ create table Message
 		references Account (AccId)
 )
 
--- 13. Table (QnA)
+-- 14. Table (QnA)
 create table QnA
 (
 	QnAId					smallint Identity(1,1)		not null,

@@ -4,10 +4,10 @@
 create table Account
 (
 	AccId		smallint Identity(1,1)		not null,
-	FullName	varchar(50)					not null,
-	DOB			date						not null CHECK(DOB <= getdate()),
+	FullName	varchar(50)					null,
+	DOB			date						null CHECK(DOB <= getdate()),
 	Email		varchar(100)				not null unique,
-	ContactNo	char(8)						not null unique,
+	ContactNo	char(8)						null unique,
 	Password	varchar(150)				not null, 
 	Photo		varchar(200)				null,
 	LinkedIn	varchar(150)				null, 

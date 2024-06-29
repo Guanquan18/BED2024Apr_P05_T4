@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spear Academy</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">SPEAR ACADEMY</div>
+        <a id="courses-btn" href="creator.html">Courses</a>
+        <a id="profile-btn" href="profile.html" >Profile</a>
+        <a id="community-btn" href="community.html" class = "active">Community</a>
+    </div>
+    <div id="community-container" class = "content-container">   
+        <div class="top-content">
+            <h1> My Community</h1>
+        </div>
+        <div class="main-container" id="community-main-container"></div>
+    </div>
+    <div id="Specific-community-container" class="content-container"  style="display: none">
+        <p>hi</p>
+    </div>
+    <!-- Bootstrap JavaScript Bundle (popper.js and bootstrap.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="scripts/script.js"></script>
+    <script>
+          fetchCoursesByCreator('community-main-container');
+    </script>
+</body>
+</html>

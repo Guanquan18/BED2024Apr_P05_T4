@@ -368,50 +368,32 @@ VALUES
 -- Inserting Values into Attempt
 INSERT INTO Attempt (Score, NoOfCorrect, NoOfWrong, Attempt_Quiz, Attempt_Section, Attempt_Account)
 VALUES 
-(5, 5, 1, 1, 2, 1),  -- Chang Guan Quan, AI Advanced (6 questions)
-(9, 9, 1, 2, 3, 2),  -- Maria Garcia, Google AI Principle (10 questions)
-(4, 4, 2, 1, 2, 3),  -- John Smith, AI Advanced (6 questions)
+(9, 9, 1, 2, 3, 2),  -- Maria Garcia, Google AI Principles (10 questions)
 (3, 3, 3, 1, 2, 4),  -- Aisha Khan, AI Advanced (6 questions)
-(8, 8, 2, 2, 3, 5),  -- David Brown, Google AI Principle (10 questions)
-(6, 6, 0, 1, 2, 6),  -- Li Wei, AI Advanced (6 questions)
-(10, 10, 0, 2, 3, 7),-- Anna Ivanova, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 8),  -- Carlos Sanchez, AI Advanced (6 questions)
-(4, 4, 2, 1, 2, 9),  -- Fatima Bint Ali, AI Advanced (6 questions)
-(9, 9, 1, 2, 3, 10), -- Mohammed El-Sayed, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 11), -- Elena Petrova, AI Advanced (6 questions)
-(8, 8, 2, 2, 3, 12), -- Robert Johnson, Google AI Principles (10 questions)
-(6, 6, 0, 1, 2, 13), -- Sofia Martinez, AI Advanced (6 questions)
-(4, 4, 2, 1, 2, 14), -- Akira Yamamoto, AI Advanced (6 questions)
-(9, 9, 1, 2, 3, 15), -- Isabella Rossi, Google AI Principles (10 questions)
-(6, 6, 0, 1, 2, 16), -- George Williams, AI Advanceds (6 questions)
-(8, 8, 2, 2, 3, 17), -- Yuki Tanaka, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 18), -- Emma Dubois, AI Advanced (6 questions)
-(4, 4, 2, 1, 2, 19), -- Hassan Ahmed, AI Advanced (6 questions)
+(8, 8, 2, 2, 3, 6),  -- Li Wei, Google AI Principles (10 questions)
+(10, 10, 0, 2, 3, 8), -- Carlos Sanchez, Google AI Principles (10 questions)
+(4, 4, 2, 1, 2, 10), -- Fatima Bint Ali, AI Advanced (6 questions)
+(9, 9, 1, 2, 3, 12), -- Mohammed El-Sayed, Google AI Principles (10 questions)
+(5, 5, 1, 1, 2, 14), -- Akira Yamamoto, AI Advanced (6 questions)
+(6, 6, 0, 1, 2, 16), -- George Williams, AI Advanced (6 questions)
+(8, 8, 2, 2, 3, 18), -- Yuki Tanaka, Google AI Principles (10 questions)
 (10, 10, 0, 2, 3, 20); -- Laura Müller, Google AI Principles (10 questions)
+
 
 -- Inserting values into Leaderboard
 INSERT INTO Leaderboard (UserName, Score, QuizId, Section_Quiz, AttemptId)
 VALUES 
-('Chang Guan Quan', 5, 1, 2, 1),  -- Chang Guan Quan, AI Advanced
 ('Maria Garcia', 9, 2, 3, 2),  -- Maria Garcia, Google AI Principles
-('John Smith', 4, 1, 2, 3),  -- John Smith, AI Advanced
 ('Aisha Khan', 3, 1, 2, 4),  -- Aisha Khan, AI Advanced
-('David Brown', 8, 2, 3, 5),  -- David Brown, Google AI Principles
-('Li Wei', 6, 1, 2, 6),  -- Li Wei, AI Advanced
-('Anna Ivanova', 10, 2, 3, 7),-- Anna Ivanova, Google AI Principles
-('Carlos Sanchez', 5, 1, 2, 8),  -- Carlos Sanchez, AI Advanced
-('Fatima Bint Ali', 4, 1, 2, 9),  -- Fatima Bint Ali, AI Advanced
-('Mohammed El-Sayed', 9, 2, 3, 10), -- Mohammed El-Sayed, Google AI Principles
-('Elena Petrova', 5, 1, 2, 11), -- Elena Petrova, AI Advanced
-('Robert Johnson', 8, 2, 3, 12), -- Robert Johnson, Google AI Principles
-('Sofia Martinez', 6, 1, 2, 13), -- Sofia Martinez, AI Advanced
-('Akira Yamamoto', 4, 1, 2, 14), -- Akira Yamamoto, AI Advanced
-('Isabella Rossi', 9, 2, 3, 15), -- Isabella Rossi, Google AI Principles
+('Li Wei', 8, 2, 3, 6),  -- Li Wei, Google AI Principles
+('Carlos Sanchez', 10, 2, 3, 8), -- Carlos Sanchez, Google AI Principles
+('Fatima Bint Ali', 4, 1, 2, 10),  -- Fatima Bint Ali, AI Advanced
+('Mohammed El-Sayed', 9, 2, 3, 12), -- Mohammed El-Sayed, Google AI Principles
+('Akira Yamamoto', 5, 1, 2, 14), -- Akira Yamamoto, AI Advanced
 ('George Williams', 6, 1, 2, 16), -- George Williams, AI Advanced
-('Yuki Tanaka', 8, 2, 3, 17), -- Yuki Tanaka, Google AI Principles
-('Emma Dubois', 5, 1, 2, 18), -- Emma Dubois, AI Advanced
-('Hassan Ahmed', 4, 1, 2, 19), -- Hassan Ahmed, AI Advanced
+('Yuki Tanaka', 8, 2, 3, 18), -- Yuki Tanaka, Google AI Principles
 ('Laura Müller', 10, 2, 3, 20); -- Laura Müller, Google AI Principles
+
 
 -- Insert into Review
 INSERT INTO Review (ReviewText, Ratings, Review_Course, Review_Account)

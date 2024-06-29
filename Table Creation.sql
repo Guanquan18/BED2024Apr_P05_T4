@@ -1,4 +1,4 @@
---create database SpearAcademy_db
+-- create database SpearAcademy_db
 
 -- 1. Table (Account)
 create table Account
@@ -199,7 +199,7 @@ create table QnA
 )
 
 
-insert into Account(FullName,DOB,Email,ContactNo,Password,Photo,LinkedIn)
+insert into Account(FullName,DOB,Email,ContactNo,Password,Photo,LinkedIn) 
 values 
 ('Chang Guan Quan', '2000-01-01','changguanquan@gmail.com','12345678','1234','Photo','www.linkedin.com/changguanquan'),
 ('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','1234','Photo','www.linkedin.com/mariagarcia'),
@@ -222,6 +222,12 @@ values
 ('Hassan Ahmed', '1990-11-06','hassan.ahmed@example.com','99012345','1234','Photo','www.linkedin.com/hassanahmed'),
 ('Laura Müller', '1993-02-18','laura.muller@example.com','10123456','1234','Photo','www.linkedin.com/lauramuller');
 
+-- Even Number AccountID Are Student 
+INSERT INTO Student (StudentId)
+VALUES 
+(2),(4),(6),(8),(10),(12),(14),(16),(18),(20);
+
+-- Odd Number AccountID Are Educator
 insert into Educator(EducatorId,Organisation,ProfessionalTitle,YearsOfExperience,FieldOfStudy,HighestDegree)
 values 
 (1,'Ngee Ann Polytechnic','Professor',10,'Computer Science','PhD Degree'),
@@ -235,23 +241,37 @@ values
 (17,'Nanyang Technological University','Associate Professor',18,'Physics','PhD Degree'),
 (19,'Singapore University of Technology and Design','Senior Lecturer',14,'Architecture','Master Degree');
 
+INSERT INTO Course (CourseTitle, SmallDescription, Description, Label, Badge, Thumbnail, Creator)
+VALUES 
+(	'Generalized AI for Beginners', 
+	'An introduction to the fundamentals of Artificial Intelligence', 
+	'This course provides a comprehensive introduction to the fundamentals of Artificial Intelligence, covering basic concepts, algorithms, and practical applications. Suitable for beginners with no prior experience in AI.', 
+	'Best Selling',
+	null,
+	'https://i.ytimg.com/vi/UkZzM-jxLv4/maxresdefault.jpg', 
+	1
+),
+(
+    'Machine Learning with Python',
+    'Learn essential machine learning techniques using Python programming language',
+    'This course covers foundational machine learning algorithms, Python libraries such as scikit-learn, and practical applications in data science.',
+    'Popular Course',
+	null,
+    'https://th.bing.com/th/id/OIP.P_3XeZcQ1lOx2bILTWvGgwHaEK?rs=1&pid=ImgDetMain',
+    1
+);
 -- Insert into SectionDetails
 INSERT INTO SectionDetails (SectionTitle, Video, Section_Course)
 VALUES 
 ('Introduction to AI', 'intro_ai.mp4', 1),
 ('Advanced AI', 'advanced_ai.mp4', 1),
-('Machine Learning Basics', 'ml_basics.mp4', 2),
-('Data Science Essentials', 'ds_essentials.mp4', 3),
-('Cyber Security Fundamentals', 'cs_fundamentals.mp4',3),
 ('Google AI Principles', 'google_ai_principles.mp4', 1);
-
-
 
 -- Insert data into Quiz table
 INSERT INTO Quiz (QuizTitle, Section_Quiz, Course_Quiz)
 VALUES
-('AI Fundamentals', 2, 1),
-('Google AI Principles Quiz', 6, 1);
+('Advanced AI Quiz', 2, 1),
+('Google AI Principles Quiz', 3, 1);
 
 
 -- Insert data into Question table
@@ -263,16 +283,16 @@ VALUES
 ('Which data science library is used to plot 2D graphs?', 1, 2),
 ('When would you use a heatmap?', 1, 2),
 ('Why is framing your machine learning problem an important step?', 1, 2),
-('Which of these are common responsible AI principles?', 2, 6),
-('What does the responsible AI principle "transparency and explainability" refer to?', 2, 6),
-('What is model drift?', 2, 6),
-('Which of these are three components of a strong algorithmic audit?', 2, 6),
-('The purpose of a technical audit is to _____.', 2, 6),
-('What are the two common forms of continuous monitoring?', 2, 6),
-('The NIST AI Risk Management Framework focuses its actions through which of the following four functions?', 2, 6),
-('This NIST AI Risk Management Framework function is often related to compliance or evaluation?', 2, 6),
-('Developers and deployers of "high-risk" AI systems will be required to implement which of the following?', 2, 6),
-('What does "data minimization" refer to?', 2, 6);
+('Which of these are common responsible AI principles?', 2, 3),
+('What does the responsible AI principle "transparency and explainability" refer to?', 2, 3),
+('What is model drift?', 2, 3),
+('Which of these are three components of a strong algorithmic audit?', 2, 3),
+('The purpose of a technical audit is to _____.', 2, 3),
+('What are the two common forms of continuous monitoring?', 2, 3),
+('The NIST AI Risk Management Framework focuses its actions through which of the following four functions?', 2, 3),
+('This NIST AI Risk Management Framework function is often related to compliance or evaluation?', 2, 3),
+('Developers and deployers of "high-risk" AI systems will be required to implement which of the following?', 2, 3),
+('What does "data minimization" refer to?', 2, 3);
 
 
 
@@ -348,47 +368,53 @@ VALUES
 -- Inserting Values into Attempt
 INSERT INTO Attempt (Score, NoOfCorrect, NoOfWrong, Attempt_Quiz, Attempt_Section, Attempt_Account)
 VALUES 
-(5, 5, 1, 1, 2, 1),  -- Chang Guan Quan, AI Fundamentals (6 questions)
-(9, 9, 1, 2, 6, 2),  -- Maria Garcia, Google AI Principles (10 questions)
-(4, 4, 2, 1, 2, 3),  -- John Smith, AI Fundamentals (6 questions)
-(3, 3, 3, 1, 2, 4),  -- Aisha Khan, AI Fundamentals (6 questions)
-(8, 8, 2, 2, 6, 5),  -- David Brown, Google AI Principles (10 questions)
-(6, 6, 0, 1, 2, 6),  -- Li Wei, AI Fundamentals (6 questions)
-(10, 10, 0, 2, 6, 7),-- Anna Ivanova, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 8),  -- Carlos Sanchez, AI Fundamentals (6 questions)
-(4, 4, 2, 1, 2, 9),  -- Fatima Bint Ali, AI Fundamentals (6 questions)
-(9, 9, 1, 2, 6, 10), -- Mohammed El-Sayed, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 11), -- Elena Petrova, AI Fundamentals (6 questions)
-(8, 8, 2, 2, 6, 12), -- Robert Johnson, Google AI Principles (10 questions)
-(6, 6, 0, 1, 2, 13), -- Sofia Martinez, AI Fundamentals (6 questions)
-(4, 4, 2, 1, 2, 14), -- Akira Yamamoto, AI Fundamentals (6 questions)
-(9, 9, 1, 2, 6, 15), -- Isabella Rossi, Google AI Principles (10 questions)
-(6, 6, 0, 1, 2, 16), -- George Williams, AI Fundamentals (6 questions)
-(8, 8, 2, 2, 6, 17), -- Yuki Tanaka, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 18), -- Emma Dubois, AI Fundamentals (6 questions)
-(4, 4, 2, 1, 2, 19), -- Hassan Ahmed, AI Fundamentals (6 questions)
-(10, 10, 0, 2, 6, 20); -- Laura Müller, Google AI Principles (10 questions)
+(5, 5, 1, 1, 2, 1),  -- Chang Guan Quan, AI Advanced (6 questions)
+(9, 9, 1, 2, 3, 2),  -- Maria Garcia, Google AI Principle (10 questions)
+(4, 4, 2, 1, 2, 3),  -- John Smith, AI Advanced (6 questions)
+(3, 3, 3, 1, 2, 4),  -- Aisha Khan, AI Advanced (6 questions)
+(8, 8, 2, 2, 3, 5),  -- David Brown, Google AI Principle (10 questions)
+(6, 6, 0, 1, 2, 6),  -- Li Wei, AI Advanced (6 questions)
+(10, 10, 0, 2, 3, 7),-- Anna Ivanova, Google AI Principles (10 questions)
+(5, 5, 1, 1, 2, 8),  -- Carlos Sanchez, AI Advanced (6 questions)
+(4, 4, 2, 1, 2, 9),  -- Fatima Bint Ali, AI Advanced (6 questions)
+(9, 9, 1, 2, 3, 10), -- Mohammed El-Sayed, Google AI Principles (10 questions)
+(5, 5, 1, 1, 2, 11), -- Elena Petrova, AI Advanced (6 questions)
+(8, 8, 2, 2, 3, 12), -- Robert Johnson, Google AI Principles (10 questions)
+(6, 6, 0, 1, 2, 13), -- Sofia Martinez, AI Advanced (6 questions)
+(4, 4, 2, 1, 2, 14), -- Akira Yamamoto, AI Advanced (6 questions)
+(9, 9, 1, 2, 3, 15), -- Isabella Rossi, Google AI Principles (10 questions)
+(6, 6, 0, 1, 2, 16), -- George Williams, AI Advanceds (6 questions)
+(8, 8, 2, 2, 3, 17), -- Yuki Tanaka, Google AI Principles (10 questions)
+(5, 5, 1, 1, 2, 18), -- Emma Dubois, AI Advanced (6 questions)
+(4, 4, 2, 1, 2, 19), -- Hassan Ahmed, AI Advanced (6 questions)
+(10, 10, 0, 2, 3, 20); -- Laura Müller, Google AI Principles (10 questions)
 
 -- Inserting values into Leaderboard
 INSERT INTO Leaderboard (UserName, Score, QuizId, Section_Quiz, AttemptId)
 VALUES 
-('Chang Guan Quan', 5, 1, 2, 1),  -- Chang Guan Quan, AI Fundamentals
-('Maria Garcia', 9, 2, 6, 2),  -- Maria Garcia, Google AI Principles
-('John Smith', 4, 1, 2, 3),  -- John Smith, AI Fundamentals
-('Aisha Khan', 3, 1, 2, 4),  -- Aisha Khan, AI Fundamentals
-('David Brown', 8, 2, 6, 5),  -- David Brown, Google AI Principles
-('Li Wei', 6, 1, 2, 6),  -- Li Wei, AI Fundamentals
-('Anna Ivanova', 10, 2, 6, 7),-- Anna Ivanova, Google AI Principles
-('Carlos Sanchez', 5, 1, 2, 8),  -- Carlos Sanchez, AI Fundamentals
-('Fatima Bint Ali', 4, 1, 2, 9),  -- Fatima Bint Ali, AI Fundamentals
-('Mohammed El-Sayed', 9, 2, 6, 10), -- Mohammed El-Sayed, Google AI Principles
-('Elena Petrova', 5, 1, 2, 11), -- Elena Petrova, AI Fundamentals
-('Robert Johnson', 8, 2, 6, 12), -- Robert Johnson, Google AI Principles
-('Sofia Martinez', 6, 1, 2, 13), -- Sofia Martinez, AI Fundamentals
-('Akira Yamamoto', 4, 1, 2, 14), -- Akira Yamamoto, AI Fundamentals
-('Isabella Rossi', 9, 2, 6, 15), -- Isabella Rossi, Google AI Principles
-('George Williams', 6, 1, 2, 16), -- George Williams, AI Fundamentals
-('Yuki Tanaka', 8, 2, 6, 17), -- Yuki Tanaka, Google AI Principles
-('Emma Dubois', 5, 1, 2, 18), -- Emma Dubois, AI Fundamentals
-('Hassan Ahmed', 4, 1, 2, 19), -- Hassan Ahmed, AI Fundamentals
-('Laura Müller', 10, 2, 6, 20); -- Laura Müller, Google AI Principles
+('Chang Guan Quan', 5, 1, 2, 1),  -- Chang Guan Quan, AI Advanced
+('Maria Garcia', 9, 2, 3, 2),  -- Maria Garcia, Google AI Principles
+('John Smith', 4, 1, 2, 3),  -- John Smith, AI Advanced
+('Aisha Khan', 3, 1, 2, 4),  -- Aisha Khan, AI Advanced
+('David Brown', 8, 2, 3, 5),  -- David Brown, Google AI Principles
+('Li Wei', 6, 1, 2, 6),  -- Li Wei, AI Advanced
+('Anna Ivanova', 10, 2, 3, 7),-- Anna Ivanova, Google AI Principles
+('Carlos Sanchez', 5, 1, 2, 8),  -- Carlos Sanchez, AI Advanced
+('Fatima Bint Ali', 4, 1, 2, 9),  -- Fatima Bint Ali, AI Advanced
+('Mohammed El-Sayed', 9, 2, 3, 10), -- Mohammed El-Sayed, Google AI Principles
+('Elena Petrova', 5, 1, 2, 11), -- Elena Petrova, AI Advanced
+('Robert Johnson', 8, 2, 3, 12), -- Robert Johnson, Google AI Principles
+('Sofia Martinez', 6, 1, 2, 13), -- Sofia Martinez, AI Advanced
+('Akira Yamamoto', 4, 1, 2, 14), -- Akira Yamamoto, AI Advanced
+('Isabella Rossi', 9, 2, 3, 15), -- Isabella Rossi, Google AI Principles
+('George Williams', 6, 1, 2, 16), -- George Williams, AI Advanced
+('Yuki Tanaka', 8, 2, 3, 17), -- Yuki Tanaka, Google AI Principles
+('Emma Dubois', 5, 1, 2, 18), -- Emma Dubois, AI Advanced
+('Hassan Ahmed', 4, 1, 2, 19), -- Hassan Ahmed, AI Advanced
+('Laura Müller', 10, 2, 3, 20); -- Laura Müller, Google AI Principles
+
+-- Insert into Review
+INSERT INTO Review (ReviewText, Ratings, Review_Course, Review_Account)
+VALUES 
+('This is an excellent course for beginners. The content is well-structured and easy to understand.', 4.5, 1, 2),
+('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4);

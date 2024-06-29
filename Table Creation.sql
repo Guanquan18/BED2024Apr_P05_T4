@@ -380,19 +380,19 @@ VALUES
 (10, 10, 0, 2, 3, 20); -- Laura Müller, Google AI Principles (10 questions)
 
 
--- Inserting values into Leaderboard
+-- Inserting values into Leaderboard 
 INSERT INTO Leaderboard (UserName, Score, QuizId, Section_Quiz, AttemptId)
 VALUES 
-('Maria Garcia', 9, 2, 3, 2),  -- Maria Garcia, Google AI Principles
-('Aisha Khan', 3, 1, 2, 4),  -- Aisha Khan, AI Advanced
-('Li Wei', 8, 2, 3, 6),  -- Li Wei, Google AI Principles
-('Carlos Sanchez', 10, 2, 3, 8), -- Carlos Sanchez, Google AI Principles
-('Fatima Bint Ali', 4, 1, 2, 10),  -- Fatima Bint Ali, AI Advanced
-('Mohammed El-Sayed', 9, 2, 3, 12), -- Mohammed El-Sayed, Google AI Principles
-('Akira Yamamoto', 5, 1, 2, 14), -- Akira Yamamoto, AI Advanced
-('George Williams', 6, 1, 2, 16), -- George Williams, AI Advanced
-('Yuki Tanaka', 8, 2, 3, 18), -- Yuki Tanaka, Google AI Principles
-('Laura Müller', 10, 2, 3, 20); -- Laura Müller, Google AI Principles
+('Maria Garcia', 9, 2, 3, 1),  -- Maria Garcia, Google AI Principles
+('Aisha Khan', 3, 1, 2, 2),  -- Aisha Khan, AI Advanced
+('Li Wei', 8, 2, 3, 3),  -- Li Wei, Google AI Principles
+('Carlos Sanchez', 10, 2, 3, 4), -- Carlos Sanchez, Google AI Principles
+('Fatima Bint Ali', 4, 1, 2, 5),  -- Fatima Bint Ali, AI Advanced
+('Mohammed El-Sayed', 9, 2, 3, 6), -- Mohammed El-Sayed, Google AI Principles
+('Akira Yamamoto', 5, 1, 2, 7), -- Akira Yamamoto, AI Advanced
+('George Williams', 6, 1, 2, 8), -- George Williams, AI Advanced
+('Yuki Tanaka', 8, 2, 3, 9), -- Yuki Tanaka, Google AI Principles
+('Laura Müller', 10, 2, 3, 10); -- Laura Müller, Google AI Principles
 
 
 -- Insert into Review

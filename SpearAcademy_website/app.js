@@ -2,9 +2,11 @@
 Function Created
 Sairam (S10255930H)
 - app.get("/courses-creator/:creator", CoursesController.getCourseByCreator);
-- app.get("/courses-id/:CourseId", CoursesController.getCourseById);
+- app.get("/courses-with-sections-id/:CourseId", CoursesController.getCourseWithSectionById);
 - app.put("/courses-id/:CourseId",CoursesController.updateCourse); 
+- app.get("/sectionDetails-id/:id/:SectionNo", SectionDetailsController.getSectionDetailsById);
 - const CoursesController = require("./controllers/CoursesController");
+- const SectionDetailsController = require("./controllers/SectionDetailsController");
 Chang Guan Quan (S10257825A)
 - 
 -
@@ -26,11 +28,12 @@ Keshwindren Gandipanh (S10259469C)
   const sql = require("mssql"); // Import the mssql module
   const dbConfig = require("./dbConfig"); // Import the database configuration
   const bodyParser = require("body-parser"); // Import body-parser for parsing request bodies
-  const validateBook = require("./middleware/validateBook"); // Import a custom middleware (if applicable)
   const staticMiddleware = express.static("public"); // Middleware to serve static files from the public folder
 
    // Import the CoursesController. Created by Sairam
    const CoursesController = require("./controllers/CoursesController");
+    // Import the SectionDetailsController. Created by Sairam
+   const SectionDetailsController = require("./controllers/SectionDetailsController");
    // Add necessary Controllers
 
   const app = express(); // Create an Express application
@@ -69,10 +72,11 @@ Keshwindren Gandipanh (S10259469C)
 
   // Routes for handling course-related requests (Created by: Sairam)
   app.get("/courses-creator/:creator", CoursesController.getCourseByCreator); // Get courses by creator
-  app.get("/courses-id/:CourseId", CoursesController.getCourseById); // Get course by ID
+  app.get("/courses-with-sections-id/:CourseId", CoursesController.getCourseWithSectionById); // Get course and section by ID
   app.put("/courses-id/:CourseId",CoursesController.updateCourse); // Update course by ID
 
-
+  // Routes for handling sections-related requests (Created by: Sairam)
+  app.get("/sectionDetails-id/:id/:SectionNo", SectionDetailsController.getSectionDetailsById);
 
 
 

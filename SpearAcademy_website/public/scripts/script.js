@@ -3,10 +3,12 @@ Function Created
 Sairam (S10255930H)
 - showPopup(popupId)
 - hidePopup(popupId)
+- editSection
 - ViewActive(containerId)
 - fetchCoursesByCreator(containerId)
-- fetchCourseDetails(CourseId)
+- fetchCourseandSectionDetails(CourseId)
 - UpdateCourse()
+- fetchSectionDetails
 
 Chang Guan Quan (S10257825A)
 - 
@@ -35,6 +37,17 @@ function showPopup(popupId) {
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
+// Function for edit Section Pop-up (creator.html) Created by: Sairam
+function editSection(CourseId, sectionNo) {
+  // Show the edit popup
+  showPopup('SectionDetails-Popup');
+  // Log the section number
+  console.log(`Editing Course: ${CourseId} Editing Section: ${sectionNo}`);
+  const sectionDetailsPopUp = document.getElementById('SectionDetails-Popup');
+  sectionDetailsPopUp.querySelector('.popup-content h3').innerText = `Section: ${sectionNo}`;
+  fetchSectionDetails(CourseId, sectionNo)
+}
+
 
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
 function ViewActive(containerId) {
@@ -52,7 +65,7 @@ function ViewActive(containerId) {
               coursebtn.classList.add('active');
               document.getElementById('courses-container').style.display = 'none';
               document.getElementById('Specific-course-container').style.display = 'block';
-              fetchCourseDetails(courseId);
+              fetchCourseandSectionDetails(courseId);
           } else if (containerId === 'community-main-container') {
             // Activate community view
             const coursebtn = document.getElementById('community-btn');
@@ -159,40 +172,69 @@ async function fetchCoursesByCreator(containerId) {
   }
 }
 
-// Function to fetch detailed information about a specific course. Created by: Sairam
-async function fetchCourseDetails(CourseId) {
-  const response = await fetch(`http://localhost:3000/courses-id/${CourseId}`);
-  
-  const data = await response.json();
-  console.log(data)
-  if (data.length == 0){
-    alert("No Courses created");
+// Function to fetch detailed information about a specific course and section. Created by: Sairam
+async function fetchCourseandSectionDetails(CourseId) {
+  try {
+    const response = await fetch(`http://localhost:3000/courses-with-sections-id/${CourseId}`);
+    console.log("CourseId:", CourseId);
+    console.log("Constructed URL:", response); // Log the constructed URL for debugging
+    const data = await response.json();
+    console.log("Data:", data);
+
+    if (data.length === 0) {
+      alert("No Courses found");
+      return;
+    }
+    
+    // Update UI with fetched data
+    const courseContainer = document.getElementById('Specific-course-container');
+    courseContainer.querySelector('.top-content h1').innerText = data[0].CourseTitle; // Assuming data is an array with one course object
+    courseContainer.querySelector('.course-title span').innerText = data[0].CourseTitle;
+    courseContainer.querySelector('.course-label span').innerText = data[0].Label;
+    courseContainer.querySelector('.course-small-description span').innerText = data[0].SmallDescription;
+    courseContainer.querySelector('.course-badge span').innerText = data[0].Badge;
+    courseContainer.querySelector('.course-last-updated span').innerText = data[0].LastUpdated;
+    const courseImage = courseContainer.querySelector('.course-icon');
+    courseImage.src = data[0].Thumbnail;
+    courseImage.alt = data[0].CourseTitle;
+    
+    // Update description popup content
+    const Description_Popup = document.getElementById('view-course-Description-Popup');
+    Description_Popup.querySelector('.popup-content p').innerText = data[0].Description;
+
+    // Pre-fill edit form
+    document.getElementById('edit-Course-Title').value = data[0].CourseTitle;
+    document.getElementById('edit-Course-SmallDescription').value = data[0].SmallDescription;
+    document.getElementById('edit-Course-Description').value = data[0].Description;
+    document.getElementById('edit-Course-Label').value = data[0].Label;
+    document.getElementById('edit-Course-Badge').value = data[0].Badge;
+
+    const pop_up_edit_container = document.querySelector('.popup-content');
+    pop_up_edit_container.id = `edit-btn-${CourseId}`;
+
+    // Dynamically create section items
+    const sectionDetailsContainer = document.getElementById('section-details-container');
+    sectionDetailsContainer.innerHTML = ''; // Clear existing content
+
+    data[0].Sections.forEach((section) => {
+      const sectionItem = document.createElement('div');
+      sectionItem.classList.add('section-item', 'Tag', 'word-link');
+      sectionItem.id = `section-item-${section.SectionNo}`;
+
+      sectionItem.innerHTML = `
+          <h3>Section ${section.SectionNo}: <span>${section.SectionTitle}</span></h3>
+          <p id="edit-section-${section.SectionNo}" onclick="editSection(${CourseId}, ${section.SectionNo})">Edit</p>
+      `;
+
+      sectionDetailsContainer.appendChild(sectionItem);
+  });
+    
+  } catch (error) {
+    console.error('Error fetching course details:', error);
+    alert('Failed to fetch course details. Please try again later.');
   }
-  // Update the specific course container with fetched data
-  const courseContainer = document.getElementById('Specific-course-container');
-  const Description_Popup = document.getElementById('view-course-Description-Popup');
-  courseContainer.querySelector('.top-content h1').innerText = data.CourseTitle;
-  courseContainer.querySelector('.course-title span').innerText = data.CourseTitle;
-  courseContainer.querySelector('.course-label span').innerText = data.Label;
-  courseContainer.querySelector('.course-small-description span').innerText = data.SmallDescription;
-  courseContainer.querySelector('.course-badge span').innerText = data.Badge;
-  courseContainer.querySelector('.course-last-updated span').innerText = data.LastUpdated;
-  const courseImage = courseContainer.querySelector('.course-icon');
-  courseImage.src = data.Thumbnail;
-  courseImage.alt = data.CourseTitle;
-  Description_Popup.querySelector('.popup-content p').innerText = data.Description;
+}
 
-
-  // Pre-fill form with fetched course details
-  document.getElementById('edit-Course-Title').value = data.CourseTitle;
-  document.getElementById('edit-Course-SmallDescription').value = data.SmallDescription;
-  document.getElementById('edit-Course-Description').value = data.Description;
-  document.getElementById('edit-Course-Label').value = data.Label;
-  document.getElementById('edit-Course-Badge').value = data.Badge;
-
-  const pop_up_edit_container = document.querySelector('.popup-content');
-  pop_up_edit_container.id = `edit-btn-${CourseId}`
-  }
 // Function to update course details with the data from the form. Created by: Sairam
 async function UpdateCourse() {
     const pop_up_edit_container = document.querySelector('.popup-content');
@@ -224,7 +266,7 @@ async function UpdateCourse() {
       console.log(data)
       alert("Course details updated successfully!");
       hidePopup('edit-course-details-Popup');
-      fetchCourseDetails(courseId); // Refresh displayed details after update
+      fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
   } catch (error) {
       console.error('Error updating course:', error);
       alert('Failed to update course. Please try again later.');
@@ -232,3 +274,14 @@ async function UpdateCourse() {
 
   }
 
+// Function to fetch sections by a specific course and sectionNo. Created by: Sairam
+async function fetchSectionDetails(courseId, SectionNo) {
+  const response = await fetch(`http://localhost:3000/sectionDetails-id/${courseId}/${SectionNo}`);
+  const data = await response.json();
+  console.log(data);
+  if (data.length === 0) {
+    alert("No Courses created");
+  }
+  const sectionDetailsPopUp = document.getElementById('SectionDetails-Popup');
+  sectionDetailsPopUp.querySelector('.popup h2').innerText = data.SectionTitle;
+}

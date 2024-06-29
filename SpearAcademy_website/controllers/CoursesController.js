@@ -16,18 +16,18 @@ const getCourseByCreator = async (req, res) => {
   }
 };
 
-// Controller function to get course by ID.  Created By: Sairam (S10259930H)
-const getCourseById = async (req, res) => {
-  const id = parseInt(req.params.CourseId); // Parse course ID from request parameters
+// Controller function to get course and section by ID.  Created By: Sairam (S10259930H)
+const getCourseWithSectionById = async (req, res) => {
+  const id = parseInt(req.params.CourseId);  // Parse the CourseId from request parameters
   try {
-    const course = await Course.getCourseById(id); // Fetch course by ID from the model
+    const course = await Course.getCourseWithSectionById(id); // Attempt to fetch course details by id
     if (!course) {
-      return res.status(404).send("Course not found"); // Return 404 if course not found
+      return res.status(404).send("Course not found"); // Handle case where no course is found
     }
     res.json(course);
   } catch (error) {
-    console.error(error); // Log error to the console
-    res.status(500).send("Error retrieving course"); // Send 500 status code for server error
+    console.error(error);  // Log and respond with server error if retrieval fails
+    res.status(500).send("Error retrieving course");
   }
 };
 
@@ -50,6 +50,6 @@ const updateCourse = async (req, res) => {
 };
 module.exports = {
   getCourseByCreator,
-  getCourseById,
+  getCourseWithSectionById,
   updateCourse,
 };

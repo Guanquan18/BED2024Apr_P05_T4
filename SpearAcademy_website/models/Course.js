@@ -68,40 +68,65 @@ class Courses {
             : []; // Return an empty array if no courses are found
     }
 
-    // Getting course by Id  Created By: Sairam (S10259930H)
-    static async getCourseById(CourseId) {
-      const connection = await sql.connect(dbConfig); // Connect to the database
-      // SQL query to get course by ID
-      const sqlQuery = `SELECT  
-                        CourseId, 
-                        CourseTitle, 
-                        SmallDescription, 
-                        Description, 
-                        ISNULL(Label, 'No Label') AS Label,
-                        ISNULL(Badge, 'No Badge') AS Badge,
-                        Thumbnail,
-                        FORMAT(LastUpdated, 'dddd dd MMM yyyy hh:mm tt') AS LastUpdated 
-                        FROM Course WHERE CourseId = @id`; // Parameterized query
-                    
-      const request = connection.request();
-      request.input("id", CourseId); // Ensure the correct SQL data type
-      const result = await request.query(sqlQuery); // Close the connection
+    // Getting course and section by Id  Created By: Sairam (S10259930H)
+    static async getCourseWithSectionById(CourseId) {
+      const connection = await sql.connect(dbConfig);
   
-      connection.close();
+      try {
+          const sqlQuery = `
+              SELECT 
+                  c.CourseId, c.CourseTitle, c.SmallDescription, c.Description, 
+                  ISNULL(c.Label, 'No Label') AS Label, 
+                  ISNULL(c.Badge, 'No Badge') AS Badge,
+                  c.Thumbnail, FORMAT(c.LastUpdated, 'dddd dd MMM yyyy hh:mm tt') AS LastUpdated,
+                  s.SectionNo, s.SectionTitle, s.Video
+              FROM Course c
+              LEFT JOIN SectionDetails s ON c.CourseId = s.Section_Course
+              WHERE c.CourseId = @id
+          `;
   
-      return result.recordset[0]
-        ? new Courses(
-            result.recordset[0].CourseId,
-            result.recordset[0].CourseTitle,
-            result.recordset[0].SmallDescription,
-            result.recordset[0].Description,
-            result.recordset[0].Label,
-            result.recordset[0].Badge,
-            result.recordset[0].Thumbnail,
-            result.recordset[0].LastUpdated,
-          )
-        : null; // Handle Course not found
-    }
+          const request = connection.request();
+          request.input("id", CourseId);
+          const result = await request.query(sqlQuery);
+  
+          if (result.recordset.length === 0) {
+              return null; // Handle case where course with given CourseId is not found
+          }
+  
+          const courseWithSections = {};
+          
+          for (const row of result.recordset) {
+              const courseId = row.CourseId;
+              if (!courseWithSections[courseId]) {
+                  courseWithSections[courseId] = {
+                      CourseId: row.CourseId,
+                      CourseTitle: row.CourseTitle,
+                      SmallDescription: row.SmallDescription,
+                      Description: row.Description,
+                      Label: row.Label,
+                      Badge: row.Badge,
+                      Thumbnail: row.Thumbnail,
+                      LastUpdated: row.LastUpdated,
+                      Sections: [],
+                  };
+              }
+              if (row.SectionNo !== null) { // Ensure there is section data
+                  courseWithSections[courseId].Sections.push({
+                      SectionNo: row.SectionNo,
+                      SectionTitle: row.SectionTitle,
+                      Video: row.Video,
+                  });
+              }
+          }
+  
+          // Return the values (courses with sections) as an array
+          return Object.values(courseWithSections);
+      } catch (error) {
+          throw new Error("Error fetching course with sections");
+      } finally {
+          await connection.close();
+      }
+  }
 
      // Static method to update course details  Created By: Sairam (S10259930H)
     static async updateCourse(CourseId, newCourseData) {
@@ -148,7 +173,7 @@ class Courses {
     
       connection.close();
     
-      return this.getCourseById(CourseId);
+      return this.getCourseWithSectionById(CourseId);
     }    
 }
 

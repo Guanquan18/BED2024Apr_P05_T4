@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="styles/styles.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--Font Awesome Link-->
+    <script src="https://kit.fontawesome.com/543bcc20b3.js" crossorigin="anonymous"></script>
 </head>
 <body>
      <!-- Sidebar -->
@@ -74,9 +76,19 @@
             <!-- Full-width Section Details -->
             <div class="row">
                 <div class="col-md-12 sub-container second-row">
-                    <div class="course-header course-content word-link">
+                    <div class="course-header course-content">
                         <h2>Section Details</h2>
-                        <p> Edit </p>
+                        <i class="fas fa-plus add-icon"></i>
+                    </div>
+                    <div id="section-details-container">
+                        <div class="section-item Tag word-link">
+                            <h3>Section 1: <span>Introduction to AI</span></h3>
+                            <p> Edit </p>
+                        </div>
+                        <div class="section-item Tag word-link">
+                            <h3>Section 2: <span>AI Concepts</span></h3>
+                            <p> Edit </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,6 +128,15 @@
             <span class="close-btn" onclick="hidePopup('view-course-Description-Popup')">&times;</span>
             <h3>Description</h3>
             <p></p>
+        </div>
+    </div>
+
+    <!-- View Section Description Popup -->
+    <div id="SectionDetails-Popup" class="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="hidePopup('SectionDetails-Popup')">&times;</span>
+            <h3></h3>
+            <h2></h2>
         </div>
     </div>
 

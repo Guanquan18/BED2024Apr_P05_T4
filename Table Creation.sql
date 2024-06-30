@@ -400,3 +400,19 @@ INSERT INTO Review (ReviewText, Ratings, Review_Course, Review_Account)
 VALUES 
 ('This is an excellent course for beginners. The content is well-structured and easy to understand.', 4.5, 1, 2),
 ('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4);
+
+--Insert into Message table
+INSERT INTO Message (MsgText, Message_Account)
+VALUES 
+('What does npm mean?', 2),
+('I am having trouble implementing the user mapping information, need help.', 4),
+('How much time should I allocate to master this topic if I am a fast learner who had certification in data structures?', 6),
+('How many different fields are there in AI?', 8);
+
+--Insert into QnA table
+INSERT INTO QnA (QnATitle, QnA_Msg, QnA_Course)
+VALUES 
+('Discussion on AI Basics', 1, 1),
+('Question on Database', 2, 1),
+('Allocation of time', 3, 1),
+('Number of fields', 4,1);

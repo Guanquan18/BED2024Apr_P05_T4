@@ -33,7 +33,7 @@ class Courses {
                 c.Thumbnail, 
                 c.LastUpdated, 
                 c.Creator,
-                cr.Ratings
+                ISNULL(cr.Ratings, 0) AS Ratings
             FROM Course c
             LEFT JOIN (
                 SELECT 

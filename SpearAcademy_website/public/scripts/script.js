@@ -43,8 +43,6 @@ function editSection(CourseId, sectionNo) {
   showPopup('SectionDetails-Popup');
   // Log the section number
   console.log(`Editing Course: ${CourseId} Editing Section: ${sectionNo}`);
-  const sectionDetailsPopUp = document.getElementById('SectionDetails-Popup');
-  sectionDetailsPopUp.querySelector('.popup-content h3').innerText = `Section: ${sectionNo}`;
   fetchSectionDetails(CourseId, sectionNo)
 }
 
@@ -226,14 +224,14 @@ async function fetchCourseandSectionDetails(CourseId) {
     const sectionDetailsContainer = document.getElementById('section-details-container');
     sectionDetailsContainer.innerHTML = ''; // Clear existing content
 
-    data[0].Sections.forEach((section) => {
+    data[0].Sections.forEach((section, index) => {
       const sectionItem = document.createElement('div');
       sectionItem.classList.add('section-item', 'Tag', 'word-link');
-      sectionItem.id = `section-item-${section.SectionNo}`;
+      sectionItem.id = `section-item-${section.SectionNo}-${CourseId}`;
 
       sectionItem.innerHTML = `
-          <h3>Section ${section.SectionNo}: <span>${section.SectionTitle}</span></h3>
-          <p id="edit-section-${section.SectionNo}" onclick="editSection(${CourseId}, ${section.SectionNo})">Edit</p>
+          <h3>Section ${index + 1}: <span>${section.SectionTitle}</span></h3>
+          <p id="edit-section-${section.SectionNo}-${CourseId}" onclick="editSection(${CourseId}, ${section.SectionNo})">Edit</p>
       `;
 
       sectionDetailsContainer.appendChild(sectionItem);

@@ -173,6 +173,7 @@ async function fetchCoursesByCreator(containerId) {
 }
 
 // Function to fetch detailed information about a specific course and section. Created by: Sairam
+let originalCourseDetails = {};
 async function fetchCourseandSectionDetails(CourseId) {
   try {
     const response = await fetch(`http://localhost:3000/courses-with-sections-id/${CourseId}`);
@@ -186,6 +187,15 @@ async function fetchCourseandSectionDetails(CourseId) {
       return;
     }
     
+    // Store original course details for comparison later
+    originalCourseDetails = {
+    CourseTitle: data[0].CourseTitle,
+    SmallDescription: data[0].SmallDescription,
+    Description: data[0].Description,
+    Label: data[0].Label,
+    Badge: data[0].Badge
+  };
+
     // Update UI with fetched data
     const courseContainer = document.getElementById('Specific-course-container');
     courseContainer.querySelector('.top-content h1').innerText = data[0].CourseTitle; // Assuming data is an array with one course object
@@ -237,42 +247,54 @@ async function fetchCourseandSectionDetails(CourseId) {
 
 // Function to update course details with the data from the form. Created by: Sairam
 async function UpdateCourse() {
-    const pop_up_edit_container = document.querySelector('.popup-content');
-    const courseId = pop_up_edit_container.id.split('-')[2];
+  const pop_up_edit_container = document.querySelector('.popup-content');
+  const courseId = pop_up_edit_container.id.split('-')[2];
 
-    const updatedCourse = {
-      CourseTitle: document.getElementById('edit-Course-Title').value,
-      SmallDescription: document.getElementById('edit-Course-SmallDescription').value,
-      Description: document.getElementById('edit-Course-Description').value,
-      Label: document.getElementById('edit-Course-Label').value,
-      Badge: document.getElementById('edit-Course-Badge').value
-    };
+  const updatedCourse = {
+    CourseTitle: document.getElementById('edit-Course-Title').value,
+    SmallDescription: document.getElementById('edit-Course-SmallDescription').value,
+    Description: document.getElementById('edit-Course-Description').value,
+    Label: document.getElementById('edit-Course-Label').value,
+    Badge: document.getElementById('edit-Course-Badge').value
+  };
 
-    // Send updated course details to server (example with fetch)
-    try {
-      const response = await fetch(`http://localhost:3000/courses-id/${courseId}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(updatedCourse)
-      });
+  const isChanged = JSON.stringify(updatedCourse) !== JSON.stringify(originalCourseDetails);
 
-      if (!response.ok) {
-          throw new Error('Failed to update course');
+  if (!isChanged) {
+    alert('Please update something before submitting.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/courses-id/${courseId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedCourse)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message && errorData.errors && errorData.errors.length > 0) {
+        const validationErrors = errorData.errors.map(error => `- ${error}`).join('\n');
+        throw new Error(`Validation Errors:\n${validationErrors}`);
+      } else {
+        throw new Error('Failed to update course'); // Fallback message if no specific message from server
       }
+    }
 
-      const data = await response.json();
-      console.log(data)
-      alert("Course details updated successfully!");
-      hidePopup('edit-course-details-Popup');
-      fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
+    const data = await response.json();
+    console.log(data);
+    alert("Course details updated successfully!");
+    hidePopup('edit-course-details-Popup');
+    fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
   } catch (error) {
-      console.error('Error updating course:', error);
-      alert('Failed to update course. Please try again later.');
+    console.error('Error updating course:', error);
+    alert(`${error.message}`);
   }
+}
 
-  }
 
 // Function to fetch sections by a specific course and sectionNo. Created by: Sairam
 async function fetchSectionDetails(courseId, SectionNo) {

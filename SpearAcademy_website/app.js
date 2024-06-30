@@ -29,6 +29,7 @@ Keshwindren Gandipanh (S10259469C)
   const dbConfig = require("./dbConfig"); // Import the database configuration
   const bodyParser = require("body-parser"); // Import body-parser for parsing request bodies
   const staticMiddleware = express.static("public"); // Middleware to serve static files from the public folder
+  const validateCourse = require("./middleware/validateCourse"); 
 
    // Import the CoursesController. Created by Sairam
    const CoursesController = require("./controllers/CoursesController");
@@ -73,7 +74,7 @@ Keshwindren Gandipanh (S10259469C)
   // Routes for handling course-related requests (Created by: Sairam)
   app.get("/courses-creator/:creator", CoursesController.getCourseByCreator); // Get courses by creator
   app.get("/courses-with-sections-id/:CourseId", CoursesController.getCourseWithSectionById); // Get course and section by ID
-  app.put("/courses-id/:CourseId",CoursesController.updateCourse); // Update course by ID
+  app.put("/courses-id/:CourseId",validateCourse, CoursesController.updateCourse); // Update course by ID
 
   // Routes for handling sections-related requests (Created by: Sairam)
   app.get("/sectionDetails-id/:id/:SectionNo", SectionDetailsController.getSectionDetailsById);

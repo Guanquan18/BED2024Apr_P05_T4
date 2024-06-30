@@ -257,7 +257,7 @@ async function UpdateCourse() {
     Label: document.getElementById('edit-Course-Label').value,
     Badge: document.getElementById('edit-Course-Badge').value
   };
-
+  // Check if the form inputs are updated. 
   const isChanged = JSON.stringify(updatedCourse) !== JSON.stringify(originalCourseDetails);
 
   if (!isChanged) {

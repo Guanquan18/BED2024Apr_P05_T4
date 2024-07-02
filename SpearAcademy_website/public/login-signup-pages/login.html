@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="https://kit.fontawesome.com/cc3cb1dbea.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+</head>
+
+<body class="login-signup">
+    <article class="login-signup-wrapper">
+        <form class="login-signup-form" id="login-form">
+
+            <h1 class="login-signup-header">Welcome to SPEAR Academy</h1>
+            <h2 class="login-signup-subheader">We Inspire to learn and teach</h2>
+
+            <!-- Google login -->
+            <button id="google-sign-in-btn" class="third-party-login-signup-btn col-12">
+                <div>Login with Google</div>
+                <img src="../Images/google-icon.png" alt="Google Icon">
+            </button>
+            <!-- Apple login -->
+            <button id="apple-sign-in-btn" class="third-party-login-signup-btn col-12">
+                <div>Login with Apple</div>
+                <img src="../Images/apple-icon.png" alt="Google Icon">
+            </button>
+                
+            <p class="selection-option">or</p>
+            
+            <!-- Email input field -->
+            <div class="form-floating col-12">
+                <input type="text" id="login-email" name="login-email" class="form-control rounded-pill"
+                placeholder="Enter email">
+                <label for="login-username">Email</label>
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <!-- Password input field -->
+            <div class="form-floating col-12">
+                <input type="password" id="login-password" name="login-password" class="form-control rounded-pill"
+                placeholder="Enter password">
+                <label for="login-password">Password</label>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <!-- Validation Error message -->
+            <p class="loginsignup-validation-error" id="login-validation-error">Error Message</p>
+            
+            <!-- Login button -->
+            <button type="submit" id="login-submit" class="login-signup-buttons btn rounded-pill col-12">Log In</button>
+
+            <!-- Remember me and Forget password links -->
+            <a href="#" id="login-forget-password">Forget Password?</a>
+            
+            <!-- Signup link -->
+            <div class="login-signup-link">
+                <p>Don't have an SPEAR account? <a href="/signup" id="signup-link">Sign up</a></p>
+            </div>
+
+        </form>
+    </article>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            sessionStorage.clear();  // Clear session storage
+
+            // Get login form
+            const loginForm = document.getElementById("login-form");
+
+            loginForm.addEventListener("submit",async function(event){
+                event.preventDefault();
+
+                // Get email and password inputs
+                const email = document.getElementById("login-email").value;
+                const password = document.getElementById("login-password").value;
+                
+                let role = null;
+                let verified = await verifyAccount();
+                
+                if(verified){
+                    if (role === "Student"){
+                        window.location.href = "../student.html";
+                    }
+                    else if (role === "Educator"){
+                        window.location.href = "../creator.html";
+                    }
+                };
+
+                async function verifyAccount(){
+
+                    // Send login request to the server
+                    const response = await fetch("/account/login",{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    });
+
+                    const data = await response.json(); // Convert response to JSON
+
+                    let inputFields = document.querySelectorAll("#login-form .form-floating input");
+                    let errorMessage = document.getElementById("login-validation-error");
+                    
+
+                    if (response.status === 200) {  // If user is authenticated successfully
+
+                        inputFields.forEach((inputField) => {
+                            if (inputField.classList.contains("error")){
+                                inputField.classList.remove("error");   // Remove Red Border
+                            }
+                            inputField.classList.add("success");    // Add Green Border
+                        });
+
+                        // Display success message
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "green";
+                        errorMessage.textContent = "Authenticated successfully";
+
+                        role = data.role;   // Get user role
+                        sessionStorage.setItem("user", JSON.stringify(data));   // Store user data in session storage
+
+                        console.log("User Authenticated successfully");
+
+                        /*
+                        // Accessing Email property of the user object stored in session storage
+
+                        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+                        console.log(storedUser.Email);
+                        */
+
+                        return true
+                        
+                    }
+                    else if (response.status === 400 || response.status === 404){   // If authenticated failed
+
+                        inputFields.forEach((inputField) => {
+                            if (inputField.classList.contains("success")){
+                                inputField.classList.remove("success"); // Remove Green Border
+                            }
+                            inputField.classList.add("error");  // Add Red Border
+                        });
+
+                        // Display error message
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        if (data.errors){
+                            errorMessage.textContent = data.errors;
+                        }
+                        else{
+                            errorMessage.textContent = data.message;
+                        }
+                        console.log(errorMessage.textContent);
+
+                        return false;
+                    }
+                }
+            },false)
+        })
+    </script>
+</body>
+</html>

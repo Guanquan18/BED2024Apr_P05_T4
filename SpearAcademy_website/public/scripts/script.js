@@ -80,7 +80,8 @@ async function fetchCoursesByCreator(containerId) {
   const courseList = document.getElementById(containerId);
   if (courseList) {
     // Proceed with fetching courses only if the container exists
-    const creatorId = 1; // Example creator ID; modify as needed
+    let account = JSON.parse(sessionStorage.getItem("user")); // Retrieve the creator ID from the session storage
+    let creatorId = account.AccId;
     const response = await fetch(`http://localhost:3000/courses-creator/${creatorId}`);
     
     const data = await response.json();

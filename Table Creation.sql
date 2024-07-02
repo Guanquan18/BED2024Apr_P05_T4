@@ -38,10 +38,6 @@ create table Educator
 		references Account (AccId)
 )
 
-
-select * from Educator
-
----
 -- 4. Table (Courses)
 create table Course
 (

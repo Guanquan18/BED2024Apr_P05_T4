@@ -9,6 +9,7 @@ create table Account
 	Email		varchar(100)				not null unique,
 	ContactNo	char(8)						null unique,
 	Password	varchar(150)				not null, 
+	role            varchar(10)                             null,
 	Photo		varchar(200)				null,
 	LinkedIn	varchar(150)				null, 
 	constraint PK_Account primary key (AccId)
@@ -197,26 +198,26 @@ create table QnA
 
 insert into Account(FullName,DOB,Email,ContactNo,Password,Photo,LinkedIn) 
 values 
-('Chang Guan Quan', '2000-01-01','changguanquan@gmail.com','12345678','1234','Photo','www.linkedin.com/changguanquan'),
-('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','1234','Photo','www.linkedin.com/mariagarcia'),
-('John Smith', '1988-12-22','john.smith@example.com','23456789','1234','Photo','www.linkedin.com/johnsmith'),
-('Aisha Khan', '1993-07-08','aisha.khan@example.com','34567890','1234','Photo','www.linkedin.com/aishakhan'),
-('David Brown', '1985-03-30','david.brown@example.com','45678901','1234','Photo','www.linkedin.com/davidbrown'),
-('Li Wei', '1999-09-19','li.wei@example.com','56789012','1234','Photo','www.linkedin.com/liwei'),
-('Anna Ivanova', '1992-11-11','anna.ivanova@example.com','67890123','1234','Photo','www.linkedin.com/annaivanova'),
-('Carlos Sanchez', '1990-02-20','carlos.sanchez@example.com','78901234','1234','Photo','www.linkedin.com/carlossanchez'),
-('Fatima Bint Ali', '1997-04-10','fatima.ali@example.com','89012345','1234','Photo','www.linkedin.com/fatimaali'),
-('Mohammed El-Sayed', '1986-08-25','mohammed.sayed@example.com','90123456','1234','Photo','www.linkedin.com/mohammedsayed'),
-('Elena Petrova', '1994-03-05','elena.petrova@example.com','11234567','1234','Photo','www.linkedin.com/elenapetrova'),
-('Robert Johnson', '1983-12-12','robert.johnson@example.com','22345678','1234','Photo','www.linkedin.com/robertjohnson'),
-('Sofia Martinez', '1996-07-18','sofia.martinez@example.com','33456789','1234','Photo','www.linkedin.com/sofiamartinez'),
-('Akira Yamamoto', '1989-06-14','akira.yamamoto@example.com','44567890','1234','Photo','www.linkedin.com/akirayamamoto'),
-('Isabella Rossi', '1991-09-28','isabella.rossi@example.com','55678901','1234','Photo','www.linkedin.com/isabellarossi'),
-('George Williams', '1987-05-17','george.williams@example.com','66789012','1234','Photo','www.linkedin.com/georgewilliams'),
-('Yuki Tanaka', '1998-10-04','yuki.tanaka@example.com','77890123','1234','Photo','www.linkedin.com/yukitanaka'),
-('Emma Dubois', '1984-01-22','emma.dubois@example.com','88901234','1234','Photo','www.linkedin.com/emmadubois'),
-('Hassan Ahmed', '1990-11-06','hassan.ahmed@example.com','99012345','1234','Photo','www.linkedin.com/hassanahmed'),
-('Laura Müller', '1993-02-18','laura.muller@example.com','10123456','1234','Photo','www.linkedin.com/lauramuller');
+('Chang Guan Quan', '2000-01-01','changguanquan@gmail.com','12345678','1234','Educator', 'Photo','www.linkedin.com/changguanquan'),
+('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','1234','Student','Photo','www.linkedin.com/mariagarcia'),
+('John Smith', '1988-12-22','john.smith@example.com','23456789','1234','Educator','Photo','www.linkedin.com/johnsmith'),
+('Aisha Khan', '1993-07-08','aisha.khan@example.com','34567890','1234','Student','Photo','www.linkedin.com/aishakhan'),
+('David Brown', '1985-03-30','david.brown@example.com','45678901','1234','Educator','Photo','www.linkedin.com/davidbrown'),
+('Li Wei', '1999-09-19','li.wei@example.com','56789012','1234','Student','Photo','www.linkedin.com/liwei'),
+('Anna Ivanova', '1992-11-11','anna.ivanova@example.com','67890123','1234','Educator','Photo','www.linkedin.com/annaivanova'),
+('Carlos Sanchez', '1990-02-20','carlos.sanchez@example.com','78901234','1234','Student','Photo','www.linkedin.com/carlossanchez'),
+('Fatima Bint Ali', '1997-04-10','fatima.ali@example.com','89012345','1234','Educator','Photo','www.linkedin.com/fatimaali'),
+('Mohammed El-Sayed', '1986-08-25','mohammed.sayed@example.com','90123456','1234','Student','Photo','www.linkedin.com/mohammedsayed'),
+('Elena Petrova', '1994-03-05','elena.petrova@example.com','11234567','1234','Educator','Photo','www.linkedin.com/elenapetrova'),
+('Robert Johnson', '1983-12-12','robert.johnson@example.com','22345678','1234','Student','Photo','www.linkedin.com/robertjohnson'),
+('Sofia Martinez', '1996-07-18','sofia.martinez@example.com','33456789','1234','Educator','Photo','www.linkedin.com/sofiamartinez'),
+('Akira Yamamoto', '1989-06-14','akira.yamamoto@example.com','44567890','1234','Student','Photo','www.linkedin.com/akirayamamoto'),
+('Isabella Rossi', '1991-09-28','isabella.rossi@example.com','55678901','1234','Educator','Photo','www.linkedin.com/isabellarossi'),
+('George Williams', '1987-05-17','george.williams@example.com','66789012','1234','Student','Photo','www.linkedin.com/georgewilliams'),
+('Yuki Tanaka', '1998-10-04','yuki.tanaka@example.com','77890123','1234','Educator','Photo','www.linkedin.com/yukitanaka'),
+('Emma Dubois', '1984-01-22','emma.dubois@example.com','88901234','1234','Student','Photo','www.linkedin.com/emmadubois'),
+('Hassan Ahmed', '1990-11-06','hassan.ahmed@example.com','99012345','1234','Educator','Photo','www.linkedin.com/hassanahmed'),
+('Laura Müller', '1993-02-18','laura.muller@example.com','10123456','1234','Student','Photo','www.linkedin.com/lauramuller');
 
 -- Even Number AccountID Are Student 
 INSERT INTO Student (StudentId)

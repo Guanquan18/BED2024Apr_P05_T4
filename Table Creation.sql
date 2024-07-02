@@ -196,7 +196,7 @@ create table QnA
 )
 
 
-insert into Account(FullName,DOB,Email,ContactNo,Password,Photo,LinkedIn) 
+insert into Account(FullName,DOB,Email,ContactNo,Password,role,Photo,LinkedIn) 
 values 
 ('Chang Guan Quan', '2000-01-01','changguanquan@gmail.com','12345678','1234','Educator', 'Photo','www.linkedin.com/changguanquan'),
 ('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','1234','Student','Photo','www.linkedin.com/mariagarcia'),

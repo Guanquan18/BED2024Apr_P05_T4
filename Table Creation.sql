@@ -109,37 +109,6 @@ create table [Option]
 		references Question (QuestionNo,Quiz_Question)
 )
 
--- 9. Table (Attempt)
-create table Attempt
-(
-	Attemptid				smallint Identity(1,1)	not null,
-	score					int						not null,
-	NoOfCorrect				int						not null,
-	NoOfWrong				int						not null,
-	Attempt_Quiz			smallint				not null,
-	Attempt_Section			smallint				not null,
-	Attempt_Account			smallint				not null,
-	constraint PK_Attempt primary key (AttemptId),
-	constraint FK_Attempt_Quiz foreign key (Attempt_Quiz,Attempt_Section)
-		references Quiz (QuizId,Section_Quiz),
-	constraint FK_Attempt_Account foreign key (Attempt_Account)
-		references Account (AccId)
-)
-
--- 10. Table (Leaderboard)
-CREATE TABLE Leaderboard (
-    LeaderboardId       INT IDENTITY(1,1)      NOT NULL,
-    UserName            VARCHAR(50)            NOT NULL,
-    Score               INT                    NOT NULL,
-    QuizId              SMALLINT               NOT NULL,
-    Section_Quiz        SMALLINT               NOT NULL,
-    AttemptId           SMALLINT               NOT NULL,
-    CONSTRAINT PK_Leaderboard PRIMARY KEY (LeaderboardId),
-    CONSTRAINT FK_Leaderboard_Quiz FOREIGN KEY (QuizId, Section_Quiz)
-        REFERENCES Quiz (QuizId, Section_Quiz),
-    CONSTRAINT FK_Leaderboard_Attempt FOREIGN KEY (AttemptId)
-        REFERENCES Attempt (AttemptId)
-);
 
 -- 11. Table (Enrollement )
 create table Enrollment
@@ -363,37 +332,6 @@ VALUES
 ('Collect a small amount of data to reduce redundancies.', 'Data minimization may not reduce the number of redundancies.', 0, 16, 2),
 ('Collect a small amount of data to save energy.', 'While reducing energy consumption is important, data minimization is a core component of data privacy.', 0, 16, 2),
 ('Collect a small amount of data to make your model more efficient.', 'Collecting a small or large amount of data may not affect model performance.', 0, 16, 2);
-
-
--- Inserting Values into Attempt
-INSERT INTO Attempt (Score, NoOfCorrect, NoOfWrong, Attempt_Quiz, Attempt_Section, Attempt_Account)
-VALUES 
-(9, 9, 1, 2, 3, 2),  -- Maria Garcia, Google AI Principles (10 questions)
-(3, 3, 3, 1, 2, 4),  -- Aisha Khan, AI Advanced (6 questions)
-(8, 8, 2, 2, 3, 6),  -- Li Wei, Google AI Principles (10 questions)
-(10, 10, 0, 2, 3, 8), -- Carlos Sanchez, Google AI Principles (10 questions)
-(4, 4, 2, 1, 2, 10), -- Fatima Bint Ali, AI Advanced (6 questions)
-(9, 9, 1, 2, 3, 12), -- Mohammed El-Sayed, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 14), -- Akira Yamamoto, AI Advanced (6 questions)
-(6, 6, 0, 1, 2, 16), -- George Williams, AI Advanced (6 questions)
-(8, 8, 2, 2, 3, 18), -- Yuki Tanaka, Google AI Principles (10 questions)
-(10, 10, 0, 2, 3, 20); -- Laura Müller, Google AI Principles (10 questions)
-
-
--- Inserting values into Leaderboard 
-INSERT INTO Leaderboard (UserName, Score, QuizId, Section_Quiz, AttemptId)
-VALUES 
-('Maria Garcia', 9, 2, 3, 1),  -- Maria Garcia, Google AI Principles
-('Aisha Khan', 3, 1, 2, 2),  -- Aisha Khan, AI Advanced
-('Li Wei', 8, 2, 3, 3),  -- Li Wei, Google AI Principles
-('Carlos Sanchez', 10, 2, 3, 4), -- Carlos Sanchez, Google AI Principles
-('Fatima Bint Ali', 4, 1, 2, 5),  -- Fatima Bint Ali, AI Advanced
-('Mohammed El-Sayed', 9, 2, 3, 6), -- Mohammed El-Sayed, Google AI Principles
-('Akira Yamamoto', 5, 1, 2, 7), -- Akira Yamamoto, AI Advanced
-('George Williams', 6, 1, 2, 8), -- George Williams, AI Advanced
-('Yuki Tanaka', 8, 2, 3, 9), -- Yuki Tanaka, Google AI Principles
-('Laura Müller', 10, 2, 3, 10); -- Laura Müller, Google AI Principles
-
 
 -- Insert into Review
 INSERT INTO Review (ReviewText, Ratings, Review_Course, Review_Account)

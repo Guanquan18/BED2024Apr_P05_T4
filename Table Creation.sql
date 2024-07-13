@@ -1,4 +1,4 @@
--- create database SpearAcademy_db
+ -- create database SpearAcademy_db
 
 -- 1. Table (Account)
 create table Account
@@ -48,7 +48,7 @@ create table Course
 	Description			Text					not null,
 	Label				varchar(100)			null,
 	Badge				varchar(100)			null,
-	Thumbnail			varchar(150)			not null,
+	Thumbnail			text		not null,
 	LastUpdated			smalldatetime			not null default(getdate()),
 	Creator				smallint				not null,
 	constraint PK_Course primary key (CourseId),

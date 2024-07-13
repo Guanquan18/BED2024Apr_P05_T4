@@ -1,5 +1,5 @@
 // Entirely Created By: Sairam (S10259930H)
-const Section = require("../models/SectionDetails");
+const Section = require("../models/sectionDetails");
 // getting sections by id
 const getSectionDetailsById = async (req, res) => {
     // Parse CourseId and SectionNo from request parameters

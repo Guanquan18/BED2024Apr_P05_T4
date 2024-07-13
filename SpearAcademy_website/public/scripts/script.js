@@ -1,8 +1,6 @@
 /* 
 Function Created
 Sairam (S10255930H)
-- showPopup(popupId)
-- hidePopup(popupId)
 - editSection
 - ViewActive(containerId)
 - fetchCoursesByCreator(containerId)
@@ -28,15 +26,6 @@ Keshwindren Gandipanh (S10259469C)
 */
 
 
-// Function to show a popup (creator.html) Created by: Sairam
-function showPopup(popupId) {
-  document.getElementById(popupId).style.display = 'block';
-}
-
-// Function to hide a popup (creator.html) Created by: Sairam
-function hidePopup(popupId) {
-  document.getElementById(popupId).style.display = 'none';
-}
 // Function for edit Section Pop-up (creator.html) Created by: Sairam
 function editSection(CourseId, sectionNo) {
   // Show the edit popup
@@ -50,26 +39,27 @@ function editSection(CourseId, sectionNo) {
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
 function ViewActive(containerId) {
   // Select all elements whose ID starts with 'view-btn' within the specified container
-  const viewButtons = document.querySelectorAll(`.view-button`);
+  const viewButtons = document.querySelectorAll(`.educator-course-view-button`);
 
   // Add click event listener to each view button
   viewButtons.forEach(button => {
       button.addEventListener('click', () => {
           const courseId = button.id.split('-')[2];
 
-          if (containerId === 'course-main-container') {
+          if (containerId === 'educator-course-main-container') {
              // Activate course view
               const coursebtn = document.getElementById('courses-btn');
               coursebtn.classList.add('active');
-              document.getElementById('courses-container').style.display = 'none';
-              document.getElementById('Specific-course-container').style.display = 'block';
+              document.getElementById('educator-courses-container').style.display = 'none';
+              document.getElementById('educator-specific-course-container').style.display = 'block';
               fetchCourseandSectionDetails(courseId);
-          } else if (containerId === 'community-main-container') {
+          } else if (containerId === 'educator-community-main-container') {
             // Activate community view
             const coursebtn = document.getElementById('community-btn');
             coursebtn.classList.add('active');
-            document.getElementById('community-container').style.display = 'none';
-            document.getElementById('Specific-community-container').style.display = 'block';
+            document.getElementById('educator-community-container').style.display = 'none';
+            document.getElementById('educator-specific-community-container').style.display = 'block';
+            // Add getcommunitybycourseid section
           }
       });
   });
@@ -103,36 +93,36 @@ async function fetchCoursesByCreator(containerId) {
 
       // Create a new div element for the card
       const card = document.createElement('div');
-      card.classList.add('card');
+      card.classList.add('educator-course-card');
 
       // Create an img element for the course thumbnail
       const img = document.createElement('img');
       img.src = course.Thumbnail;
-      img.classList.add('card-img-top');
+      img.classList.add('educator-course-card-img-top');
       img.alt = 'Course Image';
       
       // Create a div element for the card body
       const cardBody = document.createElement('div');
-      cardBody.classList.add('card-body');
+      cardBody.classList.add('educator-course-card-body');
       
       // Create a span element for the course label
       const label = document.createElement('span');
-      label.classList.add('label');
+      label.classList.add('educator-course-label');
       label.textContent = course.Label;
       
       // Create an h2 element for the course title
       const title = document.createElement('h2');
-      title.classList.add('card-title');
+      title.classList.add('educator-course-card-title');
       title.textContent = course.CourseTitle;
     
       // Create a p element for the course small description
       const description = document.createElement('p');
-      description.classList.add('card-description');
+      description.classList.add('educator-course-card-description');
       description.textContent = course.SmallDescription;
       
        // Create a div element for the card footer
       const cardFooter = document.createElement('div');
-      cardFooter.classList.add('card-footer');
+      cardFooter.classList.add('educator-course-card-footer');
       
       // Create a p element for the course rating
       const rating = document.createElement('p');
@@ -140,8 +130,8 @@ async function fetchCoursesByCreator(containerId) {
     
       // Create a button element for the view button
       const viewButton = document.createElement('button');
-      viewButton.classList.add(`view-button`);
-      viewButton.classList.add(`view-button-${containerId}`);
+      viewButton.classList.add(`educator-course-view-button`);
+      viewButton.classList.add(`educator-course-view-button-${containerId}`);
       viewButton.id = `view-btn-${course.CourseId}`;
       viewButton.textContent = 'View';
     
@@ -196,7 +186,7 @@ async function fetchCourseandSectionDetails(CourseId) {
   };
 
     // Update UI with fetched data
-    const courseContainer = document.getElementById('Specific-course-container');
+    const courseContainer = document.getElementById('educator-specific-course-container');
     courseContainer.querySelector('.top-content h1').innerText = data[0].CourseTitle; // Assuming data is an array with one course object
     courseContainer.querySelector('.course-title span').innerText = data[0].CourseTitle;
     courseContainer.querySelector('.course-label span').innerText = data[0].Label;
@@ -227,7 +217,7 @@ async function fetchCourseandSectionDetails(CourseId) {
 
     data[0].Sections.forEach((section, index) => {
       const sectionItem = document.createElement('div');
-      sectionItem.classList.add('section-item', 'Tag', 'word-link');
+      sectionItem.classList.add('section-item', 'tag', 'word-link');
       sectionItem.id = `section-item-${section.SectionNo}-${CourseId}`;
 
       sectionItem.innerHTML = `
@@ -304,5 +294,5 @@ async function fetchSectionDetails(courseId, SectionNo) {
     alert("No Courses created");
   }
   const sectionDetailsPopUp = document.getElementById('SectionDetails-Popup');
-  sectionDetailsPopUp.querySelector('.popup h2').innerText = data.SectionTitle;
+  sectionDetailsPopUp.querySelector('.popup-content h2').innerText = data.SectionTitle;
 }

@@ -42,8 +42,8 @@ const validateCourse = require("./middlewares/validateCourse");  // Import the v
 const validateAccount = require("./middlewares/validateAccount");  // Import the validateAccount middleware. Created by Chang Guan Quan
 const validateEducator = require("./middlewares/validateEducator"); // Import the accountController. Created by Chang Guan Quan
 
-const CoursesController = require("./controllers/CoursesController"); // Import the CoursesController. Created by Sairam
-const SectionDetailsController = require("./controllers/SectionDetailsController"); // Import the SectionDetailsController. Created by Sairam
+const CoursesController = require("./controllers/coursesController"); // Import the CoursesController. Created by Sairam
+const SectionDetailsController = require("./controllers/sectionDetailsController"); // Import the SectionDetailsController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
 
@@ -72,23 +72,20 @@ app.get('/student', (req, res) => {
 
 // Route to serve creator.html (Created By: Sairam)
 app.get('/creator', (req, res) => {
-  res.sendFile(__dirname + "/public/creator.html");
+  res.sendFile(__dirname + "/public/educator-pages/creator.html");
 });
 
 // Route to serve community.html
 app.get('/community', (req, res) => {
-  res.sendFile(__dirname + "/public/community.html");
+  res.sendFile(__dirname + "/public/educator-pages/community.html");
 });
 
 // Route to serve profile.html
 app.get('/profile', (req, res) => {
-  res.sendFile(__dirname + "/public/profile.html");
+  res.sendFile(__dirname + "/public/educator-pages/profile.html");
 });
 
-// Route to serve community.html
-app.get('/learning', (req, res) => {
-  res.sendFile(__dirname + "/public/learning.html");
-});
+
 
 
 // Routes for handling course-related requests (Created by: Sairam)

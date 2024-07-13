@@ -174,7 +174,7 @@ body {
 
 
 /* Styling for creator.html   Created by: Sairam (S10259930H)*/ 
-.sidebar {
+.educator-navigation-sidebar {
   width: 400px;
   height: 100vh;
   background-color: #FAF8FF;
@@ -185,14 +185,14 @@ body {
   border-right: 2px solid black;
 }
 
-.sidebar-header {
+.educator-navigation-sidebar-header {
   padding: 15px;
   text-align: center;
   font-size: 1.2em;
   font-weight: 600;
 }
 
-.sidebar a {
+.educator-navigation-sidebar a {
   background-color: transparent;
   border: none;
   color: black;
@@ -205,7 +205,7 @@ body {
   outline: none;
 }
 
-.sidebar a:hover {
+.educator-navigation-sidebar a:hover {
   background-color:  #42459b;
   color: white;
   border-top-right-radius: 15px;
@@ -213,7 +213,7 @@ body {
   width: 350px;
 }
 
-.sidebar a.active {
+.educator-navigation-sidebar a.active {
   background-color: #6F74FB;
   color: white;
   border-top-right-radius: 15px;
@@ -262,50 +262,51 @@ body {
   padding: 15px;
 }
 
-.main-container .card {
+.main-container .educator-course-card {
   transition: transform 0.3s ease;
   background-color: #FAF8FF;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   width: 250px;
-  height: 420px;
+  height: 430px;
+  border: 1px solid black
 }
 
-.card:hover {
+.educator-course-card:hover {
   transform: scale(1.05);
 }
 
-.card-img-top{
+.educator-course-card-img-top{
   width: 100%;
   height: 150px;
   border-bottom: 1px solid #ddd;
 }
 
-.card-body {
+.educator-course-card-body {
   padding: 15px;
 }
 
-.card-title {
+.educator-course-card-title {
   font-size: 1.5em;
   margin: 0 0 10px;
   color: #333;
 }
 
-.card-description {
+.educator-course-card-description {
   color: #666;
   font-size: 0.9em;
 }
 
-.card-footer {
+.educator-course-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  background-color: #FAF8FF;
 }
 
-.view-button {
+.educator-course-view-button {
+  margin-bottom: 15px;
   padding: 5px 10px;
   background-color:  #6F74FB;
   color: white;
@@ -314,11 +315,11 @@ body {
   cursor: pointer;
 }
 
-.view-button:hover {
+.educator-course-view-button:hover {
   background-color: #42459b;;
 }
 
-.label {
+.educator-course-label {
   display: inline-block;
   padding: 5px 10px;
   background-color: #6F74FB;
@@ -326,155 +327,6 @@ body {
   border-radius: 4px;
   font-size: 1.0em;
   margin-bottom: 10px;
-}
-.sub-container{
-  padding: 10px;
-  background-color: #FAF8FF;
-  border: 2px solid black;
-  border-radius: 10px;
-}
-.first-row{
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column ;
-  align-items: center;
-}
-.first-left-container{
-  height: 240px;
-}
-.second-row, .first-right-container{
-  height: auto;
-}
-.course-icon{
-  width: 100%;
-  height: auto;
-  border: 1px solid black;
-}
-.course-content,.section-item {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  width:  100%;
-  margin-bottom: 20px;
-}
-.Tag {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.Tag h3{
-  text-align: left;
-  font-size: 1.2em;
-  color: #717171;
-  margin: 0;
-  font-weight: 700;
-}
-
-.Tag span{
-  font-size: 0.9em;
-  margin: 0;
-  font-weight: 450;
-}
-
-.course-header h2 {
-  font-size: 1.5em;
-  color: #333;
-  border-bottom: 1px solid black;
-  margin: 0;
-}
-
-.word-link p{
-  font-size: 1em;
-  color: #6F74FB;
-  transition: border-color 0.3s ease;
-  cursor: pointer;
-  margin: 0;
-}
-.word-link p:hover {
-  border-bottom: 2px solid #6F74FB;
-}
-
-/* Popup content in creator.html Created by: Sairam (S10259930H)*/
-.popup {
-  display: none;
-  position: fixed; 
-  z-index: 9; 
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgba(0,0,0,0.4); 
-}
-
-/* Popup content */
-.popup-content {
-  background-color:  #FAF8FF;
-  padding: 20px;
-  width: 80%;
-  margin: 8% 10%;
-  border-radius: 30px;
-}
-
-/* Close button */
-.close-btn {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close-btn:hover{
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Form for Course Update  Created by: Sairam (S10259930H) */
-.form-label {
-  font-weight: bold;
-}
-
-.form-control {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 2px solid black;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-#section-details-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.add-icon {
-  font-size: 1.5em; 
-  color: white;
-  background-color: #6F74FB;
-  border-radius: 50%;
-  padding: 10px; 
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
 

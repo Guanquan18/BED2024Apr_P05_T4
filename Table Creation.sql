@@ -123,37 +123,8 @@ create table Attempt
 		references Account (AccId)
 )
 
--- 10. Table (Leaderboard)
-CREATE TABLE Leaderboard (
-    LeaderboardId       INT IDENTITY(1,1)      NOT NULL,
-    UserName            VARCHAR(50)            NOT NULL,
-    Score               INT                    NOT NULL,
-    QuizId              SMALLINT               NOT NULL,
-    Section_Quiz        SMALLINT               NOT NULL,
-    AttemptId           SMALLINT               NOT NULL,
-    CONSTRAINT PK_Leaderboard PRIMARY KEY (LeaderboardId),
-    CONSTRAINT FK_Leaderboard_Quiz FOREIGN KEY (QuizId, Section_Quiz)
-        REFERENCES Quiz (QuizId, Section_Quiz),
-    CONSTRAINT FK_Leaderboard_Attempt FOREIGN KEY (AttemptId)
-        REFERENCES Attempt (AttemptId)
-);
 
--- 11. Table (Enrollement )
-create table Enrollment
-(
-	EnrollmentNo				smallint Identity(1,1)	not null,
-	Progress					Decimal(5,2)			not null check(Progress <= 100) default(0),
-	Status						varchar(25)				not null check(Status in ('Completed','Incomplete')),
-	Enrollment_Course			smallint				not null,
-	Enrollment_Account			smallint				not null,
-	constraint PK_Enrollment primary key (EnrollmentNo),
-	constraint FK_Enrollment_Course foreign key (Enrollment_Course)
-		references Course (CourseId),
-	constraint FK_Enrollment_Account foreign key (Enrollment_Account)
-		references Account (AccId)
-)
-
--- 12. Table (Review)
+-- 11. Table (Review)
 create table Review
 (
 	ReviewId					smallint Identity(1,1)	not null,
@@ -168,7 +139,7 @@ create table Review
 		references Account (AccId)
 )
 
--- 13. Table (Message)
+-- 12. Table (Message)
 create table Message
 (
 	MsgId					smallint Identity(1,1)		not null,
@@ -180,7 +151,7 @@ create table Message
 		references Account (AccId)
 )
 
--- 14. Table (QnA)
+-- 13. Table (QnA)
 create table QnA
 (
 	QnAId					smallint Identity(1,1)		not null,
@@ -377,19 +348,7 @@ VALUES
 (10, 10, 0, 2, 3, 20); -- Laura Müller, Google AI Principles (10 questions)
 
 
--- Inserting values into Leaderboard 
-INSERT INTO Leaderboard (UserName, Score, QuizId, Section_Quiz, AttemptId)
-VALUES 
-('Maria Garcia', 9, 2, 3, 1),  -- Maria Garcia, Google AI Principles
-('Aisha Khan', 3, 1, 2, 2),  -- Aisha Khan, AI Advanced
-('Li Wei', 8, 2, 3, 3),  -- Li Wei, Google AI Principles
-('Carlos Sanchez', 10, 2, 3, 4), -- Carlos Sanchez, Google AI Principles
-('Fatima Bint Ali', 4, 1, 2, 5),  -- Fatima Bint Ali, AI Advanced
-('Mohammed El-Sayed', 9, 2, 3, 6), -- Mohammed El-Sayed, Google AI Principles
-('Akira Yamamoto', 5, 1, 2, 7), -- Akira Yamamoto, AI Advanced
-('George Williams', 6, 1, 2, 8), -- George Williams, AI Advanced
-('Yuki Tanaka', 8, 2, 3, 9), -- Yuki Tanaka, Google AI Principles
-('Laura Müller', 10, 2, 3, 10); -- Laura Müller, Google AI Principles
+
 
 
 -- Insert into Review

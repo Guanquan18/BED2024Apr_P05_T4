@@ -42,8 +42,8 @@ const validateCourse = require("./middlewares/validateCourse");  // Import the v
 const validateAccount = require("./middlewares/validateAccount");  // Import the validateAccount middleware. Created by Chang Guan Quan
 const validateEducator = require("./middlewares/validateEducator"); // Import the accountController. Created by Chang Guan Quan
 
-const CoursesController = require("./controllers/coursesController"); // Import the CoursesController. Created by Sairam
-const SectionDetailsController = require("./controllers/sectionDetailsController"); // Import the SectionDetailsController. Created by Sairam
+const CoursesController = require("./controllers/courseController"); // Import the CoursesController. Created by Sairam
+const SectionDetailsController = require("./controllers/sectiondetailsController"); // Import the SectionDetailsController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
 

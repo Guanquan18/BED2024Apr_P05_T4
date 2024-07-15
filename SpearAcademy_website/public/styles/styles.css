@@ -1,8 +1,13 @@
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
 /* Styling For Index.html*/
 
 .navigation-panel {
@@ -169,7 +174,7 @@
 
 
 /* Styling for creator.html   Created by: Sairam (S10259930H)*/ 
-.sidebar {
+.educator-navigation-sidebar {
   width: 400px;
   height: 100vh;
   background-color: #FAF8FF;
@@ -180,14 +185,14 @@
   border-right: 2px solid black;
 }
 
-.sidebar-header {
+.educator-navigation-sidebar-header {
   padding: 15px;
   text-align: center;
   font-size: 1.2em;
   font-weight: 600;
 }
 
-.sidebar a {
+.educator-navigation-sidebar a {
   background-color: transparent;
   border: none;
   color: black;
@@ -200,7 +205,7 @@
   outline: none;
 }
 
-.sidebar a:hover {
+.educator-navigation-sidebar a:hover {
   background-color:  #42459b;
   color: white;
   border-top-right-radius: 15px;
@@ -208,7 +213,7 @@
   width: 350px;
 }
 
-.sidebar a.active {
+.educator-navigation-sidebar a.active {
   background-color: #6F74FB;
   color: white;
   border-top-right-radius: 15px;
@@ -257,50 +262,51 @@
   padding: 15px;
 }
 
-.main-container .card {
+.main-container .educator-course-card {
   transition: transform 0.3s ease;
   background-color: #FAF8FF;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   width: 250px;
-  height: 420px;
+  height: 430px;
+  border: 1px solid black
 }
 
-.card:hover {
+.educator-course-card:hover {
   transform: scale(1.05);
 }
 
-.card-img-top,{
+.educator-course-card-img-top{
   width: 100%;
   height: 150px;
   border-bottom: 1px solid #ddd;
 }
 
-.card-body {
+.educator-course-card-body {
   padding: 15px;
 }
 
-.card-title {
+.educator-course-card-title {
   font-size: 1.5em;
   margin: 0 0 10px;
   color: #333;
 }
 
-.card-description {
+.educator-course-card-description {
   color: #666;
   font-size: 0.9em;
 }
 
-.card-footer {
+.educator-course-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  background-color: #FAF8FF;
 }
 
-.view-button {
+.educator-course-view-button {
+  margin-bottom: 15px;
   padding: 5px 10px;
   background-color:  #6F74FB;
   color: white;
@@ -309,11 +315,11 @@
   cursor: pointer;
 }
 
-.view-button:hover {
+.educator-course-view-button:hover {
   background-color: #42459b;;
 }
 
-.label {
+.educator-course-label {
   display: inline-block;
   padding: 5px 10px;
   background-color: #6F74FB;
@@ -322,155 +328,215 @@
   font-size: 1.0em;
   margin-bottom: 10px;
 }
-.sub-container{
-  padding: 10px;
+
+
+/* Style for login and signup page Created by: Guan Quan (S10257285A) */
+
+.login-signup{
+  width: 100vw;
+  height: 100vh;
   background-color: #FAF8FF;
-  border: 2px solid black;
-  border-radius: 10px;
-}
-.first-row{
-  margin-bottom: 10px;
+  
   display: flex;
-  flex-direction: column ;
+  justify-content: center;
   align-items: center;
 }
-.first-left-container{
-  height: 240px;
-}
-.second-row, .first-right-container{
-  height: auto;
-}
-.course-icon{
-  width: 100%;
-  height: auto;
-  border: 1px solid black;
-}
-.course-content,.section-item {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  width:  100%;
-  margin-bottom: 20px;
-}
-.Tag {
-  width: 100%;
-  margin-bottom: 20px;
-}
 
-.Tag h3{
-  text-align: left;
-  font-size: 1.2em;
-  color: #717171;
-  margin: 0;
-  font-weight: 700;
-}
-
-.Tag span{
-  font-size: 0.9em;
-  margin: 0;
-  font-weight: 450;
-}
-
-.course-header h2 {
-  font-size: 1.5em;
-  color: #333;
-  border-bottom: 1px solid black;
-  margin: 0;
-}
-
-.word-link p{
-  font-size: 1em;
-  color: #6F74FB;
-  transition: border-color 0.3s ease;
-  cursor: pointer;
-  margin: 0;
-}
-.word-link p:hover {
-  border-bottom: 2px solid #6F74FB;
-}
-
-/* Popup content in creator.html Created by: Sairam (S10259930H)*/
-.popup {
-  display: none;
-  position: fixed; 
-  z-index: 9; 
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgba(0,0,0,0.4); 
-}
-
-/* Popup content */
-.popup-content {
-  background-color:  #FAF8FF;
-  padding: 20px;
-  width: 80%;
-  margin: 8% 10%;
-  border-radius: 30px;
-}
-
-/* Close button */
-.close-btn {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close-btn:hover{
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Form for Course Update  Created by: Sairam (S10259930H) */
-.form-label {
-  font-weight: bold;
-}
-
-.form-control {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 2px solid black;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-#section-details-container {
+.login-signup-wrapper {
+  width: 550px;
+  height: 100%;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
 }
 
-.add-icon {
-  font-size: 1.5em; 
-  color: white;
-  background-color: #6F74FB;
-  border-radius: 50%;
-  padding: 10px; 
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+@media screen and (max-width: 768px) {
+  .login-signup-wrapper {
+      width: 80%;
+      
+  }
 }
+
+.login-signup-header{
+  width: fit-content;
+  margin: 20px 0 10px;
+
+  font-size: 40px;
+  font-weight:bolder;
+  color: #6F74FB;
+  text-align: center;
+}
+
+.login-signup-subheader{
+  width: fit-content;
+  height: fit-content;
+  margin-bottom: 20px;
+
+  font-size: 20px;
+  font-weight: 650;
+  color: black;
+  text-align: center;
+}
+
+
+.login-signup-form{
+  width: 100%;
+  margin: 20px auto 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.third-party-login-signup-btn{
+  height: 3.75rem;
+  padding: 0 .75rem;
+  margin: 15px 0;
+
+  background-color: white;
+  border: 3px solid #6F74FB;
+  border-radius: 32px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.third-party-login-signup-btn:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 5px 8px rgba(0,0,0,0.5);
+
+  transition: all 0.3s ease;
+}
+
+.third-party-login-signup-btn div{
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.third-party-login-signup-btn img{
+  height:70%;
+  
+  position: relative;
+}
+
+/* Styling for floating form inputs */
+.form-floating{
+  margin: 15px 0;
+  padding: 0;
+}
+
+
+.selection-option{
+  width: fit-content;
+  height: fit-content;
+  margin: 0;
+  
+  font-size: 18px;
+  font-weight: 600;
+  color: black;
+}
+
+/* Styling for form inputs */
+.form-floating input{
+  font-weight: 600;
+  border: 3px solid #6F74FB;
+
+  transition: all 0.3s ease;
+}
+.form-floating input:focus{
+  font-weight: 600;
+  border: 3px solid #6F74FB;
+  box-shadow: 0 0 10px #6F74FB;
+
+  transition: all 0.3s ease;
+}
+
+/* Styling for icons inside form inputs */
+.form-floating i{
+  font-size: 20px;
+  color: #6F74FB;
+  position: absolute;
+  top: 0%;
+  left: calc(100% - 35px);
+  transform: translateY(-50%);
+}
+
+.loginsignup-validation-error{
+  width: fit-content;
+  height: fit-content;
+  margin-bottom: 20px;
+
+  font-size: 15px;
+  font-weight: bold;
+  color: red;
+  text-align: center;
+
+  visibility: hidden;
+}
+
+/* Border styling for error and success */
+.login-signup-form input.error {
+  border: 3px solid rgb(255, 0, 0);
+}
+.login-signup-form input.success {
+  border: 3px solid rgb(0, 190, 25);
+}
+
+.login-signup-buttons.btn.rounded-pill.col-12{
+  padding: 7px 0;
+  background-color: #6F74FB;
+  color: white;
+  font-weight: 600;
+  font-size: 20px;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.login-signup-buttons.btn.rounded-pill.col-12:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 5px 8px rgba(0,0,0,0.5);
+
+  transition: all 0.3s ease;
+}
+
+#login-forget-password{
+  width: fit-content;
+  height: fit-content;
+  margin: 5px 0;
+  
+  font-size: 15px;
+  font-weight: bold;
+  color: #6F74FB;
+}
+
+.login-signup-link{
+  width: fit-content;
+  height: fit-content;
+  margin: 5px 0;
+  text-align: center;
+}
+
+#login-forget-password, .login-signup-link a{
+  color: #6F74FB;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#login-forget-password:hover, .login-signup-link a:hover{
+  text-decoration: underline;
+}
+
+/* End of login and signup style */
 
 
 

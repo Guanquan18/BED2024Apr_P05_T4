@@ -1,4 +1,4 @@
--- create database SpearAcademy_db
+ -- create database SpearAcademy_db
 
 -- 1. Table (Account)
 create table Account

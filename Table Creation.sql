@@ -106,22 +106,7 @@ create table [Option]
 		references Question (QuestionNo,Quiz_Question)
 )
 
--- 9. Table (Attempt)
-create table Attempt
-(
-	Attemptid				smallint Identity(1,1)	not null,
-	score					int						not null,
-	NoOfCorrect				int						not null,
-	NoOfWrong				int						not null,
-	Attempt_Quiz			smallint				not null,
-	Attempt_Section			smallint				not null,
-	Attempt_Account			smallint				not null,
-	constraint PK_Attempt primary key (AttemptId),
-	constraint FK_Attempt_Quiz foreign key (Attempt_Quiz,Attempt_Section)
-		references Quiz (QuizId,Section_Quiz),
-	constraint FK_Attempt_Account foreign key (Attempt_Account)
-		references Account (AccId)
-)
+
 
 
 -- 11. Table (Review)
@@ -331,22 +316,6 @@ VALUES
 ('Collect a small amount of data to reduce redundancies.', 'Data minimization may not reduce the number of redundancies.', 0, 16, 2),
 ('Collect a small amount of data to save energy.', 'While reducing energy consumption is important, data minimization is a core component of data privacy.', 0, 16, 2),
 ('Collect a small amount of data to make your model more efficient.', 'Collecting a small or large amount of data may not affect model performance.', 0, 16, 2);
-
-
--- Inserting Values into Attempt
-INSERT INTO Attempt (Score, NoOfCorrect, NoOfWrong, Attempt_Quiz, Attempt_Section, Attempt_Account)
-VALUES 
-(9, 9, 1, 2, 3, 2),  -- Maria Garcia, Google AI Principles (10 questions)
-(3, 3, 3, 1, 2, 4),  -- Aisha Khan, AI Advanced (6 questions)
-(8, 8, 2, 2, 3, 6),  -- Li Wei, Google AI Principles (10 questions)
-(10, 10, 0, 2, 3, 8), -- Carlos Sanchez, Google AI Principles (10 questions)
-(4, 4, 2, 1, 2, 10), -- Fatima Bint Ali, AI Advanced (6 questions)
-(9, 9, 1, 2, 3, 12), -- Mohammed El-Sayed, Google AI Principles (10 questions)
-(5, 5, 1, 1, 2, 14), -- Akira Yamamoto, AI Advanced (6 questions)
-(6, 6, 0, 1, 2, 16), -- George Williams, AI Advanced (6 questions)
-(8, 8, 2, 2, 3, 18), -- Yuki Tanaka, Google AI Principles (10 questions)
-(10, 10, 0, 2, 3, 20); -- Laura Müller, Google AI Principles (10 questions)
-
 
 
 

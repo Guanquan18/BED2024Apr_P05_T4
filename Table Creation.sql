@@ -86,7 +86,7 @@ create table Question
 	QuestionNo				smallint Identity(1,1)	not null,
 	QuestionTitle			varchar(150)			not null,
 	Quiz_Question			smallint				not null,
-	Section_Question		smallint				not null,
+	Section_Question		smallint				null,
 	constraint PK_Question primary key (QuestionNo,Quiz_Question),
 	constraint FK_Question_Quiz foreign key (Quiz_Question,Section_Question)
 		references Quiz (QuizId,Section_Quiz)

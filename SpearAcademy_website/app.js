@@ -21,9 +21,16 @@ Eductor routes
 
 
 Pey Zhi Xun (S10258774E)
-- 
--
--
+- app.post("/api/quizzes", quizController.createQuiz);
+- app.get("/api/quizzes", quizController.getAllQuizzes);
+- app.get("/api/quizzes/:quizId", quizController.getQuizById);
+- app.put("/api/quizzes/:quizId", quizController.updateQuiz);
+- app.delete("/api/quizzes/:quizId", quizController.deleteQuiz);
+- app.get("/api/questions/:quizId", questionController.getQuestionsByQuizId);
+- app.get("/api/options/:questionNo", optionController.getOptionsByQuestionNo);
+- const quizRouter = require("./controllers/quizController");
+- const questionRouter = require("./controllers/questionController");
+- const optionRouter = require("./controllers/optionController"); 
 
 Keshwindren Gandipanh (S10259469C)
 - 
@@ -46,6 +53,10 @@ const CoursesController = require("./controllers/courseController"); // Import t
 const SectionDetailsController = require("./controllers/sectiondetailsController"); // Import the SectionDetailsController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
+
+const quizRouter = require("./controllers/quizController"); // Import the quizController. Created by PeyZhiXun
+const questionRouter = require("./controllers/questionController"); // Import the questionController. Created by PeyZhiXun
+const optionRouter = require("./controllers/optionController"); // Import the optionController. Created by PeyZhiXun
 
 const app = express(); // Create an Express application
 const port = process.env.PORT || 3000; // Use environment variable or default port
@@ -85,7 +96,10 @@ app.get('/profile', (req, res) => {
   res.sendFile(__dirname + "/public/educator-pages/profile.html");
 });
 
-
+// Serve quiz.html from a different route
+app.get('/manage-quizzes', (req, res) => {
+  res.sendFile(__dirname + "/public/educator-pages/manage-quizzes.html");
+});
 
 
 // Routes for handling course-related requests (Created by: Sairam)
@@ -105,6 +119,11 @@ app.put("/account/update/verifyPersonalDetails/:accId",validateAccount.validateP
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
 app.post("/educator/createEducator/:eduId", validateEducator.validateQualification, educatorController.createEducator);
+
+// Mount the routers for handling quiz-related requests (Created by: Pey Zhi Xun)
+app.use("/api/quizzes", quizRouter);
+app.use("/api/questions", questionRouter);
+app.use("/api/options", optionRouter);
 
 // Start the server and connect to the database
 app.listen(port, async () => {

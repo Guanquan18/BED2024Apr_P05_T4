@@ -296,3 +296,628 @@ async function fetchSectionDetails(courseId, SectionNo) {
   const sectionDetailsPopUp = document.getElementById('SectionDetails-Popup');
   sectionDetailsPopUp.querySelector('.popup-content h2').innerText = data.SectionTitle;
 }
+
+
+// Functions created by: Pey Zhi Xun
+let currentQuizId = null;
+let quizData = [];
+let userAnswers = [];
+let score = 0;
+let currentQuestionIndex = 0;
+
+let newQuizData = {
+    QuizTitle: '',
+    Section_Quiz: '',
+    Course_Quiz: '',
+    questions: [
+        {
+            QuestionTitle: '',
+            options: []
+        }
+    ]
+};
+
+let currentOptionIndex = 0;
+let currentQuestionBlockIndex = 1;
+
+let currentEditQuestionIndex = 0;
+let currentEditOptionIndex = 0;
+
+async function openEditForm(quizId, currentTitle) {
+    currentQuizId = quizId;
+    const editQuizTitleInput = document.getElementById('edit-quiz-title');
+    const editQuizForm = document.getElementById('edit-quiz-form');
+    const editQuestionContainer = document.getElementById('edit-question-container');
+    
+    try {
+        const response = await fetch(`/api/quizzes/${quizId}`);
+        if (!response.ok) throw new Error('Failed to fetch quiz details');
+        const quizData = await response.json();
+
+        // Store the current section ID
+        currentSectionId = quizData.questions.length > 0 ? quizData.questions[0].Section_Question : null;
+
+        editQuizTitleInput.value = currentTitle;
+        editQuizForm.style.display = 'block';
+
+        editQuestionContainer.innerHTML = '';
+        quizData.questions.forEach((question, qIndex) => {
+            const questionBlock = document.createElement('div');
+            questionBlock.id = `edit-question-block-${qIndex + 1}`;
+            questionBlock.className = 'edit-question-block';
+            questionBlock.style.display = qIndex === 0 ? 'block' : 'none';
+            questionBlock.innerHTML = `
+                <label for="edit-question-${qIndex + 1}">Question ${qIndex + 1}:</label>
+                <input type="text" id="edit-question-${qIndex + 1}" value="${question.QuestionTitle}">
+            `;
+
+            question.options.forEach((option, oIndex) => {
+                const optionBlock = document.createElement('div');
+                optionBlock.id = `edit-option-${oIndex + 1}-container-${qIndex + 1}`;
+                optionBlock.className = 'option-container';
+                optionBlock.style.display = oIndex === 0 ? 'block' : 'none';
+                optionBlock.innerHTML = `
+                    <label for="edit-option-${oIndex + 1}-${qIndex + 1}">Option ${oIndex + 1}:</label>
+                    <input type="text" id="edit-option-${oIndex + 1}-${qIndex + 1}" value="${option.OptionName}">
+                    <label for="edit-explanation-${oIndex + 1}-${qIndex + 1}">Explanation ${oIndex + 1}:</label>
+                    <input type="text" id="edit-explanation-${oIndex + 1}-${qIndex + 1}" value="${option.Explanation}">
+                    <label for="edit-correct-answer-${oIndex + 1}-${qIndex + 1}">Correct Answer:</label>
+                    <input type="radio" id="edit-correct-answer-${oIndex + 1}-${qIndex + 1}" name="edit-correct-answer-${qIndex + 1}" value="${oIndex + 1}" ${option.IsCorrectOption ? 'checked' : ''}>
+                `;
+                questionBlock.appendChild(optionBlock);
+            });
+
+            editQuestionContainer.appendChild(questionBlock);
+        });
+
+        // Add navigation buttons for options and questions
+        const navigationButtons = document.createElement('div');
+        navigationButtons.id = 'navigation-buttons';
+        navigationButtons.innerHTML = `
+            <button id="edit-prev-question-button" style="display: none;">Previous Question</button>
+            <button id="edit-next-question-button">Next Question</button>
+            <button id="edit-prev-option-button" style="display: none;">Previous Option</button>
+            <button id="edit-next-option-button">Next Option</button>
+        `;
+        editQuestionContainer.appendChild(navigationButtons);
+
+        // Initialize indexes
+        currentEditQuestionIndex = 0;
+        currentEditOptionIndex = 0;
+        updateEditOptionNavigationButtons();
+        updateEditQuestionNavigationButtons();
+
+        // Attach event listeners
+        document.getElementById('edit-next-option-button').addEventListener('click', handleNextOptionEdit);
+        document.getElementById('edit-prev-option-button').addEventListener('click', handlePrevOptionEdit);
+        document.getElementById('edit-next-question-button').addEventListener('click', handleNextQuestionEdit);
+        document.getElementById('edit-prev-question-button').addEventListener('click', handlePrevQuestionEdit);
+
+    } catch (error) {
+        console.error('Error fetching quiz data:', error);
+    }
+}
+
+function handleNextOptionEdit() {
+    const currentQuestionIndex = currentEditQuestionIndex;
+    const activeOption = document.querySelector(`#edit-option-${currentEditOptionIndex + 1}-container-${currentQuestionIndex + 1}`);
+    if (activeOption && activeOption.nextElementSibling && activeOption.nextElementSibling.classList.contains('option-container')) {
+        activeOption.style.display = 'none';
+        activeOption.nextElementSibling.style.display = 'block';
+        currentEditOptionIndex++;
+    }
+    updateEditOptionNavigationButtons();
+}
+
+function handlePrevOptionEdit() {
+    const currentQuestionIndex = currentEditQuestionIndex;
+    const activeOption = document.querySelector(`#edit-option-${currentEditOptionIndex + 1}-container-${currentQuestionIndex + 1}`);
+    if (activeOption && activeOption.previousElementSibling && activeOption.previousElementSibling.classList.contains('option-container')) {
+        activeOption.style.display = 'none';
+        activeOption.previousElementSibling.style.display = 'block';
+        currentEditOptionIndex--;
+    }
+    updateEditOptionNavigationButtons();
+}
+
+function handleNextQuestionEdit() {
+    const activeQuestion = document.querySelector(`#edit-question-block-${currentEditQuestionIndex + 1}`);
+    if (activeQuestion && activeQuestion.nextElementSibling && activeQuestion.nextElementSibling.classList.contains('edit-question-block')) {
+        activeQuestion.style.display = 'none';
+        activeQuestion.nextElementSibling.style.display = 'block';
+        currentEditQuestionIndex++;
+        currentEditOptionIndex = 0; // Reset option index for the new question
+        updateEditOptionNavigationButtons();
+        updateEditQuestionNavigationButtons();
+    }
+}
+
+function handlePrevQuestionEdit() {
+    const activeQuestion = document.querySelector(`#edit-question-block-${currentEditQuestionIndex + 1}`);
+    if (activeQuestion && activeQuestion.previousElementSibling && activeQuestion.previousElementSibling.classList.contains('edit-question-block')) {
+        activeQuestion.style.display = 'none';
+        activeQuestion.previousElementSibling.style.display = 'block';
+        currentEditQuestionIndex--;
+        currentEditOptionIndex = 0; // Reset option index for the new question
+        updateEditOptionNavigationButtons();
+        updateEditQuestionNavigationButtons();
+    }
+}
+
+function updateEditOptionNavigationButtons() {
+    const currentQuestionIndex = currentEditQuestionIndex;
+    const totalOptions = document.querySelectorAll(`#edit-question-block-${currentQuestionIndex + 1} .option-container`).length;
+
+    document.getElementById('edit-prev-option-button').style.display = currentEditOptionIndex > 0 ? 'inline-block' : 'none';
+    document.getElementById('edit-next-option-button').style.display = currentEditOptionIndex < totalOptions - 1 ? 'inline-block' : 'none';
+}
+
+function updateEditQuestionNavigationButtons() {
+    const totalQuestions = document.querySelectorAll('.edit-question-block').length;
+
+    document.getElementById('edit-prev-question-button').style.display = currentEditQuestionIndex > 0 ? 'inline-block' : 'none';
+    document.getElementById('edit-next-question-button').style.display = currentEditQuestionIndex < totalQuestions - 1 ? 'inline-block' : 'none';
+}
+
+document.getElementById('save-quiz-button').addEventListener('click', async () => {
+  const newTitle = document.getElementById('edit-quiz-title').value;
+  const questions = Array.from(document.querySelectorAll('.edit-question-block')).map((block, questionIndex) => {
+      const questionTitle = document.getElementById(`edit-question-${questionIndex + 1}`).value;
+      const options = [];
+
+      for (let oIndex = 1; oIndex <= 4; oIndex++) {
+          const optionNameElement = document.getElementById(`edit-option-${oIndex}-${questionIndex + 1}`);
+          const explanationElement = document.getElementById(`edit-explanation-${oIndex}-${questionIndex + 1}`);
+          const correctAnswerElement = document.getElementById(`edit-correct-answer-${oIndex}-${questionIndex + 1}`);
+
+          if (optionNameElement && explanationElement && correctAnswerElement) {
+              const optionName = optionNameElement.value;
+              const explanation = explanationElement.value;
+              const isCorrect = correctAnswerElement.checked;
+
+              options.push({
+                  OptionName: optionName,
+                  Explanation: explanation,
+                  IsCorrectOption: isCorrect
+              });
+          }
+      }
+
+      return {
+          QuestionTitle: questionTitle,
+          Section_Question: currentSectionId,  // Ensure this field is set
+          options: options
+      };
+  });
+
+  const payload = {
+      QuizTitle: newTitle,
+      questions: questions
+  };
+
+
+  try {
+      const response = await fetch(`/api/quizzes/${currentQuizId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error('Failed to update quiz');
+      alert('Quiz updated successfully');
+      document.getElementById('edit-quiz-form').style.display = 'none';
+      fetchQuizzes(true); // Refresh the quiz list for manage quizzes
+  } catch (error) {
+      console.error('Error updating quiz:', error);
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Fetch quizzes for manage quizzes page
+  if (window.location.pathname.endsWith('manage-quizzes.html')) {
+      fetchQuizzes(true);
+  }
+
+  // Add event listeners
+  const createQuizButton = document.getElementById('create-quiz-button');
+
+  if (createQuizButton) {
+      createQuizButton.addEventListener('click', openCreateQuizForm);
+  }
+
+
+  // Fetch quiz data if on quiz.html page
+  const urlParams = new URLSearchParams(window.location.search);
+  const quizId = urlParams.get('quizId');
+  if (quizId && window.location.pathname.endsWith('quiz.html')) {
+      loadQuiz(quizId);
+  }
+});
+
+// Function to view the quiz
+function viewQuiz(quizId) {
+  console.log(`Navigating to quiz.html with quizId: ${quizId}`);
+  window.location.href = `quiz.html?quizId=${quizId}`;
+}
+
+// Function to fetch and display quizzes
+async function fetchQuizzes(forManage = false) {
+  try {
+      const response = await fetch('/api/quizzes');
+      if (!response.ok) throw new Error(`Failed to fetch quizzes: ${response.statusText}`);
+      const quizzes = await response.json();
+      displayQuizzes(quizzes, forManage);
+  } catch (error) {
+      console.error('Error fetching quizzes:', error);
+  }
+}
+
+// Function to display quizzes
+function displayQuizzes(quizzes, forManage = false) {
+  const quizList = document.getElementById(forManage ? 'quiz-list' : 'quiz-container');
+  if (!quizList) {
+      console.error('Quiz list container not found.');
+      return;
+  }
+
+  quizList.innerHTML = '';
+
+  if (quizzes.length === 0) {
+      quizList.innerHTML = '<p>No quizzes available</p>';
+      return;
+  }
+
+  quizzes.forEach(quiz => {
+      const quizItem = document.createElement('div');
+      quizItem.className = 'quiz-item';
+      if (forManage) {
+          quizItem.innerHTML = `
+              <h3>${quiz.QuizTitle}</h3>
+              <p>Number of Questions: ${quiz.QuestionsCount}</p>
+              <button onclick="openEditForm(${quiz.QuizId}, '${quiz.QuizTitle}')">Edit</button>
+              <button class="delete-button" data-quiz-id="${quiz.QuizId}">Delete</button>
+              <button onclick="viewQuiz(${quiz.QuizId})">View</button>
+          `;
+      } else {
+          quizItem.innerHTML = `
+              <h3>${quiz.QuizTitle}</h3>
+              <p>Number of Questions: ${quiz.QuestionsCount}</p>
+              <button onclick="loadQuiz(${quiz.QuizId})">Start Quiz</button>
+          `;
+      }
+      quizList.appendChild(quizItem);
+  });
+
+  if (forManage) attachDeleteListeners();
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const quizId = urlParams.get('quizId');
+  if (quizId) {
+      loadQuiz(quizId);
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const saveQuizButton = document.getElementById('save-quiz-button');
+  const editQuizForm = document.getElementById('edit-quiz-form');
+  const editQuizTitleInput = document.getElementById('edit-quiz-title');
+  const cancelEditButton = document.getElementById('cancel-edit-button');
+  const createQuizButton = document.getElementById('create-quiz-button');
+  const saveNewQuizButton = document.getElementById('save-new-quiz-button');
+  const cancelNewQuizButton = document.getElementById('cancel-new-quiz-button');
+  const nextOptionButton = document.getElementById('next-option-button');
+  const addQuestionButton = document.getElementById('add-question-button');
+  const createQuizForm = document.getElementById('create-quiz-form');
+
+  if (createQuizButton) {
+      createQuizButton.addEventListener('click', openCreateQuizForm);
+  }
+
+  if (cancelNewQuizButton) {
+      cancelNewQuizButton.addEventListener('click', function () {
+          createQuizForm.style.display = 'none';
+      });
+  }
+
+  if (nextOptionButton) {
+      nextOptionButton.addEventListener('click', handleNextOption);
+  }
+
+  if (addQuestionButton) {
+      addQuestionButton.addEventListener('click', handleAddQuestion);
+  }
+
+  if (saveNewQuizButton) {
+    saveNewQuizButton.addEventListener('click', handleSaveNewQuiz);
+}
+
+
+  if (saveQuizButton) {
+      saveQuizButton.addEventListener('click', async () => {
+          const newTitle = editQuizTitleInput.value;
+          const questions = Array.from(document.querySelectorAll('.edit-question-block')).map((block, questionIndex) => {
+              const questionTitle = document.getElementById(`edit-question-${questionIndex + 1}`).value;
+              const options = Array.from(block.querySelectorAll('.edit-option-block')).map((optionBlock, optionIndex) => {
+                  const optionText = document.getElementById(`edit-option-${questionIndex + 1}-${optionIndex + 1}`).value;
+                  const explanation = document.getElementById(`edit-explanation-${questionIndex + 1}-${optionIndex + 1}`).value;
+                  const correct = document.getElementById(`edit-correct-answer-${questionIndex + 1}-${optionIndex + 1}`).checked;
+                  return { OptionName: optionText, Explanation: explanation, IsCorrectOption: correct };
+              });
+              return { QuestionTitle: questionTitle, options };
+          });
+
+          try {
+              const response = await fetch(`/api/quizzes/${currentQuizId}`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ QuizTitle: newTitle, questions })
+              });
+              if (!response.ok) throw new Error('Failed to update quiz');
+              editQuizForm.style.display = 'none';
+              fetchQuizzes(true); // Refresh the quiz list for manage quizzes
+          } catch (error) {
+              console.error('Error updating quiz:', error);
+          }
+      });
+  }
+
+  
+  if (cancelEditButton) {
+      cancelEditButton.addEventListener('click', () => {
+          editQuizForm.style.display = 'none';
+      });
+  }
+
+  function handleSaveNewQuiz() {
+    const newTitle = document.getElementById('new-quiz-title').value;
+    const sectionNo = document.getElementById('new-section-no').value;
+    const courseId = document.getElementById('new-course-id').value;
+    const questions = [];
+
+    for (let i = 1; i <= currentQuestionBlockIndex; i++) {
+        const questionTitle = document.getElementById(`new-question-${i}`).value;
+        const options = [];
+
+        for (let j = 1; j <= 4; j++) {
+            const optionText = document.getElementById(`new-option-${j}-${i}`).value;
+            const explanation = document.getElementById(`new-explanation-1-${j}-${i}`).value;
+            const correct = document.getElementById(`new-correct-answer-${j}-${i}`).checked;
+
+            if (optionText && explanation) {
+                options.push({ OptionName: optionText, Explanation: explanation, IsCorrectOption: correct });
+            }
+        }
+
+        if (questionTitle && options.length > 0) {
+            questions.push({ QuestionTitle: questionTitle, options });
+        }
+    }
+
+    const quizData = {
+        QuizTitle: newTitle,
+        Section_Quiz: sectionNo,
+        Course_Quiz: courseId,
+        questions: questions
+    };
+
+    console.log('Preparing to send create request', quizData);
+
+    createQuiz(quizData);
+}
+
+  // Save the updated quiz data
+document.getElementById('save-quiz-button').addEventListener('click', async () => {
+  const newTitle = document.getElementById('edit-quiz-title').value;
+  const questions = [];
+  const questionBlocks = document.querySelectorAll('[id^="edit-question-block-"]');
+
+  questionBlocks.forEach((block, qIndex) => {
+      const questionTitle = document.getElementById(`edit-question-${qIndex + 1}`).value;
+      const options = [];
+
+      for (let oIndex = 1; oIndex <= 4; oIndex++) {
+          const optionName = document.getElementById(`edit-option-${oIndex}-${qIndex + 1}`).value;
+          const explanation = document.getElementById(`edit-explanation-${oIndex}-${qIndex + 1}`).value;
+          const isCorrect = document.getElementById(`edit-correct-answer-${oIndex}-${qIndex + 1}`).checked;
+
+          options.push({
+              OptionName: optionName,
+              Explanation: explanation,
+              IsCorrectOption: isCorrect
+          });
+      }
+
+      questions.push({
+          QuestionTitle: questionTitle,
+          options: options
+      });
+  });
+
+  try {
+      const response = await fetch(`http://localhost:3000/api/quizzes/${currentQuizId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ QuizTitle: newTitle, questions: questions })
+      });
+      if (!response.ok) throw new Error('Failed to update quiz');
+      document.getElementById('edit-quiz-form').style.display = 'none';
+      fetchQuizzes(true); // Refresh the quiz list for manage quizzes
+  } catch (error) {
+      console.error('Error updating quiz:', error);
+  }
+});
+
+  if (window.location.pathname.endsWith('manage-quizzes.html')) {
+      fetchQuizzes(true); // Fetch quizzes for manage quizzes
+  }
+});
+
+
+// Function to attach delete listeners
+function attachDeleteListeners() {
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const quizId = this.getAttribute('data-quiz-id');
+            deleteQuiz(quizId);
+        });
+    });
+}
+
+// Function to delete a quiz
+async function deleteQuiz(quizId) {
+    try {
+        console.log(`Sending DELETE request for quizId: ${quizId}`);
+        const response = await fetch(`/api/quizzes/${quizId}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) throw new Error(`Failed to delete quiz: ${response.statusText}`);
+        alert('Quiz deleted successfully');
+        fetchQuizzes(true); // Refresh the quiz list for manage quizzes
+    } catch (error) {
+        console.error('Error deleting quiz:', error);
+    }
+}
+
+// Function to create a new quiz
+async function createQuiz(quizData) {
+    try {
+        const response = await fetch('/api/quizzes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(quizData)
+        });
+        if (!response.ok) throw new Error('Failed to create quiz');
+        const result = await response.json();
+        console.log('Created Quiz:', result);
+        currentQuizId = result.QuizId;
+        fetchQuizzes(true); // Fetch quizzes for manage quizzes
+        const questionForm = document.getElementById('question-form');
+        if (questionForm) questionForm.style.display = 'block';
+    } catch (error) {
+        console.error('Error creating quiz:', error);
+    }
+}
+
+// Function to handle the creation of quiz options one by one
+function handleNextOption() {
+    const optionText = document.getElementById(`new-option-${currentOptionIndex + 1}-${currentQuestionBlockIndex}`).value;
+    const explanationText = document.getElementById(`new-explanation-1-${currentOptionIndex + 1}-${currentQuestionBlockIndex}`).value;
+    const isCorrect = document.getElementById(`new-correct-answer-${currentOptionIndex + 1}-${currentQuestionBlockIndex}`).checked;
+
+    if (optionText && explanationText) {
+        newQuizData.questions[currentQuestionBlockIndex - 1].options.push({
+            OptionName: optionText,
+            Explanation: explanationText,
+            IsCorrectOption: isCorrect
+        });
+
+        // Hide the current option container
+        document.getElementById(`option-${currentOptionIndex + 1}-container-${currentQuestionBlockIndex}`).style.display = 'none';
+        
+        currentOptionIndex++;
+        if (currentOptionIndex < 4) {
+            // Show the next option container
+            document.getElementById(`option-${currentOptionIndex + 1}-container-${currentQuestionBlockIndex}`).style.display = 'block';
+        } else {
+            // Show the save button and hide the next option button
+            document.getElementById('save-new-quiz-button').style.display = 'block';
+            document.getElementById('next-option-button').style.display = 'none';
+        }
+    } else {
+        alert('Please fill in all fields for the option.');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const addQuestionButton = document.getElementById('edit-add-question-button');
+
+  if (addQuestionButton) {
+      addQuestionButton.addEventListener('click', handleAddEditQuestion);
+  }
+});
+
+// Function to handle adding a new question
+function handleAddQuestion() {
+    currentQuestionBlockIndex++;
+    currentOptionIndex = 0;
+    newQuizData.questions.push({
+        QuestionTitle: '',
+        options: []
+    });
+
+    // Hide all previous question blocks
+    const allQuestionBlocks = document.querySelectorAll('[id^="question-block-"]');
+    allQuestionBlocks.forEach(block => {
+        block.style.display = 'none';
+    });
+
+    const questionBlock = document.createElement('div');
+    questionBlock.id = `question-block-${currentQuestionBlockIndex}`;
+    questionBlock.innerHTML = `
+        <label for="new-question-${currentQuestionBlockIndex}">Question ${currentQuestionBlockIndex}:</label>
+        <input type="text" id="new-question-${currentQuestionBlockIndex}">
+
+        <div id="option-1-container-${currentQuestionBlockIndex}" class="option-container active">
+            <label for="new-option-1-${currentQuestionBlockIndex}">Option 1:</label>
+            <input type="text" id="new-option-1-${currentQuestionBlockIndex}">
+            <label for="new-explanation-1-1-${currentQuestionBlockIndex}">Explanation 1:</label>
+            <input type="text" id="new-explanation-1-1-${currentQuestionBlockIndex}">
+            <label for="new-correct-answer-1-${currentQuestionBlockIndex}">Correct Answer:</label>
+            <input type="radio" id="new-correct-answer-1-${currentQuestionBlockIndex}" name="correct-answer-${currentQuestionBlockIndex}" value="1">
+        </div>
+
+        <div id="option-2-container-${currentQuestionBlockIndex}" class="option-container">
+            <label for="new-option-2-${currentQuestionBlockIndex}">Option 2:</label>
+            <input type="text" id="new-option-2-${currentQuestionBlockIndex}">
+            <label for="new-explanation-1-2-${currentQuestionBlockIndex}">Explanation 2:</label>
+            <input type="text" id="new-explanation-1-2-${currentQuestionBlockIndex}">
+            <label for="new-correct-answer-2-${currentQuestionBlockIndex}">Correct Answer:</label>
+            <input type="radio" id="new-correct-answer-2-${currentQuestionBlockIndex}" name="correct-answer-${currentQuestionBlockIndex}" value="2">
+        </div>
+
+        <div id="option-3-container-${currentQuestionBlockIndex}" class="option-container">
+            <label for="new-option-3-${currentQuestionBlockIndex}">Option 3:</label>
+            <input type="text" id="new-option-3-${currentQuestionBlockIndex}">
+            <label for="new-explanation-1-3-${currentQuestionBlockIndex}">Explanation 3:</label>
+            <input type="text" id="new-explanation-1-3-${currentQuestionBlockIndex}">
+            <label for="new-correct-answer-3-${currentQuestionBlockIndex}">Correct Answer:</label>
+            <input type="radio" id="new-correct-answer-3-${currentQuestionBlockIndex}" name="correct-answer-${currentQuestionBlockIndex}" value="3">
+        </div>
+
+        <div id="option-4-container-${currentQuestionBlockIndex}" class="option-container">
+            <label for="new-option-4-${currentQuestionBlockIndex}">Option 4:</label>
+            <input type="text" id="new-option-4-${currentQuestionBlockIndex}">
+            <label for="new-explanation-1-4-${currentQuestionBlockIndex}">Explanation 4:</label>
+            <input type="text" id="new-explanation-1-4-${currentQuestionBlockIndex}">
+            <label for="new-correct-answer-4-${currentQuestionBlockIndex}">Correct Answer:</label>
+            <input type="radio" id="new-correct-answer-4-${currentQuestionBlockIndex}" name="correct-answer-${currentQuestionBlockIndex}" value="4">
+        </div>
+    `;
+
+    const createQuizForm = document.getElementById('create-quiz-form');
+    createQuizForm.insertBefore(questionBlock, document.getElementById('add-question-button').parentElement);
+
+    // Reset buttons for new question
+    document.getElementById('save-new-quiz-button').style.display = 'none';
+    document.getElementById('next-option-button').style.display = 'block';
+}
+
+function openCreateQuizForm() {
+    const createQuizForm = document.getElementById('create-quiz-form');
+    if (createQuizForm) {
+        createQuizForm.style.display = 'block';
+    }
+}
+
+// Add event listeners for submit and next buttons
+document.addEventListener('DOMContentLoaded', function () {
+    const submitButton = document.getElementById('submit');
+    const nextButton = document.getElementById('next');
+
+    if (submitButton) submitButton.addEventListener('click', showResults);
+    if (nextButton) nextButton.addEventListener('click', nextQuestion);
+});

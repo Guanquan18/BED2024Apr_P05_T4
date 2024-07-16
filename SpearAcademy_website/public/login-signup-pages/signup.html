@@ -347,7 +347,7 @@
                 if (personalDetailsVerified){
 
                     if (roleSelected === "Student"){
-                            window.location.href = "../index.html";   // Redirect to home page
+                            window.location.href = "../student-pages/student.html";   // Redirect to home page
                     }
                     else{
                         signupPersonalDetailsForm.style.display = "none";   // Hide personal details form
@@ -436,7 +436,7 @@
                 let qualificationVerified = await verifyQualification();
 
                 if (qualificationVerified){
-                    window.location.href = "../creator.html";
+                    window.location.href = "../educator-pages/creator.html";
                 }
 
                 // function to verify qualification of the user by sending a request to the server

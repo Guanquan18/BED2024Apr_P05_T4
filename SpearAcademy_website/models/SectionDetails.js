@@ -1,5 +1,4 @@
 // Entirely Created By: Sairam (S10259930H)
-
 const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
@@ -30,6 +29,43 @@ class Section {
             result.recordset[0].Video
         )
         : null; // Handle section not found
+    }
+
+    // Static method to update section details  Created By: Sairam (S10259930H)
+    static async updateSectionDetails(CourseId, sectionDetailNo, newSectionDetail) {
+        const connection = await sql.connect(dbConfig); // Connect to the database
+    
+        // Base SQL query for updating section
+        let sqlQuery = 'UPDATE SectionDetails SET ';
+        const fields = [];
+        const request = connection.request();
+    
+        // Check each field and add to query if defined
+        if (newSectionDetail.SectionTitle !== undefined) {
+            fields.push('SectionTitle = @SectionTitle');
+            request.input('SectionTitle', newSectionDetail.SectionTitle);
+        }
+        if (newSectionDetail.Video !== undefined) {
+            fields.push('Video = @Video');
+            request.input('Video', newSectionDetail.Video);
+        }
+    
+        // If no fields are provided for update, return early
+        if (fields.length === 0) {
+            throw new Error('No fields provided for update');
+        }
+    
+        // Join the fields to the query
+        sqlQuery += fields.join(', ') + ' WHERE Section_Course = @CourseId and SectionNo = @SectionNo';
+        request.input('CourseId', CourseId);
+        request.input('SectionNo', sectionDetailNo);
+    
+        // Execute the query
+        await request.query(sqlQuery);
+    
+        connection.close();
+    
+        return this.getSectionDetailsById(CourseId, sectionDetailNo);
     }
 }
 

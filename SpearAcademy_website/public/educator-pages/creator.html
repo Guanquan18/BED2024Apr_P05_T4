@@ -25,14 +25,14 @@
             align-items: center;
         }
         .first-left-container{
-            height: 240px;
+            height: 280px;
         }
         .second-row, .first-right-container{
             height: auto;
         }
         .course-icon{
             width: 100%;
-            height: auto;
+            height: 180px;
             border: 1px solid black;
         }
         .course-content,.section-item {
@@ -97,8 +97,7 @@
             border-radius: 30px;
             position: relative;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            top: 80px; /* Adjust this value to control vertical position */
-            margin: 0 auto; /* Horizontally center the content */
+            margin: 20px auto; /* Horizontally center the content */
             height: fit-content; /* Adjust as needed */
         }
 
@@ -162,6 +161,10 @@
             align-items: center;
             justify-content: center;
         }
+        #sectionDetails-Popup video {
+        max-width: 100%;
+        max-height: 400px;
+    }
     </style>
 </head>
 <body>
@@ -193,7 +196,7 @@
                 <div class="col-md-4 sub-container first-row first-left-container">
                     <div class="course-header course-content word-link">
                         <h2>Course Icon</h2>
-                        <p> Edit </p>
+                        <p onclick="showPopup('edit-course-icon-Popup')"> Edit </p>
                     </div>
                     <img src="" class="course-icon" alt="Course Image">
                 </div>
@@ -233,21 +236,25 @@
                         <h2>Section Details</h2>
                         <i class="fas fa-plus add-icon"></i>
                     </div>
-                    <div id="section-details-container">
-                        <div class="section-item tag word-link">
-                            <h3>Section 1: <span>Introduction to AI</span></h3>
-                            <p> Edit </p>
-                        </div>
-                        <div class="section-item tag word-link">
-                            <h3>Section 2: <span>AI Concepts</span></h3>
-                            <p> Edit </p>
-                        </div>
-                    </div>
+                    <div id="section-details-container"></div>
                 </div>
             </div>
         </div>
     </div>
 
+     <!-- Edit Course IcoN Popup -->
+     <div id="edit-course-icon-Popup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-btn" onclick="hidePopup('edit-course-icon-Popup')">&times;</span>
+            <h3>Course Icon</h3>
+            <form id="edit-course-icon-form" enctype="multipart/form-data">
+                <label for="course-icon">Choose a image:</label>
+                <input type="file" id="course-icon" name="thumbnail" accept="image/*" class="form-control"><br><br>
+                <button type="button" class="btn btn-primary" onclick="UpdateCourseIcon()">Save changes</button>
+            </form>
+        </div>
+    </div>
+    
      <!-- Edit Course Details Popup -->
     <div id="edit-course-details-Popup" class="popup-overlay">
         <div class="popup-content">
@@ -285,11 +292,23 @@
     </div>
 
     <!-- View Section Description Popup -->
-    <div id="SectionDetails-Popup" class="popup-overlay">
+    <div id="sectionDetails-Popup" class="popup-overlay">
         <div class="popup-content">
-            <span class="close-btn" onclick="hidePopup('SectionDetails-Popup')">&times;</span>
-            <h3></h3>
+            <span class="close-btn" onclick="hidePopup('sectionDetails-Popup')">&times;</span>
             <h2></h2>
+            <h5>Video</h5>
+            <video id="video-item" controls>
+                <source id="video-source" src="" type="video/mp4">
+            </video>
+            <form id="edit-section-detail-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="section-title" class="form-label">Section Title</label>
+                    <input type="text" class="form-control" id="section-title" placeholder="Enter section title">
+                </div>
+                <label for="section-detail-video">Choose a video:</label>
+                <input type="file" id="section-detail-video" name="video" accept="video/mp4" class="form-control"><br><br>
+                <button type="button" class="btn btn-primary" onclick="UpdateSectionDetails()">Save changes</button>
+            </form>
         </div>
     </div>
 

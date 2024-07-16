@@ -1,5 +1,5 @@
 // Entirely Created By: Sairam (S10259930H)
-const Course = require("../models/course"); // Import the Course model
+const Course = require("../models/Course"); // Import the Course model
 // Controller function to get courses by creator.  Created By: Sairam (S10259930H)
 const getCourseByCreator = async (req, res) => {
   const creator = parseInt(req.params.creator); // Parse creator ID from request parameters
@@ -12,6 +12,20 @@ const getCourseByCreator = async (req, res) => {
   } catch (error) {
     console.error(error); // Log error to the console
     res.status(500).send("Error retrieving course"); // Send 500 status code for server error
+  }
+};
+
+// Controller function to all courses.  Created By: Sairam (S10259930H)
+const getCourses = async (req, res) => {
+  try {
+    const courses = await Course.getCourses(); // Fetch courses by creator from the model
+    if (!courses) {
+      return res.status(404).send("Courses not found");  // Return 404 if no courses found
+    }
+    res.json(courses); // Send the course data as JSON response
+  } catch (error) {
+    console.error(error); // Log error to the console
+    res.status(500).send("Error retrieving courses"); // Send 500 status code for server error
   }
 };
 
@@ -48,7 +62,7 @@ const updateCourse = async (req, res) => {
   }
 };
 
-
+// Controller function to update a course icon.  Created By: Sairam (S10259930H)
 const updateCourseIcon = async (req, res) => {
   const CourseId = parseInt(req.params.CourseId); // Parse course ID from request parameters
 
@@ -69,10 +83,66 @@ const updateCourseIcon = async (req, res) => {
     res.status(500).send('Error updating course');
   }
 };
+// Controller function to create a course.  Created By: Sairam (S10259930H)
+const createCourse = async (req, res) => {
+  const creatorId = parseInt(req.params.creatorId);
+  try {
+    // Initialize an object to hold the new course data
+    let newCourseData = {};
+
+    // Extract mandatory fields from the request body
+    newCourseData.CourseTitle = req.body.CourseTitle;
+    newCourseData.SmallDescription = req.body.SmallDescription;
+    newCourseData.Description = req.body.Description;
+
+    // Handle file upload for CourseIcon
+    if (req.file) {
+      newCourseData.Thumbnail = '../Images/courses/' + req.file.filename;
+    }
+
+    // Handle optional fields
+    if (req.body.Label) {
+      newCourseData.Label = req.body.Label;
+    }
+    if (req.body.Badge) {
+      newCourseData.Badge = req.body.Badge;
+    }
+
+    // Call the model function to create a new course
+    const createdCourse = await Course.createCourse(creatorId, newCourseData);
+
+    // Send the created course as the response
+    res.status(201).json(createdCourse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error creating course");
+  }
+};
+// Controller function to delete  a course.  Created By: Sairam (S10259930H)
+const deleteCourseAndDetails = async (req, res) => {
+  const courseId = parseInt(req.params.courseId); // Extract course ID from request parameters
+
+  try {
+    // Call the model method to delete course and associated details
+    const success = await Course.deleteCourseAndDetails(courseId);
+
+    if (!success) {
+      return res.status(404).send('Course details not found');
+    }
+
+    res.status(204).send('Course and associated details successfully deleted');
+  } catch (error) {
+    console.error('Error deleting course and details:', error);
+    res.status(500).send('Error deleting course and details');
+  }
+};
 
 module.exports = {
   getCourseByCreator,
+  getCourses,
   getCourseWithSectionById,
   updateCourse,
-  updateCourseIcon
+  updateCourseIcon,
+  createCourse,
+  deleteCourseAndDetails
 };

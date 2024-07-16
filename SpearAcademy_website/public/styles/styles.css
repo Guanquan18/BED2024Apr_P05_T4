@@ -8,171 +8,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Styling For Index.html*/
-
-.navigation-panel {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 30px;
-  background-color: #FAF8FF;
-  border-bottom: 2px solid black;
-
-}
-
-.right-section, .left-section {
-  display: flex;
-  align-items: center;
-}
-
- .left-section h1 {
-  font-size: 2em;
-  margin-left: 20px;
-}
-
-.right-section a {
-  font-size: 1.4em;
-  margin-right: 20px;
-  text-decoration: none;
-  color: #333;
-}
-
-/* Search box styling */
-.box{
-  height: 40px;
-  display: flex;
-  cursor: pointer;
-  padding: 10px;
-  background-color: #6F74FB;
-  border-radius: 60px;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  margin-right: 20px;
-}
-
-.box:hover input{
-  width: 400px;
-}
-
-.box:hover{
-  border-radius: 10px;
-}
-
-.box input{
-  width: 0;
-  outline: none;
-  border: none;
-  font-weight: 500;
-  transition: 0.8s;
-  background: transparent;
-
-}
-.box .fa{
-  color:#fff;
-  font-size: 19px;
-}
-
-.box input::placeholder {
-  color: #fff; /* Placeholder text color */
-}
-
-/* Profile icon styling */
-.profile-icon {
-  position: relative;
-}
-
-#profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-#profile-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-#profile p {
-  margin: 0;
-  font-size: 1em;
-  color: #333;
-  text-align: center;
-}
-
-.icon{
-  width: 80px;
-  height: 80px;
-}
-
-/* Slider styling */
-.swiper-container {
-  width: 100%;
-  background-color: #0056b3;
-  padding: 30px;
-  position: relative;
-}
-
-.swiper-slide {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.slide-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.slide-image img {
-  width: 300px;
-  height: auto;
-  border-radius: 10px;
-  margin-right: 20px;
-}
-
-.slide-text {
-  max-width: 50%;
-}
-
-.slide-text h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.slide-text p {
-  margin-bottom: 5px;
-  font-size: 1rem;
-}
-
-/* Swiper Navigation Buttons */
-.swiper-button-next, .swiper-button-prev {
-  color: #fff;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-}
-
-.swiper-button-next {
-  right: 10px;
-}
-
-.swiper-button-prev {
-  left: 10px;
-}
-
-/* Swiper Pagination */
-.swiper-pagination {
-  bottom: 10px;
-  text-align: center;
-}
-
-
-
 /* Styling for creator.html   Created by: Sairam (S10259930H)*/ 
 .educator-navigation-sidebar {
   width: 400px;
@@ -255,14 +90,14 @@ body {
 .top-content button:hover {
   background-color: #42459b;;
 }
-.main-container{
+.main-container, .main-course-container{
   width: 100%;
   height: auto;
   margin: 20px;
   padding: 15px;
 }
 
-.main-container .educator-course-card {
+.main-container .educator-course-card, .student-course-card {
   transition: transform 0.3s ease;
   background-color: #FAF8FF;
   border-radius: 15px;
@@ -270,35 +105,38 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   width: 250px;
   height: 430px;
-  border: 1px solid black
+  border: 1px solid black;
+  margin-bottom: 20px
 }
-
-.educator-course-card:hover {
+.student-course-card{
+  height: 450px;
+}
+.educator-course-card, .student-course-card:hover {
   transform: scale(1.05);
 }
 
-.educator-course-card-img-top{
+.educator-course-card-img-top,.student-course-card-img-top{
   width: 100%;
   height: 150px;
   border-bottom: 1px solid #ddd;
 }
 
-.educator-course-card-body {
+.educator-course-card-body, .student-course-card-body {
   padding: 15px;
 }
 
-.educator-course-card-title {
+.educator-course-card-title,.student-course-card-title {
   font-size: 1.5em;
   margin: 0 0 10px;
   color: #333;
 }
 
-.educator-course-card-description {
+.educator-course-card-description,.student-course-card-description,.student-course-card-fullname {
   color: #666;
   font-size: 0.9em;
 }
 
-.educator-course-card-footer {
+.educator-course-card-footer,.student-course-card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -319,7 +157,7 @@ body {
   background-color: #42459b;;
 }
 
-.educator-course-label {
+.educator-course-label,.student-course-label {
   display: inline-block;
   padding: 5px 10px;
   background-color: #6F74FB;
@@ -328,7 +166,6 @@ body {
   font-size: 1.0em;
   margin-bottom: 10px;
 }
-
 
 /* Style for login and signup page Created by: Guan Quan (S10257285A) */
 

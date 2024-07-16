@@ -16,7 +16,38 @@ const getSectionDetailsById = async (req, res) => {
       res.status(500).send("Error retrieving Section");
     }
   };
+ 
+// Update section details
+const updateSectionDetails = async (req, res) => {
+  const CourseId = parseInt(req.params.id); // Parse course ID from request parameters
+  const sectionNo = parseInt(req.params.SectionNo);
 
-  module.exports = {
-    getSectionDetailsById
-  };
+  try {
+    const sectionTitle = req.body.SectionTitle; // Get section title from request body
+
+    let newSectionDetail = {};
+    if (sectionTitle) {
+      newSectionDetail.SectionTitle = sectionTitle; // Update section title if provided
+    }
+    if (req.file) {
+      newSectionDetail.Video = '../videos/' + req.file.filename; // Update video if file is provided
+    }
+
+    const updatedSection = await Section.updateSectionDetails(CourseId, sectionNo, newSectionDetail);
+
+    if (!updatedSection) {
+      return res.status(404).send('Section not found'); // Handle case where section is not found
+    }
+
+    res.json(updatedSection); // Send success response
+  } catch (error) {
+    console.error("Update Section Error:", error);
+    res.status(500).send('Error updating section');
+  }
+};
+
+
+module.exports = {
+getSectionDetailsById,
+updateSectionDetails
+};

@@ -7,6 +7,7 @@ Sairam (S10255930H)
 - fetchCourseandSectionDetails(CourseId)
 - UpdateCourse()
 - fetchSectionDetails
+- UpdateSectionDetails
 
 Chang Guan Quan (S10257825A)
 - 
@@ -346,6 +347,113 @@ try {
 }
 }
 
+// Function to update section details by a courseId. Created by: Sairam 
+async function UpdateSectionDetails() {
+  const edit_section_btn = document.querySelector('.section-item');
+  const sectionNo = edit_section_btn.id.split('-')[2];
+  const courseId = edit_section_btn.id.split('-')[3];
+
+  const newSectionTitle = document.getElementById('section-title').value;
+  const fileInput = document.getElementById('section-detail-video');
+
+  // Check if either section title or video is updated
+  if (newSectionTitle == "" && fileInput.files.length === 0) {
+    alert('Please update either the section title or the section video before submitting.');
+    return;
+}
+
+
+  // Create FormData object and append the selected file
+  const formData = new FormData();
+  if (fileInput.files.length > 0) {
+      formData.append('Video', fileInput.files[0]);
+  }
+  formData.append('SectionTitle', newSectionTitle);
+
+  try {
+      // Send PUT request to update section details
+      const response = await fetch(`http://localhost:3000/sectionDetails/${courseId}/${sectionNo}`, {
+          method: 'PUT',
+          body: formData,
+      });
+
+
+      // Check if response is ok
+      if (!response.ok) {
+        const errorData = await response.json(); // Parse response body as JSON
+
+        if (errorData.message && errorData.errors && errorData.errors.length > 0) {
+            const validationErrors = errorData.errors.map(error => `- ${error}`).join('\n');
+            throw new Error(`Validation Errors:\n${validationErrors}`);
+        } else {
+            throw new Error('Failed to update section details'); // Fallback message if no specific message from server
+        }
+      }
+
+      // If successful, show success message and update UI
+      alert("Section details updated successfully!");
+      fetchSectionDetails(courseId, sectionNo); // Refresh displayed details after update
+      fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
+  } catch (error) {
+      // Log and show error message if request fails
+      console.error('Error updating section details:', error);
+      alert(`Error updating section details: ${error.message}`);
+  }
+}
+// Function to update section details by a courseId. Created by: Sairam 
+async function UpdateSectionDetails() {
+    const edit_section_btn = document.querySelector('.section-item');
+    const sectionNo = edit_section_btn.id.split('-')[2];
+    const courseId = edit_section_btn.id.split('-')[3];
+  
+    const newSectionTitle = document.getElementById('section-title').value;
+    const fileInput = document.getElementById('section-detail-video');
+  
+    // Check if either section title or video is updated
+    if (newSectionTitle == "" && fileInput.files.length === 0) {
+      alert('Please update either the section title or the section video before submitting.');
+      return;
+  }
+  
+  
+    // Create FormData object and append the selected file
+    const formData = new FormData();
+    if (fileInput.files.length > 0) {
+        formData.append('Video', fileInput.files[0]);
+    }
+    formData.append('SectionTitle', newSectionTitle);
+  
+    try {
+        // Send PUT request to update section details
+        const response = await fetch(`http://localhost:3000/sectionDetails/${courseId}/${sectionNo}`, {
+            method: 'PUT',
+            body: formData,
+        });
+  
+  
+        // Check if response is ok
+        if (!response.ok) {
+          const errorData = await response.json(); // Parse response body as JSON
+  
+          if (errorData.message && errorData.errors && errorData.errors.length > 0) {
+              const validationErrors = errorData.errors.map(error => `- ${error}`).join('\n');
+              throw new Error(`Validation Errors:\n${validationErrors}`);
+          } else {
+              throw new Error('Failed to update section details'); // Fallback message if no specific message from server
+          }
+        }
+  
+        // If successful, show success message and update UI
+        alert("Section details updated successfully!");
+        fetchSectionDetails(courseId, sectionNo); // Refresh displayed details after update
+        fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
+    } catch (error) {
+        // Log and show error message if request fails
+        console.error('Error updating section details:', error);
+        alert(`Error updating section details: ${error.message}`);
+    }
+  }
+  
 
 
 // Functions created by: Pey Zhi Xun

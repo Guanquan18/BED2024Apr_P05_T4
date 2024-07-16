@@ -79,7 +79,7 @@ const validateAccount = require("./middlewares/validateAccount");  // Import the
 const validateEducator = require("./middlewares/validateEducator"); // Import the accountController. Created by Chang Guan Quan
 
 const coursesController = require("./controllers/courseController"); // Import the CoursesController. Created by Sairam
-const sectionDetailsController = require("./controllers/sectionDetailsController"); // Import the SectionDetailsController. Created by Sairam
+const sectionDetailsController = require("./controllers/sectionDetailController"); // Import the SectionDetailsController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
 

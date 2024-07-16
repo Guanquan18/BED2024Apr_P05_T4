@@ -3,31 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spear Academy</title>
+    <title>Quiz Application</title>
     <link rel="stylesheet" href="../styles/styles.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 <body>
-    <div class="educator-navigation-sidebar">
-        <div class="educator-navigation-sidebar-header">SPEAR ACADEMY</div>
-        <a id="courses-btn" href="creator.html">Courses</a>
-        <a id="community-btn" href="community.html">Community</a>
-        <a id="quiz-btn" href="quiz.html" class = "active">Quiz</a>
-        <a id="profile-btn" href="profile.html" >Profile</a>
-    </div>
-    <div id="educator-quiz-container" class = "content-container">   
-        <div class="top-content">
-            <h1> My Quizzes</h1>
+    <div id="quiz-section">
+        <div class="container">
+            <header class="header">
+                <button class="back-button" onclick="window.history.back()">&#9664; Back</button>
+                <h1>Generalized AI for Beginners</h1>
+                <div class="progress-container">
+                    <span>My Progress</span>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 56%;">56%</div>
+                    </div>
+                </div>
+            </header>
+            <div class="content main-content">
+                <div class="left-content">
+                    <div class="tab-content" id="quizzes">
+                        <div class="quiz-container" id="quiz-container">
+                            <!-- Quizzes will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="question-container" style="display:none;">
+                <div id="question-content"></div>
+                <div id="results"></div>
+                <button id="submit" class="btn" disabled>Submit Answer</button>
+                <button id="next" class="btn" disabled>Next Question</button>
+            </div>
+            <div id="final-results" class="result-page" style="display: none;">
+                <img src="../Images/Computergirl.png" alt="Result Image" class="result-image">
+                <div id="score"></div>
+                <p>You successfully completed all questions in this quiz.</p>
+                <button id="review" class="action-btn">Review all answers</button>
+                <button id="continue" class="action-btn">Continue watching</button>
+            </div>
+            
+            <div id="review-answers" style="display: none;">
+                <div id="review-container"></div>
+                <button id="back-to-results" class="action-btn">Back to results</button>
+            </div>
+            <div id="lottie-container" style="display: none; text-align: center;">
+                <dotlottie-player 
+                    id="lottie-animation"
+                    src="https://lottie.host/54fc0118-4fbc-418b-a71b-0e311309a469/frsBDKcA8h.json" 
+                    background="transparent" 
+                    speed="1" 
+                    style="width: 300px; height: 300px;" 
+                    loop 
+                    autoplay>
+                </dotlottie-player>
+                <p>Calculating your scores...</p>
+            </div>
         </div>
-        <div class="main-container" id="educator-quiz-main-container"></div>
     </div>
-    <!-- Bootstrap JavaScript Bundle (popper.js and bootstrap.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-     <!-- Custom JavaScript -->
-    <script src="../scripts/script.js"></script>
     <script>
+        let currentQuizId = null;
+        let quizData = [];
+        let userAnswers = [];
+        let score = 0;
+        let currentQuestionIndex = 0;
+
+        async function fetchQuizData(quizId) {
+            try {
+                const response = await fetch(`/api/quizzes/${quizId}`);
+                if (!response.ok) throw new Error('Failed to fetch quiz data');
+                const quizData = await response.json();
+
+                for (const question of quizData.questions) {
+                    const optionsResponse = await fetch(`/api/options/${question.QuestionNo}`);
+                    if (!optionsResponse.ok) throw new Error('Failed to fetch options');
+                    const options = await optionsResponse.json();
+                    question.options = options.map(option => ({
+                        text: option.OptionName,
+                        correct: option.IsCorrectOption === true,
+                        explanation: option.Explanation
+                    }));
+                }
+                return quizData.questions;
+            } catch (error) {
+                console.error('Error fetching quiz data:', error);
+                return [];
+            }
+        }
+
+        // Function to build and display the current question
+        function buildQuestion(questionIndex) {
+            const quizContainer = document.getElementById('question-content');
+            const submitButton = document.getElementById('submit');
+            const nextButton = document.getElementById('next');
+            const currentQuestion = quizData[questionIndex];
+            if (!currentQuestion || !currentQuestion.options) {
+                console.error('Current question or options are undefined:', currentQuestion);
+                return;
+            }
+            const answers = currentQuestion.options.map((option, index) =>
+                `<label>
+                    <input type="radio" name="question" value="${index}">
+                    ${option.text}
+                </label>`
+            ).join('');
+
+            quizContainer.innerHTML = `
+                <div class="question-header">Question ${questionIndex + 1} of ${quizData.length}</div>
+                <div class="question">${currentQuestion.QuestionTitle}</div>
+                <div class="answers">${answers}</div>
+            `;
+
+            // Add event listener to enable the submit button when an option is selected
+            const options = quizContainer.querySelectorAll('input[name="question"]');
+            options.forEach(option => {
+                option.addEventListener('change', () => {
+                    if (submitButton) submitButton.disabled = false;
+                });
+            });
+
+            if (nextButton) nextButton.disabled = true; // Disable next button until an answer is submitted
+        }
+
+        // Function to load quiz on quiz.html page
+        async function loadQuiz(quizId) {
+            currentQuizId = quizId;
+            quizData = await fetchQuizData(quizId);
+
+            if (quizData.length === 0) {
+                console.error('No quiz data available.');
+                return;
+            }
+
+            currentQuestionIndex = 0;
+            buildQuestion(currentQuestionIndex);
+            
+            // Hide main content and show quiz container
+            const mainContent = document.querySelector('.main-content');
+            const questionContainer = document.querySelector('.question-container');
+            if (mainContent) mainContent.style.display = 'none';
+            if (questionContainer) questionContainer.style.display = 'block';
+        }
         
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const quizId = urlParams.get('quizId');
+            if (quizId) {
+                loadQuiz(quizId);
+            }
+        });
+
+        // Additional functions for handling quiz logic (e.g., submit, next, review, etc.)
+        // Function to show results for the current question
+        function showResults() {
+            const quizContainer = document.getElementById('question-content');
+            const resultsContainer = document.getElementById('results');
+            const submitButton = document.getElementById('submit');
+            const nextButton = document.getElementById('next');
+
+            if (!quizContainer) return; // Check if quizContainer exists
+            const answerContainers = quizContainer.querySelector('.answers');
+            const selector = 'input[name=question]:checked';
+            const userAnswer = (answerContainers.querySelector(selector) || {}).value;
+            const currentQuestion = quizData[currentQuestionIndex];
+            const selectedOption = currentQuestion.options[userAnswer];
+
+            // Save user answer
+            userAnswers[currentQuestionIndex] = userAnswer;
+
+            // Check if the answer is correct
+            if (selectedOption) {
+                const isCorrect = selectedOption.correct;
+                if (resultsContainer) resultsContainer.innerHTML = `<div class="${isCorrect ? 'correct' : 'incorrect'}-answer">${isCorrect ? 'Correct!' : 'Wrong!'} ${selectedOption.explanation}</div>`;
+                if (answerContainers.children[userAnswer]) {
+                    answerContainers.children[userAnswer].style.backgroundColor = isCorrect ? '#4caf50' : '#f44336'; // Green for correct answer, red for wrong answer
+                }
+                if (isCorrect) score++;
+            } else {
+                if (resultsContainer) resultsContainer.innerHTML = `<div class="incorrect-answer">No answer selected.</div>`;
+            }
+
+            if (submitButton) submitButton.disabled = true; // Disable submit button after submitting
+            if (nextButton) nextButton.disabled = false; // Enable next button after submitting
+        }
+
+        // Function to move to the next question
+        function nextQuestion() {
+            const resultsContainer = document.getElementById('results');
+            const quizContainer = document.getElementById('question-content');
+            const submitButton = document.getElementById('submit');
+            const nextButton = document.getElementById('next');
+
+            if (!resultsContainer) return; // Check if resultsContainer exists
+            resultsContainer.innerHTML = ''; // Clear previous results
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                buildQuestion(currentQuestionIndex);
+                if (submitButton) submitButton.disabled = false;
+            } else {
+                showLottieAndFinalResults();
+            }
+        }
+
+        // Function to show Lottie animation and then final results
+        function showLottieAndFinalResults() {
+            const quizContainer = document.getElementById('question-content');
+            const lottieContainer = document.getElementById('lottie-container');
+            const submitButton = document.getElementById('submit');
+            const nextButton = document.getElementById('next');
+
+            if (quizContainer) quizContainer.style.display = 'none';
+            if (lottieContainer) lottieContainer.style.display = 'block';
+
+            // Hide submit and next buttons
+            if (submitButton) submitButton.style.display = 'none';
+            if (nextButton) nextButton.style.display = 'none';
+
+            // Show final results after 3 seconds
+            setTimeout(() => {
+                if (lottieContainer) lottieContainer.style.display = 'none';
+                showFinalResults();
+            }, 3000);
+        }
+
+        // Function to show final results
+        function showFinalResults() {
+            const finalResultsContainer = document.getElementById('final-results');
+            const scoreContainer = document.getElementById('score');
+            const reviewButton = document.getElementById('review');
+            const continueButton = document.getElementById('continue');
+
+            if (!finalResultsContainer || !scoreContainer) return; // Check if elements exist
+            finalResultsContainer.style.display = 'block'; // Show final results container
+            scoreContainer.innerHTML = `You answered ${score} of ${quizData.length} questions correctly.`;
+
+            if (reviewButton) reviewButton.addEventListener('click', reviewAllAnswers);
+            if (continueButton) continueButton.addEventListener('click', continueWatching);
+        }
+
+        // Function to review all answers
+        function reviewAllAnswers() {
+            const finalResultsContainer = document.getElementById('final-results');
+            const reviewContainer = document.getElementById('review-answers');
+            const reviewAnswersContainer = document.getElementById('review-container');
+            const backToResultsButton = document.getElementById('back-to-results');
+
+            if (!finalResultsContainer || !reviewContainer || !reviewAnswersContainer) return; // Check if elements exist
+            finalResultsContainer.style.display = 'none';
+            reviewContainer.style.display = 'block';
+
+            const reviewContent = quizData.map((question, index) => {
+                const answers = question.options.map((option, optionIndex) => {
+                    const isCorrect = option.correct;
+                    const isSelected = optionIndex == userAnswers[index];
+                    return `<div class="review-answer ${isCorrect ? 'correct' : isSelected ? 'incorrect' : ''}">
+                                <div class="icon">${isCorrect ? '&#10004;' : isSelected ? '&#10006;' : ''}</div>
+                                <div>${option.text}</div>
+                                <div class="explanation">${option.explanation}</div>
+                            </div>`;
+                }).join('');
+
+                return `<div class="review-question">
+                            <div class="question-header">Question ${index + 1} of ${quizData.length}</div>
+                            <div class="question">${question.QuestionTitle}</div>
+                            <div class="answers">${answers}</div>
+                        </div>`;
+            }).join('');
+
+            reviewAnswersContainer.innerHTML = reviewContent;
+            if (backToResultsButton) backToResultsButton.addEventListener('click', backToResults);
+        }
+
+        // Function to go back to results
+        function backToResults() {
+            const reviewContainer = document.getElementById('review-answers');
+            const finalResultsContainer = document.getElementById('final-results');
+
+            if (reviewContainer) reviewContainer.style.display = 'none';
+            if (finalResultsContainer) finalResultsContainer.style.display = 'block';
+        }
+
+        // Placeholder function for continue watching
+        function continueWatching() {
+            alert("Continue watching clicked");
+        }
+
+        // Add event listeners for submit and next buttons
+        document.addEventListener('DOMContentLoaded', function () {
+            const submitButton = document.getElementById('submit');
+            const nextButton = document.getElementById('next');
+
+            if (submitButton) submitButton.addEventListener('click', showResults);
+            if (nextButton) nextButton.addEventListener('click', nextQuestion);
+        });
     </script>
 </body>
 </html>

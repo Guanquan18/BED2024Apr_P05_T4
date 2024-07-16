@@ -174,7 +174,23 @@ class Courses {
       connection.close();
     
       return this.getCourseWithSectionById(CourseId);
-    }    
+    }
+     // Static method to update course icon  Created By: Sairam (S10259930H)
+     static async updateCourseIcon(CourseId, newIconData) {
+        const connection = await sql.connect(dbConfig);
+    
+        const sqlQuery = `UPDATE Course SET Thumbnail = @icon WHERE CourseId = @id`; // Parameterized query
+    
+        const request = connection.request();
+        request.input("id", CourseId)
+        request.input("icon",newIconData.Thumbnail);
+    
+        await request.query(sqlQuery);
+    
+        connection.close();
+    
+        return this.getCourseWithSectionById(CourseId); // returning the updated course data
+      }    
 }
 
 module.exports = Courses;

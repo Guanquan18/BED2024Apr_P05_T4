@@ -26,49 +26,39 @@ Keshwindren Gandipanh (S10259469C)
 */
 
 
-// Function for edit Section Pop-up (creator.html) Created by: Sairam
-function editSection(CourseId, sectionNo) {
-  // Show the edit popup
-  showPopup('SectionDetails-Popup');
-  // Log the section number
-  console.log(`Editing Course: ${CourseId} Editing Section: ${sectionNo}`);
-  fetchSectionDetails(CourseId, sectionNo)
-}
-
-
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
 function ViewActive(containerId) {
-  // Select all elements whose ID starts with 'view-btn' within the specified container
-  const viewButtons = document.querySelectorAll(`.educator-course-view-button`);
-
-  // Add click event listener to each view button
-  viewButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const courseId = button.id.split('-')[2];
-
-          if (containerId === 'educator-course-main-container') {
-             // Activate course view
-              const coursebtn = document.getElementById('courses-btn');
+    // Select all elements whose ID starts with 'view-btn' within the specified container
+    const viewButtons = document.querySelectorAll(`.educator-course-view-button`);
+  
+    // Add click event listener to each view button
+    viewButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const courseId = button.id.split('-')[2];
+  
+            if (containerId === 'educator-course-main-container') {
+               // Activate course view
+                const coursebtn = document.getElementById('courses-btn');
+                coursebtn.classList.add('active');
+                document.getElementById('educator-courses-container').style.display = 'none';
+                document.getElementById('educator-specific-course-container').style.display = 'block';
+                fetchCourseandSectionDetails(courseId);
+            } else if (containerId === 'educator-community-main-container') {
+              // Activate community view
+              const coursebtn = document.getElementById('community-btn');
               coursebtn.classList.add('active');
-              document.getElementById('educator-courses-container').style.display = 'none';
-              document.getElementById('educator-specific-course-container').style.display = 'block';
-              fetchCourseandSectionDetails(courseId);
-          } else if (containerId === 'educator-community-main-container') {
-            // Activate community view
-            const coursebtn = document.getElementById('community-btn');
-            coursebtn.classList.add('active');
-            document.getElementById('educator-community-container').style.display = 'none';
-            document.getElementById('educator-specific-community-container').style.display = 'block';
-            // Add getcommunitybycourseid section
-          }
-      });
-  });
-}
-
+              document.getElementById('educator-community-container').style.display = 'none';
+              document.getElementById('educator-specific-community-container').style.display = 'block';
+              // Add getcommunitybycourseid section
+            }
+        });
+    });
+  }
+  
 // Function to fetch courses created by a specific creator and display them. Created by: Sairam
 async function fetchCoursesByCreator(containerId) {
-  const courseList = document.getElementById(containerId);
-  if (courseList) {
+const courseList = document.getElementById(containerId);
+if (courseList) {
     // Proceed with fetching courses only if the container exists
     let account = JSON.parse(sessionStorage.getItem("user")); // Retrieve the creator ID from the session storage
     let creatorId = account.AccId;
@@ -78,93 +68,93 @@ async function fetchCoursesByCreator(containerId) {
     console.log(data);
     console.log(`Data fetched for container ${containerId}:`, data);
     if (data.length === 0) {
-      alert("No Courses created");
+    alert("No Courses created");
     }
-     // Clear the container
+    // Clear the container
     courseList.innerHTML = ''; 
     
     const row = document.createElement('div');
     row.classList.add('row');
     // Iterate over each course in the data
     data.forEach((course) => {
-      // Create a new div element for each column
-      const col = document.createElement('div');
-      col.classList.add('col-md-4');
+    // Create a new div element for each column
+    const col = document.createElement('div');
+    col.classList.add('col-md-4');
 
-      // Create a new div element for the card
-      const card = document.createElement('div');
-      card.classList.add('educator-course-card');
+    // Create a new div element for the card
+    const card = document.createElement('div');
+    card.classList.add('educator-course-card');
 
-      // Create an img element for the course thumbnail
-      const img = document.createElement('img');
-      img.src = course.Thumbnail;
-      img.classList.add('educator-course-card-img-top');
-      img.alt = 'Course Image';
-      
-      // Create a div element for the card body
-      const cardBody = document.createElement('div');
-      cardBody.classList.add('educator-course-card-body');
-      
-      // Create a span element for the course label
-      const label = document.createElement('span');
-      label.classList.add('educator-course-label');
-      label.textContent = course.Label;
-      
-      // Create an h2 element for the course title
-      const title = document.createElement('h2');
-      title.classList.add('educator-course-card-title');
-      title.textContent = course.CourseTitle;
+    // Create an img element for the course thumbnail
+    const img = document.createElement('img');
+    img.src = course.Thumbnail;
+    img.classList.add('educator-course-card-img-top');
+    img.alt = 'Course Image';
     
-      // Create a p element for the course small description
-      const description = document.createElement('p');
-      description.classList.add('educator-course-card-description');
-      description.textContent = course.SmallDescription;
-      
-       // Create a div element for the card footer
-      const cardFooter = document.createElement('div');
-      cardFooter.classList.add('educator-course-card-footer');
-      
-      // Create a p element for the course rating
-      const rating = document.createElement('p');
-      rating.innerHTML = `Rating: <span class="rating">${course.Ratings}</span>`;
+    // Create a div element for the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('educator-course-card-body');
     
-      // Create a button element for the view button
-      const viewButton = document.createElement('button');
-      viewButton.classList.add(`educator-course-view-button`);
-      viewButton.classList.add(`educator-course-view-button-${containerId}`);
-      viewButton.id = `view-btn-${course.CourseId}`;
-      viewButton.textContent = 'View';
+    // Create a span element for the course label
+    const label = document.createElement('span');
+    label.classList.add('educator-course-label');
+    label.textContent = course.Label;
     
-       // Append label, title, and description to the card body
-      cardBody.appendChild(label);
-      cardBody.appendChild(title);
-      cardBody.appendChild(description);
-      
-       // Append rating and view button to the card footer
-      cardFooter.appendChild(rating);
-      cardFooter.appendChild(viewButton);
-      
-      // Append img, card body, and card footer to the card
-      card.appendChild(img);
-      card.appendChild(cardBody);
-      card.appendChild(cardFooter);
-      
-      // Append the card to the column
-      col.appendChild(card);
-      // Append the column to the row
-      row.appendChild(col);
+    // Create an h2 element for the course title
+    const title = document.createElement('h2');
+    title.classList.add('educator-course-card-title');
+    title.textContent = course.CourseTitle;
+    
+    // Create a p element for the course small description
+    const description = document.createElement('p');
+    description.classList.add('educator-course-card-description');
+    description.textContent = course.SmallDescription;
+    
+        // Create a div element for the card footer
+    const cardFooter = document.createElement('div');
+    cardFooter.classList.add('educator-course-card-footer');
+    
+    // Create a p element for the course rating
+    const rating = document.createElement('p');
+    rating.innerHTML = `Rating: <span class="rating">${course.Ratings}</span>`;
+    
+    // Create a button element for the view button
+    const viewButton = document.createElement('button');
+    viewButton.classList.add(`educator-course-view-button`);
+    viewButton.classList.add(`educator-course-view-button-${containerId}`);
+    viewButton.id = `view-btn-${course.CourseId}`;
+    viewButton.textContent = 'View';
+    
+        // Append label, title, and description to the card body
+    cardBody.appendChild(label);
+    cardBody.appendChild(title);
+    cardBody.appendChild(description);
+    
+        // Append rating and view button to the card footer
+    cardFooter.appendChild(rating);
+    cardFooter.appendChild(viewButton);
+    
+    // Append img, card body, and card footer to the card
+    card.appendChild(img);
+    card.appendChild(cardBody);
+    card.appendChild(cardFooter);
+    
+    // Append the card to the column
+    col.appendChild(card);
+    // Append the column to the row
+    row.appendChild(col);
     });
     // Append the row to the container
     courseList.appendChild(row);
     // Initialize the view button event handlers
     ViewActive(containerId);
-  }
+}
 }
 
 // Function to fetch detailed information about a specific course and section. Created by: Sairam
 let originalCourseDetails = {};
 async function fetchCourseandSectionDetails(CourseId) {
-  try {
+try {
     const response = await fetch(`http://localhost:3000/courses-with-sections-id/${CourseId}`);
     console.log("CourseId:", CourseId);
     console.log("Constructed URL:", response); // Log the constructed URL for debugging
@@ -172,8 +162,8 @@ async function fetchCourseandSectionDetails(CourseId) {
     console.log("Data:", data);
 
     if (data.length === 0) {
-      alert("No Courses found");
-      return;
+    alert("No Courses found");
+    return;
     }
     
     // Store original course details for comparison later
@@ -183,7 +173,7 @@ async function fetchCourseandSectionDetails(CourseId) {
     Description: data[0].Description,
     Label: data[0].Label,
     Badge: data[0].Badge
-  };
+};
 
     // Update UI with fetched data
     const courseContainer = document.getElementById('educator-specific-course-container');
@@ -216,61 +206,63 @@ async function fetchCourseandSectionDetails(CourseId) {
     sectionDetailsContainer.innerHTML = ''; // Clear existing content
 
     data[0].Sections.forEach((section, index) => {
-      const sectionItem = document.createElement('div');
-      sectionItem.classList.add('section-item', 'tag', 'word-link');
-      sectionItem.id = `section-item-${section.SectionNo}-${CourseId}`;
+    const sectionItem = document.createElement('div');
+    sectionItem.classList.add('section-item', 'tag', 'word-link');
+    sectionItem.id = `section-item-${section.SectionNo}-${CourseId}`;
 
-      sectionItem.innerHTML = `
-          <h3>Section ${index + 1}: <span>${section.SectionTitle}</span></h3>
-          <p id="edit-section-${section.SectionNo}-${CourseId}" onclick="editSection(${CourseId}, ${section.SectionNo})">Edit</p>
-      `;
+    sectionItem.innerHTML = `
+        <h3>
+            Section ${index + 1}: <span>${section.SectionTitle}</span> <br> 
+        </h3>
+        <p id="edit-section-${section.SectionNo}-${CourseId} class = "edit-section-button" onclick="editSection(${CourseId}, ${section.SectionNo})">Edit</p>
+    `;
 
-      sectionDetailsContainer.appendChild(sectionItem);
-  });
+    sectionDetailsContainer.appendChild(sectionItem);
+});
     
-  } catch (error) {
+} catch (error) {
     console.error('Error fetching course details:', error);
     alert('Failed to fetch course details. Please try again later.');
-  }
+}
 }
 
 // Function to update course details with the data from the form. Created by: Sairam
 async function UpdateCourse() {
-  const pop_up_edit_container = document.querySelector('.popup-content');
-  const courseId = pop_up_edit_container.id.split('-')[2];
+const pop_up_edit_container = document.querySelector('.popup-content');
+const courseId = pop_up_edit_container.id.split('-')[2];
 
-  const updatedCourse = {
+const updatedCourse = {
     CourseTitle: document.getElementById('edit-Course-Title').value,
     SmallDescription: document.getElementById('edit-Course-SmallDescription').value,
     Description: document.getElementById('edit-Course-Description').value,
     Label: document.getElementById('edit-Course-Label').value,
     Badge: document.getElementById('edit-Course-Badge').value
-  };
-  // Check if the form inputs are updated. 
-  const isChanged = JSON.stringify(updatedCourse) !== JSON.stringify(originalCourseDetails);
+};
+// Check if the form inputs are updated. 
+const isChanged = JSON.stringify(updatedCourse) !== JSON.stringify(originalCourseDetails);
 
-  if (!isChanged) {
+if (!isChanged) {
     alert('Please update something before submitting.');
     return;
-  }
+}
 
-  try {
+try {
     const response = await fetch(`http://localhost:3000/courses-id/${courseId}`, {
-      method: 'PUT',
-      headers: {
+    method: 'PUT',
+    headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedCourse)
+    },
+    body: JSON.stringify(updatedCourse)
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (errorData.message && errorData.errors && errorData.errors.length > 0) {
+    const errorData = await response.json();
+    if (errorData.message && errorData.errors && errorData.errors.length > 0) {
         const validationErrors = errorData.errors.map(error => `- ${error}`).join('\n');
         throw new Error(`Validation Errors:\n${validationErrors}`);
-      } else {
+    } else {
         throw new Error('Failed to update course'); // Fallback message if no specific message from server
-      }
+    }
     }
 
     const data = await response.json();
@@ -278,24 +270,82 @@ async function UpdateCourse() {
     alert("Course details updated successfully!");
     hidePopup('edit-course-details-Popup');
     fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
-  } catch (error) {
+} catch (error) {
     console.error('Error updating course:', error);
     alert(`${error.message}`);
-  }
 }
+}
+
+// Function for edit Section Pop-up (creator.html) Created by: Sairam
+async function editSection(CourseId, sectionNo) {
+// Show the edit popup
+showPopup('sectionDetails-Popup');
+// Log the section number
+console.log(`Editing Course: ${CourseId} Editing Section: ${sectionNo}`);
+fetchSectionDetails(CourseId, sectionNo)
+}
+
 
 
 // Function to fetch sections by a specific course and sectionNo. Created by: Sairam
 async function fetchSectionDetails(courseId, SectionNo) {
-  const response = await fetch(`http://localhost:3000/sectionDetails-id/${courseId}/${SectionNo}`);
-  const data = await response.json();
-  console.log(data);
-  if (data.length === 0) {
+const response = await fetch(`http://localhost:3000/sectionDetails-id/${courseId}/${SectionNo}`);
+const data = await response.json();
+console.log(data);
+if (data.length === 0) {
     alert("No Courses created");
-  }
-  const sectionDetailsPopUp = document.getElementById('SectionDetails-Popup');
-  sectionDetailsPopUp.querySelector('.popup-content h2').innerText = data.SectionTitle;
 }
+const sectionDetailsPopUp = document.getElementById('sectionDetails-Popup');
+sectionDetailsPopUp.querySelector('.popup-content h2').innerText = data.SectionTitle;
+const videoSourceElement = sectionDetailsPopUp.querySelector('#video-source');
+videoSourceElement.src = data.Video; // Assuming data.Video is the path to your video file
+// Reload the video to apply the new source
+const videoElement = sectionDetailsPopUp.querySelector('#video-item');
+videoElement.load(); // Reload the video element to apply the new source
+//pre fill section title 
+document.getElementById('section-title').value = data.SectionTitle;
+}
+
+// Function to update course icon by a courseId. Created by: Sairam 
+async function UpdateCourseIcon() {
+const pop_up_edit_container = document.querySelector('.popup-content');
+const courseId = pop_up_edit_container.id.split('-')[2];
+const fileInput = document.getElementById('course-icon');
+
+// Ensure a file is selected
+if (fileInput.files.length === 0) {
+    alert('Please select a file to upload.');
+    return;
+}
+
+// Create FormData object and append the selected file
+const formData = new FormData();
+formData.append('Thumbnail', fileInput.files[0]);
+
+try {
+    // Send PUT request to update course icon
+    const response = await fetch(`http://localhost:3000/courses-icon/${courseId}`, {
+        method: 'PUT',
+        body: formData,
+    });
+
+    // Check if response is ok
+    if (!response.ok) {
+        const responseBody = await response.text();
+        throw new Error('Failed to update course icon. Server responded with: ' + responseBody);
+    }
+
+    // If successful, show success message and update UI
+    alert("Course icon updated successfully!");
+    hidePopup('edit-course-icon-Popup');
+    fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
+} catch (error) {
+    // Log and show error message if request fails
+    console.error('Error updating course icon:', error);
+    alert(`Error updating course icon: ${error.message}`);
+}
+}
+
 
 
 // Functions created by: Pey Zhi Xun

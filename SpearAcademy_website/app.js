@@ -5,6 +5,7 @@ Sairam (S10255930H)
 - app.get("/courses-with-sections-id/:CourseId", CoursesController.getCourseWithSectionById);
 - app.put("/courses-id/:CourseId",CoursesController.updateCourse); 
 - app.get("/sectionDetails-id/:id/:SectionNo", SectionDetailsController.getSectionDetailsById);
+- app.put("/courses-icon/:CourseId", imageupload.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
 - const CoursesController = require("./controllers/CoursesController");
 - const SectionDetailsController = require("./controllers/SectionDetailsController");
 
@@ -43,14 +44,30 @@ const sql = require("mssql"); // Import the mssql module
 const dbConfig = require("./dbConfig"); // Import the database configuration
 const bodyParser = require("body-parser"); // Import body-parser for parsing request bodies
 const staticMiddleware = express.static("public"); // Middleware to serve static files from the public folder
+const multer = require("multer"); // Import multer for handling file uploads
+const path = require('path'); // Import path module for working with file and directory paths
+
+// Multer configuration for iamge upload 
+const imagestorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/Images/courses'); // Destination folder for uploaded files Created by Saira
+  },
+  filename: function (req, file, cb) {
+    // Ensure unique filenames to avoid overwriting
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+const imageupload = multer({ storage: imagestorage }); // Initialize multer with storage configuration Created by Saira
+
+
 
 
 const validateCourse = require("./middlewares/validateCourse");  // Import the validateCourse middleware. Created by Sairam
 const validateAccount = require("./middlewares/validateAccount");  // Import the validateAccount middleware. Created by Chang Guan Quan
 const validateEducator = require("./middlewares/validateEducator"); // Import the accountController. Created by Chang Guan Quan
 
-const CoursesController = require("./controllers/courseController"); // Import the CoursesController. Created by Sairam
-const SectionDetailsController = require("./controllers/sectiondetailsController"); // Import the SectionDetailsController. Created by Sairam
+const coursesController = require("./controllers/courseController"); // Import the CoursesController. Created by Sairam
+const sectionDetailsController = require("./controllers/sectiondetailsController"); // Import the SectionDetailsController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
 
@@ -103,12 +120,13 @@ app.get('/manage-quizzes', (req, res) => {
 
 
 // Routes for handling course-related requests (Created by: Sairam)
-app.get("/courses-creator/:creator", CoursesController.getCourseByCreator); // Get courses by creator
-app.get("/courses-with-sections-id/:CourseId", CoursesController.getCourseWithSectionById); // Get course and section by ID
-app.put("/courses-id/:CourseId",validateCourse, CoursesController.updateCourse); // Update course by ID
+app.get("/courses-creator/:creator", coursesController.getCourseByCreator); // Get courses by creator
+app.get("/courses-with-sections-id/:CourseId", coursesController.getCourseWithSectionById); // Get course and section by ID
+app.put("/courses-id/:CourseId",validateCourse, coursesController.updateCourse); // Update course by ID
+app.put("/courses-icon/:CourseId", imageupload.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
 
 // Routes for handling sections-related requests (Created by: Sairam)
-app.get("/sectionDetails-id/:id/:SectionNo", SectionDetailsController.getSectionDetailsById);
+app.get("/sectionDetails-id/:id/:SectionNo", sectionDetailsController.getSectionDetailsById);
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
 app.get("/accounts", accountController.getAllAccounts);

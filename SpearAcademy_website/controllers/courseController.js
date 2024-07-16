@@ -1,6 +1,5 @@
 // Entirely Created By: Sairam (S10259930H)
 const Course = require("../models/course"); // Import the Course model
-
 // Controller function to get courses by creator.  Created By: Sairam (S10259930H)
 const getCourseByCreator = async (req, res) => {
   const creator = parseInt(req.params.creator); // Parse creator ID from request parameters
@@ -48,8 +47,32 @@ const updateCourse = async (req, res) => {
     res.status(500).send("Error updating Course"); // Send 500 status code for server error
   }
 };
+
+
+const updateCourseIcon = async (req, res) => {
+  const CourseId = parseInt(req.params.CourseId); // Parse course ID from request parameters
+
+  try {
+    const newCourseIcon = {
+      Thumbnail: '../Images/courses/' + req.file.filename // Assuming you have handled file upload elsewhere
+    };
+
+    const updatedIcon = await Course.updateCourseIcon(CourseId, newCourseIcon);
+
+    if (!updatedIcon) {
+      return res.status(404).send('Course not found');
+    }
+    
+    res.json(updatedIcon); // Send success response
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating course');
+  }
+};
+
 module.exports = {
   getCourseByCreator,
   getCourseWithSectionById,
   updateCourse,
+  updateCourseIcon
 };

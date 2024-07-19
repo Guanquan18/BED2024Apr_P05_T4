@@ -1,4 +1,5 @@
- -- create database SpearAcademy_db
+-- drop database SpearAcademy_db
+-- create database SpearAcademy_db
 
 -- 1. Table (Account)
 create table Account
@@ -123,33 +124,34 @@ create table Review
 	constraint FK_Review_Account foreign key (Review_Account)
 		references Account (AccId)
 )
+-- 12. Table (QnA)
+create table QnA
+(
+	QnAId					smallint Identity(1,1)		not null,
+	QnATitle				text						not null,
+	PostDate				datetime					not null default(getdate()),
+	QnA_Course				smallint					not null unique,
+	constraint PK_QnA primary key (QnAId),
+	constraint FK_QnA_Course foreign key (QnA_Course)
+		references Course (CourseId),
+)
 
--- 12. Table (Message)
+-- 13. Table (Message)
 create table Message
 (
 	MsgId					smallint Identity(1,1)		not null,
 	MsgDate					datetime					not null default(getdate()),
 	MsgText					text						not null,
 	Message_Account			smallint					not null,
+	Message_QnA				smallint					not null,
 	constraint PK_Message primary key (MsgId),
 	constraint FK_Message_Account foreign key (Message_Account)
-		references Account (AccId)
+		references Account (AccId),
+	constraint FK_Message_QnA foreign key (Message_QnA)
+		references QnA (QnAId)
 )
 
--- 13. Table (QnA)
-create table QnA
-(
-	QnAId					smallint Identity(1,1)		not null,
-	QnATitle				text						not null,
-	PostDate				datetime					not null default(getdate()),
-	QnA_Msg					smallint					not null,
-	QnA_Course				smallint					not null,
-	constraint PK_QnA primary key (QnAId),
-	constraint FK_QnA_Msg foreign key (QnA_Msg)
-		references Message (MsgId),
-	constraint FK_QnA_Course foreign key (QnA_Course)
-		references Course (CourseId),
-)
+
 
 
 insert into Account(FullName,DOB,Email,ContactNo,Password,role,Photo,LinkedIn) 
@@ -326,18 +328,25 @@ VALUES
 ('This is an excellent course for beginners. The content is well-structured and easy to understand.', 4.5, 1, 2),
 ('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4);
 
---Insert into Message table
-INSERT INTO Message (MsgText, Message_Account)
-VALUES 
-('What does npm mean?', 2),
-('I am having trouble implementing the user mapping information, need help.', 4),
-('How much time should I allocate to master this topic if I am a fast learner who had certification in data structures?', 6),
-('How many different fields are there in AI?', 8);
 
 --Insert into QnA table
-INSERT INTO QnA (QnATitle, QnA_Msg, QnA_Course)
+INSERT INTO QnA (QnATitle, QnA_Course)
 VALUES 
-('Discussion on AI Basics', 1, 1),
-('Question on Database', 2, 1),
-('Allocation of time', 3, 1),
-('Number of fields', 4,1);
+('Discussion on Generalized AI', 1),
+('Discussion Machine Learning', 2);
+
+
+-- Insert multiple messages in one statement
+INSERT INTO Message (MsgText, Message_Account, Message_QnA)
+VALUES 
+-- Messages related to QnAId 1 ('Discussion on Generalized AI')
+('Can you explain the basic concepts of Generalized AI?', 2, 1),
+('What are the practical applications of Generalized AI?', 4, 1),
+
+-- Messages related to QnAId 2 ('Discussion Machine Learning')
+('What are the best practices for machine learning model evaluation?', 6, 2),
+('Can you recommend some advanced machine learning algorithms?', 8, 2);
+
+
+
+

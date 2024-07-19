@@ -1,3 +1,4 @@
+<!--Entirely Created By: Sairam (S10259930H)--> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,29 +15,35 @@
     <script src="https://kit.fontawesome.com/543bcc20b3.js" crossorigin="anonymous"></script>
     <!--internal CSS-->
     <style>
+         /* General container styling */
         .sub-container{
             padding: 10px;
             background-color: #FAF8FF;
             border: 2px solid black;
             border-radius: 10px;
         }
+         /* Row styling */
         .first-row{
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+         /* Left container in the first row */
         .first-left-container{
             height: 280px;
         }
+          /* Right container and second row styling */
         .second-row, .first-right-container{
             height: auto;
         }
+         /* Course icon styling */
         .course-icon{
             width: 100%;
             height: 180px;
             border: 1px solid black;
         }
+        /* Course content and section item styling */
         .course-content,.section-item {
             display: flex;
             justify-content: space-between; 
@@ -44,6 +51,7 @@
             width:  100%;
             margin-bottom: 20px;
         }
+         /* Tag styling */
         .tag {
             width: 100%;
             margin-bottom: 20px;
@@ -62,14 +70,14 @@
             margin: 0;
             font-weight: 450;
         }
-
+         /* Course header styling */
         .course-header h2 {
             font-size: 1.5em;
             color: #333;
             border-bottom: 1px solid black;
             margin: 0;
         }
-
+        /* Link styling with hover effect */
         .word-link p{
             font-size: 1em;
             color: #6F74FB;
@@ -80,6 +88,7 @@
         .word-link p:hover {
             border-bottom: 2px solid #6F74FB;
         }
+        /* Popup overlay styling */
         .popup-overlay {
             display: none;
             position: fixed;
@@ -90,7 +99,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.4);
         }
-
+        /* Popup content styling */
         .popup-content {
             background-color: #FAF8FF;
             padding: 20px;
@@ -102,7 +111,7 @@
             margin: auto; /* Horizontally center the content */
             height: fit-content; /* Adjust as needed */
         }
-
+         /* Close button styling */
         .close-btn {    
             color: #aaa;
             position: absolute;
@@ -117,7 +126,7 @@
             color: black;
         }
 
-        /* Form for Course Update  Created by: Sairam (S10259930H) */
+        /* Form for Course Update  */
         .form-label {
             font-weight: bold;
         }
@@ -131,11 +140,12 @@
             box-sizing: border-box;
             font-size: 14px;
         }
+        /* Button container styling */
         .button-container {
             display: flex;
             justify-content: space-between;
         }
-
+        /* Primary button styling with hover effect */
         .btn-primary {
             background-color: #007bff;
             color: #fff;
@@ -149,7 +159,7 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
-
+         /* Delete button styling with hover effect */
         .delete-button, .confirm-delete-button {
             background-color: #dc3545;
             color: #fff;
@@ -163,13 +173,13 @@
         .delete-button, .confirm-delete-button :hover {
             background-color: #c82333;
         }
-
+        /* Section details container styling */
         #section-details-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
+        /* Add icon styling */
         .add-icon {
             font-size: 1.5em; 
             color: white;
@@ -181,18 +191,17 @@
             align-items: center;
             justify-content: center;
         }
+        /* Popup video styling */
         #sectionDetails-Popup video {
             max-width: 100%;
             max-height: 400px;
         }
-
+         /* Lottie player styling */
         dotlottie-player {
             margin-top: 20px;
             max-width: 100%;
             height: 200px;
         }
-        
-
     </style>
 </head>
 <body>
@@ -204,7 +213,7 @@
         <a id="quiz-btn" href="manage-quizzes.html">Quiz</a>
         <a id="profile-btn" href="profile.html" >Profile</a>
     </div>
-     <!-- Courses Container -->
+     <!-- Container for displaying courses -->
     <div id="educator-courses-container" class="content-container">
         <div class="top-content">
             <h1>Courses</h1>
@@ -213,14 +222,14 @@
         <div class="main-container" id="educator-course-main-container"></div>
     </div>
 
-     <!-- Specific Course Container -->
+     <!-- Container for displaying specific course details -->
     <div id="educator-specific-course-container" class="content-container"  style="display: none">
         <div class="top-content">
             <h1>Generalized AI for Beginners</h1>
         </div>
         <div class="main-container">
             <div class="row">
-                <!-- Left Column -->
+                <!-- Left column for course icon -->
                 <div class="col-md-4 sub-container first-row first-left-container">
                     <div class="course-header course-content word-link">
                         <h2>Course Icon</h2>
@@ -228,9 +237,9 @@
                     </div>
                     <img src="" class="course-icon" alt="Course Image">
                 </div>
-                <!-- Spacer Column -->
+                <!-- Spacer column for spacing between left and right columns -->
                 <div class="col-md-1"></div>
-                <!-- Right Column -->
+               <!-- Right column for course details -->
                 <div class="col-md-7 sub-container first-row first-right-container">
                     <div class="course-header course-content word-link">
                         <h2>Course Details</h2>
@@ -257,7 +266,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Full-width Section Details -->
+             <!-- Column for section details -->
             <div class="row">
                 <div class="col-md-12 sub-container second-row">
                     <div class="course-header course-content">
@@ -265,11 +274,11 @@
                         <i class="fas fa-plus add-icon" onclick="showPopup('newSection-Pop-Up')"></i>
                     </div>
                     <div id="section-details-container"></div>
+                    <!-- Placeholder for dynamically added section items -->
                 </div>
             </div>
             <!-- Delete course button -->
             <button type="button" class="delete-button mt-3 mb-3" onclick="showPopup('course-confirmation-pop-up')">Delete Course</button>
-
         </div>
     </div>
 
@@ -278,29 +287,35 @@
         <div class="popup-content">
             <span class="close-btn" onclick="hidePopup('newCoursePopup')">&times;</span>
             <h2>Create New Course</h2>
-            <!-- Course Form -->
+            <!-- New Course Form -->
             <form id="new-course-form" enctype="multipart/form-data">
                 <div class="mb-3">
+                      <!-- New Course Title -->
                     <label for="new-course-title" class="form-label">Course Title</label>
                     <input type="text" class="form-control" id="new-course-title" name="CourseTitle" placeholder="Enter course title" required>
                 </div>
                 <div class="mb-3">
+                      <!-- New Course Brief Description -->
                     <label for="new-small-description" class="form-label">Small Description</label>
                     <textarea class="form-control" id="new-small-description" name="SmallDescription" rows="3" placeholder="Enter small description" required></textarea>
                 </div>
                 <div class="mb-3">
+                      <!-- New Course Description -->
                     <label for="new-description" class="form-label">Description</label>
                     <textarea class="form-control" id="new-description" name="Description" rows="5" placeholder="Enter description" required></textarea>
                 </div>
                 <div class="mb-3">
+                      <!-- New Course Label -->
                     <label for="new-label" class="form-label">Label</label>
                     <input type="text" class="form-control" id="new-label" name="Label" placeholder="Enter label">
                 </div>
                 <div class="mb-3">
+                      <!-- New Course Badge -->
                     <label for="new-badge" class="form-label">Badge</label>
                     <input type="text" class="form-control" id="new-badge" name="Badge" placeholder="Enter badge">
                 </div>
                 <div class="mb-3">
+                      <!-- New Course Thumbnail -->
                     <label for="new-course-thumbnail">Choose a Thumbnail:</label>
                     <input type="file" id="new-course-thumbnail" name="Thumbnail" accept="image/*" class="form-control" required>
                 </div>
@@ -309,14 +324,20 @@
         </div>
     </div>
 
-     <!-- Edit Course IcoN Popup -->
-     <div id="edit-course-icon-Popup" class="popup-overlay">
+     <!-- Popup for editing course icon -->
+    <div id="edit-course-icon-Popup" class="popup-overlay">
         <div class="popup-content">
+              <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('edit-course-icon-Popup')">&times;</span>
+             <!-- Header for the popup -->
             <h3>Course Icon</h3>
+             <!-- Form for uploading a new course icon -->
             <form id="edit-course-icon-form" enctype="multipart/form-data">
+                 <!-- Label for file input -->
                 <label for="course-icon">Choose a image:</label>
+                <!-- File input field with restrictions to accept only images -->
                 <input type="file" id="course-icon" name="thumbnail" accept="image/*" class="form-control"><br><br>
+                 <!-- Button to save changes, triggering the UpdateCourseIcon function -->
                 <button type="button" class="btn btn-primary" onclick="UpdateCourseIcon()">Save changes</button>
             </form>
         </div>
@@ -325,25 +346,31 @@
      <!-- Edit Course Details Popup -->
     <div id="edit-course-details-Popup" class="popup-overlay">
         <div class="popup-content">
+              <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('edit-course-details-Popup')">&times;</span>
+            <!-- Header for the popup -->
             <h3>Edit Course Content</h3>
+             <!-- Form for editing course details -->
             <form class="edit-course-details-form">
+                  <!-- Form group for course details inputs -->
                 <div class="mb-3">
+                    <!-- Course title input -->
                     <label for="edit-Course-Title" class="form-label">Course Title</label>
                     <input type="text" class="form-control" id="edit-Course-Title" placeholder="Edit content here">
-
+                     <!-- Course brief description input -->
                     <label for="edit-Course-SmallDescription" class="form-label">Course Brief Description </label>
                     <input type="text" class="form-control" id="edit-Course-SmallDescription" placeholder="Edit content here">
-
+                    <!-- Course description input -->
                     <label for="edit-Course-Description" class="form-label">Course Description</label>
                     <textarea class="form-control" id="edit-Course-Description" rows="5" placeholder="Edit content here"></textarea>
-
+                    <!-- Course label input -->
                     <label for="edit-Course-Label" class="form-label">Course Label</label>
                     <input type="text" class="form-control" id="edit-Course-Label" placeholder="Edit content here">
-
+                    <!-- Course badge input -->
                     <label for="edit-Course-Badge" class="form-label">Course Badge</label>
                     <input type="text" class="form-control" id="edit-Course-Badge" placeholder="Edit content here">
                 </div>
+                 <!-- Button to save changes, triggering the UpdateCourse function -->
                 <button type="button" class="btn btn-primary" onclick="UpdateCourse()">Save changes</button>
             </form>
         </div>
@@ -352,8 +379,11 @@
      <!-- View Course Description Popup -->
     <div id="view-course-Description-Popup" class="popup-overlay">
         <div class="popup-content">
+             <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('view-course-Description-Popup')">&times;</span>
+            <!-- Header for the popup -->
             <h3>Description</h3>
+             <!-- Placeholder for course description content -->
             <p></p>
         </div>
     </div>
@@ -361,16 +391,22 @@
     <!-- Create Section Description Popup -->
     <div id="newSection-Pop-Up" class="popup-overlay">
         <div class="popup-content">
+             <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('newSection-Pop-Up')">&times;</span>
+             <!-- Header for the popup -->
             <h2>Create New Section</h2>
              <!-- Section Form -->
             <form id="create-section-detail-form" enctype="multipart/form-data">
+                  <!-- Form group for section details inputs -->
                 <div class="mb-3">
+                    <!-- Section title input -->
                     <label for="new-section-title" class="form-label">Section Title</label>
                     <input type="text" class="form-control" id="new-section-title" placeholder="Enter section title">
                 </div>
+                <!-- Video file input for the section -->
                 <label for="new-section-detail-video">Choose a video:</label>
                 <input type="file" id="new-section-detail-video" name="video" accept="video/mp4" class="form-control"><br><br>
+                 <!-- Button to save changes, triggering the createSectionDetails function -->
                 <button type="button" class="btn btn-primary" onclick="createSectionDetails()">Save changes</button>
             </form>
         </div>
@@ -379,22 +415,32 @@
     <!-- View Section Description Popup -->
     <div id="sectionDetails-Popup" class="popup-overlay">
         <div class="popup-content">
+            <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('sectionDetails-Popup')">&times;</span>
+            <!-- Section title header -->
             <h2></h2>
+            <!-- Video header -->
             <h5>Video</h5>
+            <!-- Video player for the section video -->
             <video id="video-item" controls>
                 <source id="video-source" src="" type="video/mp4">
             </video>
+            <!-- Form for editing section details -->
             <form id="edit-section-detail-form" enctype="multipart/form-data">
+                <!-- Form group for section details inputs -->
                 <div class="mb-3">
+                    <!-- Section title input -->
                     <label for="section-title" class="form-label">Section Title</label>
                     <input type="text" class="form-control" id="section-title" placeholder="Enter section title">
                 </div>
+                <!-- Video file input for the section -->
                 <label for="section-detail-video">Choose a video:</label>
                 <input type="file" id="section-detail-video" name="video" accept="video/mp4" class="form-control"><br><br>
-                            <!-- Button Container -->
+                  <!-- Button container -->
                 <div class="button-container">
+                    <!-- Button to save changes, triggering the UpdateSectionDetails function -->
                     <button type="button" class="btn btn-primary" onclick="UpdateSectionDetails()">Save changes</button>
+                    <!-- Button to delete section, triggering a confirmation popup -->
                     <button type="button" class="delete-button" onclick="showPopup('section-confirmation-pop-up')">Delete Section</button>
                 </div>
             </form>
@@ -404,11 +450,15 @@
      <!-- Section deletion Confirmation Pop up -->
      <div id="section-confirmation-pop-up" class="popup-overlay">
         <div class="popup-content">
+             <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('section-confirmation-pop-up')">&times;</span>
+             <!-- Animation for confirmation -->
             <div>
                 <dotlottie-player src="https://lottie.host/114e5a0d-9a44-4d7c-b306-b770119f9058/tXT0IJhvqN.json" background="transparent" speed="1" loop autoplay></dotlottie-player>
             </div>
+             <!-- Confirmation message -->
             <h2>Are you sure you want to delete the section?</h2>
+            <!-- Button to confirm deletion, triggering the deleteSectionDetails function -->
             <button type="button" class="confirm-delete-button" onclick="deleteSectionDetails()">Confirm Delete Section</button>
         </div>
     </div>
@@ -416,11 +466,15 @@
      <!-- Course Confirmation Pop up -->
      <div id="course-confirmation-pop-up" class="popup-overlay">
         <div class="popup-content">
+             <!-- Close button for the popup -->
             <span class="close-btn" onclick="hidePopup('course-confirmation-pop-up')">&times;</span>
+             <!-- Animation for confirmation -->
             <div>
                 <dotlottie-player src="https://lottie.host/114e5a0d-9a44-4d7c-b306-b770119f9058/tXT0IJhvqN.json" background="transparent" speed="1" loop autoplay></dotlottie-player>
             </div>
+            <!-- Confirmation message -->
             <h2>Are you sure you want to delete the course?</h2>
+             <!-- Button to confirm deletion, triggering the deleteCourse function -->
             <button type="button" class="confirm-delete-button" onclick="deleteCourse()">Confirm Delete Course</button>
         </div>
     </div>
@@ -430,16 +484,16 @@
     <!-- Custom JavaScript -->
     <script src="../scripts/script.js"></script>
     <script>
-                // Function to show a popup (creator.html) Created by: Sairam
+        // Function to show a popup
         function showPopup(popupId) {
         document.getElementById(popupId).style.display = 'flex';
         }
 
-        // Function to hide a popup (creator.html) Created by: Sairam
+        // Function to hide a popup 
         function hidePopup(popupId) {
         document.getElementById(popupId).style.display = 'none';
         }
-        
+        // Function to fetch courses by creator
         fetchCoursesByCreator('educator-course-main-container');
     </script>
 </body>

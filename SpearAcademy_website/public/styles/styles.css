@@ -8,7 +8,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Styling for creator.html   Created by: Sairam (S10259930H)*/ 
+/* Styling for creator.html and student.html  Created by: Sairam (S10259930H)*/ 
 .educator-navigation-sidebar {
   width: 400px;
   height: 100vh;
@@ -168,7 +168,6 @@ body {
 }
 
 /* Style for login and signup page Created by: Guan Quan (S10257285A) */
-
 .login-signup{
   width: 100vw;
   height: 100vh;

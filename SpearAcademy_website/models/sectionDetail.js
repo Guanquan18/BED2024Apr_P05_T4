@@ -1,15 +1,18 @@
 // Entirely Created By: Sairam (S10259930H)
-const sql = require("mssql");
-const dbConfig = require("../dbConfig");
+
+const sql = require("mssql");// Import the mssql module
+const dbConfig = require("../dbConfig"); // Import the database configuration
 
 class Section {
+    // Constructor to initialize Section properties
     constructor(SectionNo, SectionTitle, Video) {
         this.SectionNo = SectionNo;
         this.SectionTitle = SectionTitle;
         this.Video = Video;
     }
-
-    // Getting Section by CourseId, SectionNo
+    
+    // Static method to fetch section details by CourseID and Section Details
+    // Created By: Sairam (S10259930H)
     static async getSectionDetailsById(CourseId,SectionNo) {
     const connection = await sql.connect(dbConfig); // Connect to the database
 
@@ -31,7 +34,8 @@ class Section {
         : null; // Handle section not found
     }
 
-    // Static method to update section details  Created By: Sairam (S10259930H)
+    // Static method to update section details  
+    // Created By: Sairam (S10259930H)
     static async updateSectionDetails(CourseId, sectionDetailNo, newSectionDetail) {
         const connection = await sql.connect(dbConfig); // Connect to the database
     
@@ -63,11 +67,13 @@ class Section {
         // Execute the query
         await request.query(sqlQuery);
     
-        connection.close();
+        connection.close(); // Close the connection
     
-        return this.getSectionDetailsById(CourseId, sectionDetailNo);
+        return this.getSectionDetailsById(CourseId, sectionDetailNo); // Return the updated section details
     }
-    // Static method to create  section details  Created By: Sairam (S10259930H)
+
+    // Static method to create section details  
+    // Created By: Sairam (S10259930H)
     static async createSection(courseId, newSectionData) {
         const connection = await sql.connect(dbConfig); // Connect to the database
 
@@ -89,18 +95,19 @@ class Section {
             const result = await request.query(sqlQuery);
             const sectionNo = result.recordset[0].SectionNo;
             
-            connection.close();
+            connection.close(); // Close the connection
             
-            // Assuming you have a method to fetch updated section details by courseId and sectionNo
-            return await this.getSectionDetailsById(courseId, sectionNo);
+            return await this.getSectionDetailsById(courseId, sectionNo);  // Return the newly created section details
         } catch (error) {
             console.error('Error creating section:', error);
             throw error;
         }
     }
-    // Static method to delete section details  Created By: Sairam (S10259930H)
+
+    // Static method to delete section details  
+    // Created By: Sairam (S10259930H)
     static async deleteSectionDetails(sectionNo) {
-        const connection = await sql.connect(dbConfig);
+        const connection = await sql.connect(dbConfig); // Connect to the database
     
         try {
             const sqlQuery = `
@@ -133,16 +140,16 @@ class Section {
                 WHERE sd.SectionNo = @SectionNo;
     
                 COMMIT TRANSACTION;
-            `;
+            `; 
     
             const request = connection.request();
-            request.input("SectionNo", sectionNo);
+            request.input("SectionNo", sectionNo); // Parameterize the sectionNo
     
             // Execute the query
             const result = await request.query(sqlQuery);
-            connection.close();
+            connection.close(); // Close the connection
             console.log(result.rowsAffected)
-            return result.rowsAffected.some(count => count > 0)
+            return result.rowsAffected.some(count => count > 0) // Return true if any rows were affected
         } catch (error) {
             console.error('Error deleting section details:', error);
             throw error;

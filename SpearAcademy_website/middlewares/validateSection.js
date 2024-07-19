@@ -1,16 +1,21 @@
+// Entirely Created By: Sairam (S10259930H)
+// Import Joi for schema validation
 const Joi = require("joi");
 
+// Middleware function to validate section data
 const validateSection = (req, res, next) => {
+    // Log request body and file for inspection and debugging
     console.log("Request body in validation:", req.body);
-    console.log("Request file in valiation:", req.file); // Log req.body and req.file to inspect their contents
+    console.log("Request file in valiation:", req.file); 
 
+    // Define the validation schema for section data using Joi
     const schema = Joi.object({
         SectionTitle: Joi.string().min(3).max(100).required().messages({
-            'string.empty': 'Section title is required',
-            'string.min': 'Section title should have a minimum length of {#limit}',
-            'string.max': 'Section title should not exceed {#limit} characters'
+            'string.empty': 'Section title is required', // Error message for empty section title
+            'string.min': 'Section title should have a minimum length of {#limit}', // Error message for section title below minimum length
+            'string.max': 'Section title should not exceed {#limit} characters' // Error message for section title exceeding maximum length
         }),
-        // Define other properties you expect in req.body here
+        
     });
 
     const validation = schema.validate(req.body, { abortEarly: false }); // Validate req.body as an object

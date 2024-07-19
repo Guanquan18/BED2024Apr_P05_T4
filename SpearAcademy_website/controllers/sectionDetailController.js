@@ -1,6 +1,10 @@
 // Entirely Created By: Sairam (S10259930H)
+
+// Import the Section model
 const Section = require("../models/sectionDetail");
-// getting sections by id
+
+// Controller function to get section details by ID
+// Created By: Sairam (S10259930H)
 const getSectionDetailsById = async (req, res) => {
   // Parse CourseId and SectionNo from request parameters
   const courseId = parseInt(req.params.id);
@@ -17,7 +21,8 @@ const getSectionDetailsById = async (req, res) => {
   }
 };
 
-// Update section details
+// Controller function to Update section details
+// Created By: Sairam (S10259930H)
 const updateSectionDetails = async (req, res) => {
 const CourseId = parseInt(req.params.id); // Parse course ID from request parameters
 const sectionNo = parseInt(req.params.SectionNo);
@@ -33,7 +38,7 @@ try {
     newSectionDetail.Video = '../videos/' + req.file.filename; // Update video if file is provided
   }
 
-  const updatedSection = await Section.updateSectionDetails(CourseId, sectionNo, newSectionDetail);
+  const updatedSection = await Section.updateSectionDetails(CourseId, sectionNo, newSectionDetail); // Update section details using the model function
 
   if (!updatedSection) {
     return res.status(404).send('Section not found'); // Handle case where section is not found
@@ -46,7 +51,8 @@ try {
 }
 };
 
-// create section details
+// Controller function to create section details
+// Created By: Sairam (S10259930H)
 const createSection = async (req, res) => {
 const courseId = parseInt(req.params.courseId); // Parse course ID from request parameters
 
@@ -58,7 +64,7 @@ try {
     };
 
     // Call the model method to create a new section
-    const createdSection = await Section.createSection(courseId, newSectionData);
+    const createdSection = await Section.createSection(courseId, newSectionData); // Call the model method to create a new section
 
     if (!createdSection) {
         return res.status(404).send('Section not created'); // Handle case where section creation fails
@@ -71,7 +77,8 @@ try {
 }
 };
 
-// Delete section details
+// Controller function to Delete section details
+// Created By: Sairam (S10259930H)
 const deleteSectionDetails = async (req, res) => {
 const sectionNo = parseInt(req.params.sectionNo); // Extract section number from request parameters
 
@@ -81,10 +88,11 @@ try {
     console.log(success)
 
     if (!success) {
+      // Handle case where section details are not found
         return res.status(404).send('Section details not found');
     }
 
-    res.status(204).send('successfully deleted');
+    res.status(204).send('successfully deleted');  // Send success response for deletion
 } catch (error) {
     console.error('Error deleting section details:', error);
     res.status(500).send('Error deleting section details');

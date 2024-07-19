@@ -18,8 +18,8 @@ class Courses {
         this.Ratings = Ratings; 
         this.Fullname = Fullname;
     }
-
-    // Getting course by Creator  Created By: Sairam (S10259930H)
+    // Static method to fetch courses by creator, including average ratings
+    // Created By: Sairam (S10259930H)
     static async getCourseByCreator(Creator) {
         const connection = await sql.connect(dbConfig); // Connect to the database
         // SQL query to get courses by creator with average ratings
@@ -47,7 +47,7 @@ class Courses {
         `; // Parameterized query
 
         const request = connection.request();
-        request.input("creator", Creator); // Ensure the correct SQL data type
+        request.input("creator", Creator); 
 
         const result = await request.query(sqlQuery);
 
@@ -68,7 +68,9 @@ class Courses {
             ))
             : []; // Return an empty array if no courses are found
     }
-     // Getting all course   Created By: Sairam (S10259930H)
+
+    // Static method to fetch all courses with additional creator full names
+    // Created By: Sairam (S10259930H)
     static async getCourses() {
         const connection = await sql.connect(dbConfig); // Connect to the database
         // SQL query to get courses by creator with average ratings
@@ -118,10 +120,12 @@ class Courses {
             ))
             : []; // Return an empty array if no courses are found
     }
-    // Getting course and section by Id  Created By: Sairam (S10259930H)
+
+     // Static method to fetch a course with its sections by CourseId
+     // Created By: Sairam (S10259930H)
     static async getCourseWithSectionById(CourseId) {
-      const connection = await sql.connect(dbConfig);
-  
+      const connection = await sql.connect(dbConfig); // Connect to the database
+          // SQL query to get courses and section details by CourseId
       try {
           const sqlQuery = `
               SELECT 
@@ -174,11 +178,12 @@ class Courses {
       } catch (error) {
           throw new Error("Error fetching course with sections");
       } finally {
-          await connection.close();
+          await connection.close(); // Close the connection
       }
-  }
+    }
 
-     // Static method to update course details  Created By: Sairam (S10259930H)
+     // Static method to update course details by CourseId
+     // Created By: Sairam (S10259930H)
     static async updateCourse(CourseId, newCourseData) {
       const connection = await sql.connect(dbConfig); // Connect to the database
     
@@ -221,11 +226,13 @@ class Courses {
       // Execute the query
       await request.query(sqlQuery);
     
-      connection.close();
+      connection.close(); // Close the connection
     
-      return this.getCourseWithSectionById(CourseId);
+      return this.getCourseWithSectionById(CourseId); // Retrieve Updated Course and Section Details by course id
     }
-    // Static method to update course icon  Created By: Sairam (S10259930H)
+
+    // Static method to update course icon  
+    // Created By: Sairam (S10259930H)
     static async updateCourseIcon(CourseId, newIconData) {
     const connection = await sql.connect(dbConfig);
 
@@ -237,11 +244,13 @@ class Courses {
 
     await request.query(sqlQuery);
 
-    connection.close();
+    connection.close(); // Close the connection
 
-    return this.getCourseWithSectionById(CourseId); // returning the updated course data
+    return this.getCourseWithSectionById(CourseId); // Retrieve Updated Course and Section Details by course id
     }
-    // Static method to create course details  Created By: Sairam (S10259930H)
+
+     // Static method to create a new course
+    // Created By: Sairam (S10259930H)
     static async createCourse(creatorId, newCourseData) {
     const connection = await sql.connect(dbConfig); // Connect to the database
     
@@ -278,12 +287,14 @@ class Courses {
     
     connection.close();
     
-    // Return the newly created course with its sections (assuming a method exists)
+    // Return the newly created course with its sections
     return this.getCourseByCreator(creatorId);
     }
-    // Static method to delete course details  Created By: Sairam (S10259930H)
+
+    // Static method to delete a course and its associated details
+    // Created By: Sairam (S10259930H)
     static async deleteCourseAndDetails(courseId) {
-        const connection = await sql.connect(dbConfig);
+        const connection = await sql.connect(dbConfig);  // Connect to the database
 
         try {
             const sqlQuery = `
@@ -340,13 +351,13 @@ class Courses {
             `;
 
             const request = connection.request();
-            request.input('CourseId', courseId);
+            request.input('CourseId', courseId); // Parameterize the courseId
 
             // Execute the query
             const result = await request.query(sqlQuery);
-            connection.close();
+            connection.close(); // Close the connection
             console.log(result.rowsAffected);
-            return result.rowsAffected.some(count => count > 0);
+            return result.rowsAffected.some(count => count > 0); // Return true if any rows were affected
         } catch (error) {
             console.error('Error deleting course and details:', error);
             throw error;

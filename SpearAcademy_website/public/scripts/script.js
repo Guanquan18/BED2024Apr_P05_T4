@@ -3,12 +3,17 @@ Function Created
 Sairam (S10255930H)
 - editSection
 - ViewActive(containerId)
+- fetchAllCourses()
 - fetchCoursesByCreator(containerId)
 - fetchCourseandSectionDetails(CourseId)
 - UpdateCourse()
-- fetchSectionDetails
-- UpdateSectionDetails
-
+- fetchSectionDetails()
+- UpdateSectionDetails(0)
+- UpdateCourseIcon()
+- createNewCourse()
+- createSectionDetails()
+- deleteSectionDetails()
+- deleteCourse()
 Chang Guan Quan (S10257825A)
 - 
 -
@@ -239,7 +244,7 @@ async function fetchAllCourses() {
   }
 
 // Function to fetch detailed information about a specific course and section. Created by: Sairam
-let originalCourseDetails = {};
+let originalCourseDetails = {}; // Object to store original course details for comparison
 async function fetchCourseandSectionDetails(CourseId) {
   try {
     const response = await fetch(`http://localhost:3000/courses-with-sections-id/${CourseId}`);
@@ -247,7 +252,7 @@ async function fetchCourseandSectionDetails(CourseId) {
     console.log("Constructed URL:", response); // Log the constructed URL for debugging
     const data = await response.json();
     console.log("Data:", data);
-
+     // Handle the case where no course details are found   
     if (data.length === 0) {
       alert("No Courses found");
       return;
@@ -270,9 +275,10 @@ async function fetchCourseandSectionDetails(CourseId) {
     courseContainer.querySelector('.course-small-description span').innerText = data[0].SmallDescription;
     courseContainer.querySelector('.course-badge span').innerText = data[0].Badge;
     courseContainer.querySelector('.course-last-updated span').innerText = data[0].LastUpdated;
+     // Update the course icon image
     const courseImage = courseContainer.querySelector('.course-icon');
-    courseImage.src = data[0].Thumbnail;
-    courseImage.alt = data[0].CourseTitle;
+    courseImage.src = data[0].Thumbnail; // Set course thumbnail
+    courseImage.alt = data[0].CourseTitle; // Set alt text for accessibility
     
     // Update description popup content
     const Description_Popup = document.getElementById('view-course-Description-Popup');
@@ -285,6 +291,7 @@ async function fetchCourseandSectionDetails(CourseId) {
     document.getElementById('edit-Course-Label').value = data[0].Label;
     document.getElementById('edit-Course-Badge').value = data[0].Badge;
 
+    // Set the ID for the popup edit container dynamically based on CourseId
     const pop_up_edit_container = document.querySelector('.popup-content');
     pop_up_edit_container.id = `edit-btn-${CourseId}`;
 
@@ -292,18 +299,19 @@ async function fetchCourseandSectionDetails(CourseId) {
     const sectionDetailsContainer = document.getElementById('section-details-container');
     sectionDetailsContainer.innerHTML = ''; // Clear existing content
 
+    // Iterate over each section and create a new section item
     data[0].Sections.forEach((section, index) => {
       const sectionItem = document.createElement('div');
       sectionItem.classList.add('section-item', 'tag', 'word-link');
       sectionItem.id = `section-item-${section.SectionNo}-${CourseId}`;
-
+        // Create the HTML content for each section item
       sectionItem.innerHTML = `
           <h3>
             Section ${index + 1}: <span>${section.SectionTitle}</span> <br> 
           </h3>
           <p id="edit-section-${section.SectionNo}-${CourseId} class = "edit-section-button" onclick="editSection(${CourseId}, ${section.SectionNo})">Edit</p>
       `;
-
+        // Append the new section item to the section details container
       sectionDetailsContainer.appendChild(sectionItem);
   });
     
@@ -315,9 +323,10 @@ async function fetchCourseandSectionDetails(CourseId) {
 
 // Function to update course details with the data from the form. Created by: Sairam
 async function UpdateCourse() {
+    // Get the course ID from the popup's ID attribute
   const pop_up_edit_container = document.querySelector('.popup-content');
   const courseId = pop_up_edit_container.id.split('-')[2];
-
+    // Collect updated course details from the form inputs
   const updatedCourse = {
     CourseTitle: document.getElementById('edit-Course-Title').value,
     SmallDescription: document.getElementById('edit-Course-SmallDescription').value,
@@ -327,37 +336,39 @@ async function UpdateCourse() {
   };
   // Check if the form inputs are updated. 
   const isChanged = JSON.stringify(updatedCourse) !== JSON.stringify(originalCourseDetails);
-
+  // Alert the user if no changes were made
   if (!isChanged) {
     alert('Please update something before submitting.');
     return;
   }
 
   try {
+    // Send a PUT request to update the course details on the server
     const response = await fetch(`http://localhost:3000/courses-id/${courseId}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json' // Specify content type as JSON
       },
-      body: JSON.stringify(updatedCourse)
+      body: JSON.stringify(updatedCourse)  // Convert the updated course object to JSON for the request body
     });
-
+    // Handle non-OK responses (errors)
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json(); // Parse error response as JSON
       if (errorData.message && errorData.errors && errorData.errors.length > 0) {
+         // Construct a detailed error message from server validation errors
         const validationErrors = errorData.errors.map(error => `- ${error}`).join('\n');
         throw new Error(`Validation Errors:\n${validationErrors}`);
       } else {
         throw new Error('Failed to update course'); // Fallback message if no specific message from server
       }
     }
-
-    const data = await response.json();
-    console.log(data);
-    alert("Course details updated successfully!");
+    // Handle successful response
+    const data = await response.json(); // Parse successful response as JSON
+    console.log(data); // Log the response data for debugging
+    alert("Course details updated successfully!"); // Notify user of successful update
     hidePopup('edit-course-details-Popup');
     fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
-  } catch (error) {
+  } catch (error) { 
     console.error('Error updating course:', error);
     alert(`${error.message}`);
   }
@@ -374,27 +385,35 @@ async function editSection(CourseId, sectionNo) {
 
 // Function to fetch sections by a specific course and sectionNo. Created by: Sairam
 async function fetchSectionDetails(courseId, SectionNo) {
+    // Fetch the section details from the server using the provided courseId and SectionNo
   const response = await fetch(`http://localhost:3000/sectionDetails-id/${courseId}/${SectionNo}`);
+ // Parse the response JSON data
   const data = await response.json();
   console.log(data);
+   // Check if no data is returned and alert the user if so
   if (data.length === 0) {
     alert("No Courses created");
   }
+  // Get the popup element where section details will be displayed
   const sectionDetailsPopUp = document.getElementById('sectionDetails-Popup');
+  // Set the section title in the popup header
   sectionDetailsPopUp.querySelector('.popup-content h2').innerText = data.SectionTitle;
+  // Update the video source URL in the popup
   const videoSourceElement = sectionDetailsPopUp.querySelector('#video-source');
-  videoSourceElement.src = data.Video; // Assuming data.Video is the path to your video file
+  videoSourceElement.src = data.Video; 
   // Reload the video to apply the new source
   const videoElement = sectionDetailsPopUp.querySelector('#video-item');
   videoElement.load(); // Reload the video element to apply the new source
   //pre fill section title 
-  document.getElementById('section-title').value = data.SectionTitle;
+  document.getElementById('section-title').value = data.SectionTitle; // Pre-fill the section title input field with the fetched section title
 }
 
 // Function to update course icon by a courseId. Created by: Sairam 
 async function UpdateCourseIcon() {
+    // Get the popup container and extract the course ID from its ID attribute
   const pop_up_edit_container = document.querySelector('.popup-content');
   const courseId = pop_up_edit_container.id.split('-')[2];
+  // Get the file input element
   const fileInput = document.getElementById('course-icon');
 
   // Ensure a file is selected
@@ -432,10 +451,11 @@ async function UpdateCourseIcon() {
 }
 // Function to update section details by a courseId. Created by: Sairam 
 async function UpdateSectionDetails() {
+    // Select the section item button to retrieve section and course IDs
   const edit_section_btn = document.querySelector('.section-item');
   const sectionNo = edit_section_btn.id.split('-')[2];
   const courseId = edit_section_btn.id.split('-')[3];
-
+    // Retrieve the new section title and the file input for the video
   const newSectionTitle = document.getElementById('section-title').value;
   const fileInput = document.getElementById('section-detail-video');
 
@@ -486,6 +506,7 @@ async function UpdateSectionDetails() {
 
 // Function to post course details . Created by: Sairam
 async function createNewCourse() {
+    // Retrieve values from form inputs
   const newTitle = document.getElementById('new-course-title').value;
   const newSmallDescription = document.getElementById('new-small-description').value;
   const newDescription = document.getElementById('new-description').value;
@@ -540,9 +561,10 @@ async function createNewCourse() {
 
 // Function to create section details by a courseId. Created by: Sairam 
 async function createSectionDetails() {
+     // Retrieve the course ID from the popup container's ID
   const pop_up_edit_container = document.querySelector('.popup-content');
   const courseId = pop_up_edit_container.id.split('-')[2];
-
+    // Retrieve values from form inputs
   const newSectionTitle = document.getElementById('new-section-title').value;
   const newvideofileInput = document.getElementById('new-section-detail-video');
 
@@ -593,25 +615,27 @@ async function createSectionDetails() {
 
 // Function to delete section details by a courseId. Created by: Sairam 
 async function deleteSectionDetails() {
-  const edit_section_btn = document.querySelector('.section-item'); // Assuming this selects the appropriate element
+    // Retrieve the section item element and extract section number and course ID from its ID
+  const edit_section_btn = document.querySelector('.section-item');
   const sectionNo = edit_section_btn.id.split('-')[2]; // Extract section number from the element's ID
   const courseId = edit_section_btn.id.split('-')[3];
 
   try {
+    // Send DELETE request to the server to remove the section
     const response = await fetch(`http://localhost:3000/delete-sectionDetails/${sectionNo}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
+     // Check if the response indicates success
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
+     // Notify user of success and update UI
     alert("Section details delete successfully!");
-      hidePopup('section-confirmation-pop-up');
-      hidePopup('sectionDetails-Popup');
+      hidePopup('section-confirmation-pop-up');  // Hide confirmation popup
+      hidePopup('sectionDetails-Popup');  // Hide section details popup
       fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
   } catch (error) {
     console.error('Error deleting section details:', error);
@@ -621,26 +645,28 @@ async function deleteSectionDetails() {
 
 // Function to delete course details by a courseId. Created by: Sairam 
 async function deleteCourse() {
+    // Retrieve the course ID from the popup container's ID
   const pop_up_edit_container = document.querySelector('.popup-content');
   const courseId = pop_up_edit_container.id.split('-')[2];
   try {
+    // Send DELETE request to the server to remove the course
     const response = await fetch(`http://localhost:3000/delete-course/${courseId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
+    // Check if the response indicates success
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     alert("Course details delete successfully!");
-      hidePopup('course-confirmation-pop-up');
-      hidePopup('sectionDetails-Popup');
+      hidePopup('course-confirmation-pop-up');  // Hide confirmation popup
+      hidePopup('sectionDetails-Popup');  // Hide section details popup
       fetchCoursesByCreator('educator-course-main-container'); // Refresh displayed details after update
-      document.getElementById('educator-courses-container').style.display = 'block';
-      document.getElementById('educator-specific-course-container').style.display = 'none';
+      document.getElementById('educator-courses-container').style.display = 'block'; // Show courses container
+      document.getElementById('educator-specific-course-container').style.display = 'none'; // Hide specific course container
   } catch (error) {
     console.error('Error course section details:', error);
     // Handle error as needed (e.g., show error message to user)

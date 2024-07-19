@@ -1,6 +1,8 @@
 // Entirely Created By: Sairam (S10259930H)
 const Course = require('../models/Course'); // Import the Course model
-// Controller function to get courses by creator.  Created By: Sairam (S10259930H)
+
+// Controller function to get courses by creator.  
+// Created By: Sairam (S10259930H)
 const getCourseByCreator = async (req, res) => {
   const creator = parseInt(req.params.creator); // Parse creator ID from request parameters
   try {
@@ -15,7 +17,8 @@ const getCourseByCreator = async (req, res) => {
   }
 };
 
-// Controller function to all courses.  Created By: Sairam (S10259930H)
+// Controller function to all courses.  
+// Created By: Sairam (S10259930H)
 const getCourses = async (req, res) => {
   try {
     const courses = await Course.getCourses(); // Fetch courses by creator from the model
@@ -29,7 +32,8 @@ const getCourses = async (req, res) => {
   }
 };
 
-// Controller function to get course and section by ID.  Created By: Sairam (S10259930H)
+// Controller function to get course and section by ID. 
+// Created By: Sairam (S10259930H)
 const getCourseWithSectionById = async (req, res) => {
   const id = parseInt(req.params.CourseId);  // Parse the CourseId from request parameters
   try {
@@ -45,7 +49,8 @@ const getCourseWithSectionById = async (req, res) => {
 };
 
 
-// Controller function to update a course.  Created By: Sairam (S10259930H)
+// Controller function to update a course. 
+// Created By: Sairam (S10259930H)
 const updateCourse = async (req, res) => {
   const CourseId = parseInt(req.params.CourseId); // Parse course ID from request parameters
   const newCourseData = req.body; // Get new course data from request body
@@ -62,28 +67,31 @@ const updateCourse = async (req, res) => {
   }
 };
 
-// Controller function to update a course icon.  Created By: Sairam (S10259930H)
+// Controller function to update a course icon.  
+// Created By: Sairam (S10259930H)
 const updateCourseIcon = async (req, res) => {
   const CourseId = parseInt(req.params.CourseId); // Parse course ID from request parameters
 
   try {
     const newCourseIcon = {
-      Thumbnail: '../Images/courses/' + req.file.filename // Assuming you have handled file upload elsewhere
+      Thumbnail: '../Images/courses/' + req.file.filename  // Construct the path to the uploaded course thumbnail image
     };
 
-    const updatedIcon = await Course.updateCourseIcon(CourseId, newCourseIcon);
+    const updatedIcon = await Course.updateCourseIcon(CourseId, newCourseIcon); // Update the course icon in the model
 
     if (!updatedIcon) {
-      return res.status(404).send('Course not found');
+      return res.status(404).send('Course not found'); // Return 404 if course not found
     }
     
-    res.json(updatedIcon); // Send success response
+    res.json(updatedIcon); // Send the updated course icon data as JSON response
   } catch (error) {
     console.error(error);
     res.status(500).send('Error updating course');
   }
 };
-// Controller function to create a course.  Created By: Sairam (S10259930H)
+
+// Controller function to create a course.  
+// Created By: Sairam (S10259930H)
 const createCourse = async (req, res) => {
   const creatorId = parseInt(req.params.creatorId);
   try {
@@ -118,7 +126,9 @@ const createCourse = async (req, res) => {
     res.status(500).send("Error creating course");
   }
 };
-// Controller function to delete  a course.  Created By: Sairam (S10259930H)
+
+// Controller function to delete  a course.  
+// Created By: Sairam (S10259930H)
 const deleteCourseAndDetails = async (req, res) => {
   const courseId = parseInt(req.params.courseId); // Extract course ID from request parameters
 

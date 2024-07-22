@@ -18,15 +18,16 @@
             justify-content: center;
             align-items: center; 
         }
-
-        #signup-form-email-password{
+        
+        #signup-form-role
+        {
             display: flex;
         }
 
-        /* Hide form laypers */
-        #signup-form-role, #signup-form-personal-details, #signup-form-qualification{
+        #signup-form-email-password, #signup-form-personal-details, #signup-form-qualification{
             display: none;
         }
+        /* Hide form laypers */
 
         #signup-form-role button{
             margin: 15px 0;
@@ -38,10 +39,30 @@
     <article class="login-signup-wrapper">
         <form class="login-signup-form" id="signup-form">
 
+            <!-- Sign Up Role -->
+            <section class="signup-form-layer-container" id="signup-form-role">
+            
+                <h1 class="login-signup-header">Select your Role</h1>
+
+                <!-- Student Role button -->
+                <button id="signup-role-student-submit" class="login-signup-buttons btn rounded-pill col-12">Student</button>
+
+                <p class="selection-option">or</p>
+
+                <!-- Educator Role button -->
+                <button id="signup-role-educator-submit" class="login-signup-buttons btn rounded-pill col-12">Educator</button>
+
+                <!-- Login link -->
+                <div class="login-signup-link">
+                    <p>Already have an SPEAR account? <a href="/" id="signup-link">Log In</a></p>
+                </div>
+
+            </section>
+
             <!-- Email and password Input -->
             <section class="signup-form-layer-container" id="signup-form-email-password">
             
-                <h1 class="login-signup-header">Create SPEAR Academy</h1>
+                <h1 class="login-signup-header"></h1>
 
                 <!-- Google login -->
                 <button id="google-sign-in-btn" class="third-party-login-signup-btn col-12">
@@ -78,29 +99,9 @@
                 
                 <!-- signup button -->
                 <button type="submit" id="signup-email-password-submit" class="login-signup-buttons btn rounded-pill col-12">Create Account</button>
-                
-                <!-- Login link -->
-                <div class="login-signup-link">
-                    <p>Already have an SPEAR account? <a href="/" id="signup-link">Log In</a></p>
-                </div>
 
             </section>
 
-            <!-- Sign Up Role -->
-            <section class="signup-form-layer-container" id="signup-form-role">
-            
-                <h1 class="login-signup-header">Select your Role</h1>
-
-                <!-- Student Role button -->
-                <button id="signup-role-student-submit" class="login-signup-buttons btn rounded-pill col-12">Student</button>
-
-                <p class="selection-option">or</p>
-
-                <!-- Educator Role button -->
-                <button id="signup-role-educator-submit" class="login-signup-buttons btn rounded-pill col-12">Educator</button>
-
-            </section>
-            
             <!-- Personal Details -->
             <section class="signup-form-layer-container" id="signup-form-personal-details">
             
@@ -201,24 +202,52 @@
             sessionStorage.clear();  // Clear session storage
 
             // Get Form Buttons
-            const signupEmailPasswordFormButton = document.getElementById("signup-email-password-submit");
             const signupRoleStudentFormButton = document.getElementById("signup-role-student-submit");
+            const signupEmailPasswordFormButton = document.getElementById("signup-email-password-submit");
             const signupRoleEducatorFormButton = document.getElementById("signup-role-educator-submit");
             const signupPersonalDetailsFormButton = document.getElementById("signup-personal-details-submit");
             const signupQualificationFormButton = document.getElementById("signup-qualification-submit");
 
             // Get Form Layers
-            const signupEmailpasswordForm = document.getElementById("signup-form-email-password");
+            const signupEmailPasswordForm = document.getElementById("signup-form-email-password");
             const signupRoleForm = document.getElementById("signup-form-role");
             const signupPersonalDetailsForm = document.getElementById("signup-form-personal-details");
             const signupQualificationForm = document.getElementById("signup-form-qualification");
 
-            let emailPasswordVerified;
+            let emailPasswordVerified = false;
+            let emailPasswordAuthenticated;
             let roleSelected;
-            let personalDetailsVerified;
-            let qualificationVerified;
+            let personalDetailsVerified = false;
+            let personalDetailsAuthenticated;
+            let qualificationVerified = false;
+            let qualificationAuthenticated;
 
+            signupRoleStudentFormButton.addEventListener("click",async function(event){
+                event.preventDefault();
+                
+                roleSelected = "Student";
 
+                signupRoleForm.style.display = "none";  // Hide role form
+                signupEmailPasswordForm.style.display = "flex";   // Display personal details form
+
+                document.querySelector("#signup-form-email-password h1").textContent = `Create a ${roleSelected} SPEAR Academy Account`;  // Display role selected
+                document.getElementById("sign-up-role").textContent = roleSelected;  // Display role selected
+                signupPersonalDetailsFormButton.textContent = "Finish";
+            },false);
+
+            signupRoleEducatorFormButton.addEventListener("click",async function(event){
+                event.preventDefault();
+                
+                roleSelected = "Educator";
+
+                signupRoleForm.style.display = "none";  // Hide role form
+                signupEmailPasswordForm.style.display = "flex";   // Display personal details form
+
+                document.querySelector("#signup-form-email-password h1").textContent = `Create a ${roleSelected} SPEAR Academy Account`;  // Display role selected
+                document.getElementById("sign-up-role").textContent = roleSelected;  // Display role selected
+                signupPersonalDetailsFormButton.textContent = "Continue";
+            },false);
+            
             signupEmailPasswordFormButton.addEventListener("click",async function(event){
                 event.preventDefault();
 
@@ -226,18 +255,80 @@
                 const email = document.getElementById("signup-email").value;
                 const password = document.getElementById("signup-password").value;
 
-                let inputFields = document.querySelectorAll("#signup-form signup-form-email-password .form-floating input");
+                let inputFields = document.querySelectorAll("#signup-form #signup-form-email-password .form-floating input");
                 let errorMessage = document.getElementById("signup-email-password-error");
 
-                emailPasswordVerified = await verifyEmailPassword();
-                
+                emailPasswordVerified = await validateEmailPassword();
                 if (emailPasswordVerified){
-                    signupEmailpasswordForm.style.display = "none"; // Hide email password form
-                    signupRoleForm.style.display = "flex";      // Display role form
+                    emailPasswordAuthenticated = await authenticateEmailPassword();
+                }
+                
+                
+                if (emailPasswordAuthenticated){
+                    signupEmailPasswordForm.style.display = "none"; // Hide email password form
+                    signupPersonalDetailsForm.style.display = "flex";      // Display role form
+                }
+
+                async function validateEmailPassword(){
+                    
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+
+                    // Validate email
+                    if (email === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Email is required");
+                    }
+                    else if (!email.includes("@") || !email.includes(".")){
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Invalid email format");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    // Validate password
+                    if (password === "") {
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Password is required");
+                    }
+                    else if (password.length < 4){
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Password must be at least 4 characters long");
+                    }
+                    else{
+                        inputFields[1].classList.add("success");
+                    }
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        errorMessage.textContent = errorList.join(", ");
+                        return false;
+                    }
                 }
                 
                 // function to verify email and password of the user by sending a request to the server
-                async function verifyEmailPassword(){
+                async function authenticateEmailPassword(){
 
                     const response = await fetch(`/account/signup/createAccount`,{
                         method: "POST",
@@ -246,7 +337,8 @@
                         },
                         body: JSON.stringify({
                             email: email,
-                            password: password
+                            password: password,
+                            role: roleSelected
                         })
                     });
 
@@ -261,21 +353,17 @@
                             inputField.classList.add("success");    // Add Green Border
                         });
 
-                        console.log(data);
-
                         errorMessage.style.visibility = "visible";
                         errorMessage.style.color = "green";
-                        errorMessage.textContent = "Authenticated successfully";
-                        
-                        sessionStorage.setItem("Account", JSON.stringify(data));
+                        errorMessage.textContent = data.message;
+                        console.log(data.message);
 
+                        sessionStorage.setItem("Token",data.token);  // Store user object in session storage
                         /*
                         Accessing Email property of the user object
                         const storedUser = JSON.parse(sessionStorage.getItem("Account"));
                         console.log(storedUser);
                         */
-                       
-                        console.log("User Authenticated successfully");
                         
                         return true;
                         
@@ -302,76 +390,126 @@
 
                         return false;
                         
-                    }   
+                    }
+                    else if (response.status === 500){
+                        alert(data.message);
+                        return false;
+                    }
                 }
-            },false);
-        
-            signupRoleStudentFormButton.addEventListener("click",async function(event){
-                event.preventDefault();
-                
-                roleSelected = "Student";
-
-                signupRoleForm.style.display = "none";  // Hide role form
-                signupPersonalDetailsForm.style.display = "flex";   // Display personal details form
-
-                document.getElementById("sign-up-role").textContent = roleSelected;  // Display role selected
-                signupPersonalDetailsFormButton.textContent = "Finish";
-            },false);
-
-            signupRoleEducatorFormButton.addEventListener("click",async function(event){
-                event.preventDefault();
-                
-                roleSelected = "Educator";
-
-                signupRoleForm.style.display = "none";  // Hide role form
-                signupPersonalDetailsForm.style.display = "flex";   // Display personal details form
-
-                document.getElementById("sign-up-role").textContent = roleSelected;  // Display role selected
-                signupPersonalDetailsFormButton.textContent = "Continue";
             },false);
             
             signupPersonalDetailsFormButton.addEventListener("click",async function(event){
                 event.preventDefault();
 
                 // Get personal details inputs
-                const accId = JSON.parse(sessionStorage.getItem("Account")).AccId;
                 const fullname = document.getElementById("signup-fullname").value;
                 const contactNo = document.getElementById("signup-contactno").value;
                 const dob = document.getElementById("signup-dob").value;
 
-                let inputFields = document.querySelectorAll("#signup-form signup-form-personal-details .form-floating input");
+                let inputFields = document.querySelectorAll("#signup-form #signup-form-personal-details .form-floating input");
                 let errorMessage = document.getElementById("signup-personal-details-error");
 
-                personalDetailsVerified = await verifyPersonalDetails();
-
+                personalDetailsVerified = await validatePersonalDetails();
                 if (personalDetailsVerified){
+                    personalDetailsAuthenticated = await authenticatePersonalDetails();
+                }
+
+                if (personalDetailsAuthenticated){
 
                     if (roleSelected === "Student"){
-                            window.location.href = "../index.html";   // Redirect to home page
+                            window.location.href = "../student-pages/student.html";   // Redirect to student home page
                     }
                     else{
                         signupPersonalDetailsForm.style.display = "none";   // Hide personal details form
                         signupQualificationForm.style.display = "flex";   // Display qualification form
                     }
                 }
-                
-                // function to verify personal details of the user by sending a request to the server
-                async function verifyPersonalDetails(){
 
-                    const response = await fetch(`/account/update/verifyPersonalDetails/${accId}`,{
+                async function validatePersonalDetails(){
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+
+                    // Validate full name
+                    if (fullname === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Full Name is required");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    // Validate contact no
+                    if (contactNo === "") {
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Contact No is required");
+                    }
+                    else if (contactNo.length < 10){
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Contact No must be at least 10 characters long");
+                    }
+                    else{
+                        inputFields[1].classList.add("success");
+                    }
+
+                    // Validate date of birth
+                    const pattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+                    if (dob === "") {
+                        inputFields[2].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Date of Birth is required");
+                    }
+                    else if (pattern.test(dob) === false){
+                        inputFields[2].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Invalid Date of Birth format");
+                    }
+                    else{
+                        inputFields[2].classList.add("success");
+                    }
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        errorMessage.textContent = errorList.join(", ");
+                        return false;
+                    }
+                }
+                
+                // function to authenticate personal details of the user by sending a request to the server
+                async function authenticatePersonalDetails(){
+
+                    const response = await fetch(`/account/update/updatePersonalDetails`,{
                         method: "PUT",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${sessionStorage.getItem("Token")}` // Include JWT token in the Authorization header
                         },
                         body: JSON.stringify({
                             fullName: fullname,
                             contactNo: contactNo,
-                            dob: dob
+                            dob: dob,
                         })
                     });
 
                     const data = await response.json(); // Convert response to JSON
-                    console.log(data);
 
                     if (response.status === 201){   // If user is created successfully
 
@@ -414,14 +552,15 @@
                         return false;
 
                     }
+                    else if (response.status === 500){   // If server error
+                        alert(data.message);
+                        return false;
+                    }
                 }
             },false);
 
             signupQualificationFormButton.addEventListener("click",async function(event){
                 event.preventDefault();
-                
-                // Get Educator Id
-                const eduId = JSON.parse(sessionStorage.getItem("Account")).AccId;
 
                 // Get qualification inputs
                 const professionalTitle = document.getElementById("signup-professional-title").value;
@@ -430,22 +569,112 @@
                 const yearsOfExperience = document.getElementById("signup-yearsOfExperience").value;
                 const fieldOfStudy = document.getElementById("signup-fieldofstudy").value;
 
-                let inputFields = document.querySelectorAll("#signup-form signup-form-qualification .form-floating input");
+                let inputFields = document.querySelectorAll("#signup-form #signup-form-qualification .form-floating input");
                 let errorMessage = document.getElementById("signup-qualification-error");
 
-                let qualificationVerified = await verifyQualification();
+                qualificationVerified = await validatePersonalDetails();
 
                 if (qualificationVerified){
-                    window.location.href = "../creator.html";
+                    qualificationAuthenticated = await verifyQualification();
+                }
+
+                if (qualificationAuthenticated){
+                    window.location.href = "../educator-pages/educator.html";   // Redirect to educator home page
+                }
+
+                async function validatePersonalDetails(){
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+
+                    // Validate professional title
+                    if (professionalTitle === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Professional Title is required");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    // Validate organisation
+                    if (organisation === "") {
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Organisation is required");
+                    }
+                    else{
+                        inputFields[1].classList.add("success");
+                    }
+
+                    // Validate highest degree
+                    if (highestDegree === "") {
+                        inputFields[2].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Highest Degree is required");
+                    }
+                    else{
+                        inputFields[2].classList.add("success");
+                    }
+
+                    const pattern = /^[0-9]+$/;
+                    // Validate years of experience
+                    if (yearsOfExperience === "") {
+                        inputFields[3].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Years of Experience is required");
+                    }
+                    else if (yearsOfExperience < 0 || pattern.test(yearsOfExperience) === false){
+                        inputFields[3].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Years of Experience is invalid");
+                    }
+                    else{
+                        inputFields[3].classList.add("success");
+                    }
+
+                    // Validate field of study
+                    if (fieldOfStudy === "") {
+                        inputFields[4].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Field of Study is required");
+                    }
+                    else{
+                        inputFields[4].classList.add("success");
+                    }
+
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        errorMessage.textContent = errorList.join(", ");
+                        return false;
+                    }
                 }
 
                 // function to verify qualification of the user by sending a request to the server
                 async function verifyQualification(){
 
-                    const response = await fetch(`/educator/createEducator/${eduId}`,{
+                    const response = await fetch(`/educator/createEducator`,{
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${sessionStorage.getItem("Token")}` // Include JWT token in the Authorization header
                         },
                         body: JSON.stringify({
                             professionalTitle: professionalTitle,
@@ -457,7 +686,6 @@
                     });
 
                     const data = await response.json();
-                    console.log(data);
 
                     if (response.status === 201){   // If user is created successfully
 
@@ -497,6 +725,10 @@
                         }
                         console.log(errorMessage.textContent);
 
+                        return false;
+                    }
+                    else if (response.status === 500){   // If server error
+                        alert(data.message);
                         return false;
                     }
                 }

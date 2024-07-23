@@ -1,5 +1,5 @@
 // Entirely Created By: Sairam (S10259930H)
-const Course = require('../models/Course'); // Import the Course model
+const Course = require('../models/course'); // Import the Course model
 
 // Controller function to get courses by creator.  
 // Created By: Sairam (S10259930H)

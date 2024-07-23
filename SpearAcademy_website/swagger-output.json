@@ -1,0 +1,879 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "SpearAcademy API",
+    "description": "\n This API compliments the progression of education in Southeast Asia as a proper education system plays a pivotal role in preparing the region for various economic, social and technological changes. Taking inspiration from some already existing systems such as Udemy and Reddit, this API, SpearAcademyAPI, powers the learning process in a much more collaborative and efficient way and the functions of SpearAcademy include: \n      The main functionalities include:\n\n      - Course Management: Create, update, retrieve, and delete courses along with associated media (images, videos).\n      - Section Management: Manage detailed sections within courses, including CRUD operations and media uploads.\n      - Account Management: Handle user accounts with secure authentication and personal detail updates.\n      - Educator Management: Manage educator profiles and their qualifications.\n      - Quiz Management: Comprehensive handling of quizzes, questions, and options to support interactive learning.\n      - Comment and QnA Management: Enable commenting on courses and QnA sessions to enhance communication.\n\n      **Key Features:**\n      - Secure media upload handling using Multer for both images and videos.\n      - Data validation using custom middleware to ensure data integrity.\n      - Integration with Swagger UI for interactive API documentation and testing.\n      - Structured and scalable design for easy extension and maintenance.\n\n      **Requirements:**\n      - Node.js and Express for server-side operations.\n      - MSSQL for database management.\n      - Multer for handling file uploads.\n      - Swagger for API documentation.\n\n",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Courses",
+      "description": "Endpoints related to course management"
+    },
+    {
+      "name": "Sections",
+      "description": "Endpoints related to section management within courses"
+    },
+    {
+      "name": "Accounts",
+      "description": "Endpoints related to user account management"
+    },
+    {
+      "name": "Educators",
+      "description": "Endpoints related to educator management"
+    },
+    {
+      "name": "Quizzes",
+      "description": "Endpoints related to quiz management"
+    },
+    {
+      "name": "Comments",
+      "description": "Endpoints related to comment management"
+    },
+    {
+      "name": "QnA",
+      "description": "Endpoints related to QnA management"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/courses-creator/{creator}": {
+      "get": {
+        "tags": ["Courses"],
+        "description": "Get courses created by a specific creator",
+        "parameters": [
+          {
+            "name": "creator",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/courses": {
+      "get": {
+        "tags": ["Courses"],
+        "description": "Retrieve a list of all courses",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/courses-with-sections-id/{CourseId}": {
+      "get": {
+        "tags": ["Courses"],
+        "description": "Get details of a specific course",
+        "parameters": [
+          {
+            "name": "CourseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/courses-id/{CourseId}": {
+      "put": {
+        "tags": ["Courses"],
+        "description": "Update details of a specific course",
+        "parameters": [
+          {
+            "name": "CourseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/courses-icon/{CourseId}": {
+      "put": {
+        "tags": ["Courses"],
+        "description": "Update the icon of a specific course",
+        "parameters": [
+          {
+            "name": "CourseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/new-course/{creatorId}": {
+      "post": {
+        "tags": ["Courses"],
+        "description": "Create a new course",
+        "parameters": [
+          {
+            "name": "creatorId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CourseTitle": {
+                  "example": "any"
+                },
+                "SmallDescription": {
+                  "example": "any"
+                },
+                "Description": {
+                  "example": "any"
+                },
+                "Label": {
+                  "example": "any"
+                },
+                "Badge": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/delete-course/{courseId}": {
+      "delete": {
+         "tags": ["Courses"],
+        "description": "Delete a specific course",
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/sectionDetails-id/{id}/{SectionNo}": {
+      "get": {
+        "tags": ["Sections"],
+        "description": "Add a new section to a course",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "SectionNo",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/sectionDetails/{id}/{SectionNo}": {
+      "put": {
+        "tags": ["Sections"],
+        "description": "Update a specific section",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "SectionNo",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "SectionTitle": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/new-sectionDetails/{courseId}": {
+      "post": {
+        "tags": ["Sections"],
+        "description": "Post a new section",
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "SectionTitle": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/delete-sectionDetails/{sectionNo}": {
+      "delete": {
+        "tags": ["Sections"],
+        "description": "Delete a specific section",
+        "parameters": [
+          {
+            "name": "sectionNo",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": ["Accounts"],
+        "description": "Retrieve account details",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/account/{accId}": {
+      "get": {
+        "tags": ["Accounts"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "accId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/account/login": {
+      "post": {
+        "tags": ["Accounts"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/account/signup/createAccount": {
+      "post": {
+        "tags": ["Accounts"],
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/account/update/verifyPersonalDetails/{accId}": {
+      "put": {
+        "tags": ["Accounts"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "accId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/educator/createEducator/{eduId}": {
+      "post": {
+        "tags": ["Educators"],
+        "description": "Retrieve educator details",
+        "parameters": [
+          {
+            "name": "eduId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/comments-QnA/{qnaId}": {
+      "get": {
+        "tags": ["Comments"],
+        "description": "Retrieve all comments associated with a specific QnA.",
+        "parameters": [
+          {
+            "name": "qnaId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/comments/{id}": {
+      "get": {
+        "tags": ["Comments"],
+        "description": "Retrieve a specific comment by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Comments"],
+        "description": "Delete a specific comment by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Comments"],
+        "description": "Update a specific comment by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msgText": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/comments": {
+      "post": {
+        "tags": ["Comments"],
+        "description": "Create a new comment.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msgText": {
+                  "example": "any"
+                },
+                "messageAccount": {
+                  "example": "any"
+                },
+                "messageQnA": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/QnA/{courseId}": {
+      "get": {
+        "tags": ["QnA"],
+        "description": "Retrieve all QnA items for a specific course.",
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/quizzes/": {
+      "get": {
+        "tags": ["Quizzes"],
+        "description": "Retrieve a list of all quizzes.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Quizzes"],
+        "description": "Create a new quiz.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "QuizTitle": {
+                  "example": "any"
+                },
+                "Section_Quiz": {
+                  "example": "any"
+                },
+                "Course_Quiz": {
+                  "example": "any"
+                },
+                "questions": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/quizzes/{quizId}": {
+      "delete": {
+        "tags": ["Quizzes"],
+        "description": "Delete a specific quiz by its ID.",
+        "parameters": [
+          {
+            "name": "quizId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Quizzes"],
+        "description": "Retrieve a specific quiz by its ID",
+        "parameters": [
+          {
+            "name": "quizId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Quizzes"],
+        "description": "Update a specific quiz by its ID.",
+        "parameters": [
+          {
+            "name": "quizId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "QuizTitle": {
+                  "example": "any"
+                },
+                "questions": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/questions/{quizId}/questions": {
+      "get": {
+        "tags": ["Quizzes"],
+        "description": "Retrieve all questions for a specific quiz.",
+        "parameters": [
+          {
+            "name": "quizId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/options/{questionId}": {
+      "get": {
+        "tags": ["Quizzes"],
+        "description": "Retrieve all options for a specific question.",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

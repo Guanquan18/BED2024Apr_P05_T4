@@ -58,6 +58,8 @@ const bodyParser = require("body-parser"); // Import body-parser for parsing req
 const staticMiddleware = express.static("public"); // Middleware to serve static files from the public folder
 const multer = require("multer"); // Import multer for handling file uploads
 const path = require('path'); // Import path module for working with file and directory paths
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json"); // Import generated spec
 
 // Multer configuration for iamge upload 
 // // Created By: Sairam (S10259930H)
@@ -117,36 +119,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/login-signup-pages/login.html");
 });
 
-// Route to serve the signup page HTML file (signup page)
-app.get('/signup', (req, res) => {
-  res.sendFile(__dirname + "/public/login-signup-pages/signup.html");
-});
 
-// Route to serve the student.html (TEAM 4 - Sairam, Pey Zhi Xun, Keshwindren Gandipanh, Chang Guan Quan)
-app.get('/student', (req, res) => {
-  res.sendFile(__dirname + "/public/student-pages/student.html");
-});
-
-
-// Route to serve creator.html (Created By: Sairam)
-app.get('/creator', (req, res) => {
-  res.sendFile(__dirname + "/public/educator-pages/creator.html");
-});
-
-// Route to serve community.html
-app.get('/community', (req, res) => {
-  res.sendFile(__dirname + "/public/educator-pages/community.html");
-});
-
-// Route to serve profile.html
-app.get('/profile', (req, res) => {
-  res.sendFile(__dirname + "/public/educator-pages/profile.html");
-});
-
-// Serve quiz.html from a different route
-app.get('/manage-quizzes', (req, res) => {
-  res.sendFile(__dirname + "/public/educator-pages/manage-quizzes.html");
-});
 
 
 // Routes for handling course-related requests (Created by: Sairam S10259930)
@@ -186,8 +159,10 @@ app.post("/comments", commentsController.createComment);  // put route for the p
 app.delete("/comments/:id", commentsController.deleteComment); // delete route to handle comment deletion
 app.put("/comments/:id", commentsController.updateComment); // Put route to handle comment update
 
-// /Routes for handling qna requests (Created by: Keshwindren S10259469C)
+// Routes for handling qna requests (Created by: Keshwindren S10259469C)
 app.get("/QnA/:courseId", qnaController.getQnAByCourseId);  //get route to retrieve all qna data from the database 
+// Routes for API documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Start the server and connect to the database
 app.listen(port, async () => {

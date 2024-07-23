@@ -1,7 +1,9 @@
 const Educator = require("../models/educator");
+const jwt = require("jsonwebtoken");    // Import jsonwebtoken for creating tokens
+require('dotenv').config(); // Import dotenv for environment variables
 
 const createEducator = async (req, res) => {
-    const eduId = req.params.eduId;
+    const eduId = req.account.AccId;
     const newEducatorData = req.body;
 
     try {

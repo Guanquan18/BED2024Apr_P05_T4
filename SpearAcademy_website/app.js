@@ -21,12 +21,12 @@ Chang Guan Quan (S10257825A)
 Account routes
 - app.get("/accounts", accountController.getAllAccounts);
 - app.get("/account/:accId", accountController.getAccountById);
-- app.post("/account/login", validateAccount.validateEmailPassword, accountController.verifyAccount);
+- app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 - app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-- app.put("/account/update/verifyPersonalDetails/:accId",validateAccount.validatePersonalDetails, accountController.updateAccount);
+- app.put("/account/update/updatePersonalDetails",validateAccount.validatePersonalDetails, validateAccount.verifyJWT, accountController.updateAccount);
 
 Eductor routes
-- app.post("/educator/createEducator/:eduId", validateEducator.validateQualification, educatorController.createEducator);
+- app.post("/educator/createEducator", validateEducator.validateQualification,validateAccount.verifyJWT, educatorController.createEducator);
 
 
 Pey Zhi Xun (S10258774E)
@@ -137,15 +137,15 @@ app.put("/sectionDetails/:id/:SectionNo", videoupload.single('Video'),validateSe
 app.post("/new-sectionDetails/:courseId", videoupload.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
 app.delete("/delete-sectionDetails/:sectionNo", sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
 
-// Routes for handling educator-related requests (Created by: Chang Guan Quan)
+// Routes for handling account-related requests (Created by: Chang Guan Quan)
 app.get("/accounts", accountController.getAllAccounts);
 app.get("/account/:accId", accountController.getAccountById);
-app.post("/account/login", validateAccount.validateEmailPassword, accountController.verifyAccount);
+app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-app.put("/account/update/verifyPersonalDetails/:accId",validateAccount.validatePersonalDetails, accountController.updateAccount);
+app.put("/account/update/updatePersonalDetails",validateAccount.validatePersonalDetails, validateAccount.verifyJWT, accountController.updateAccount);
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
-app.post("/educator/createEducator/:eduId", validateEducator.validateQualification, educatorController.createEducator);
+app.post("/educator/createEducator", validateEducator.validateQualification,validateAccount.verifyJWT, educatorController.createEducator);
 
 // Mount the routers for handling quiz-related requests (Created by: Pey Zhi Xun)
 app.use("/api/quizzes", quizRouter);

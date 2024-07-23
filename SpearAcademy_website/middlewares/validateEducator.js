@@ -20,5 +20,5 @@ const validateQualification = (req, res, next) => {
 }
 
 module.exports = {
-  validateQualification
+  validateQualification,
 };

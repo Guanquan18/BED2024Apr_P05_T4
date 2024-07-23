@@ -244,7 +244,7 @@ body {
 
 .third-party-login-signup-btn:hover{
   transform: translateY(-4px);
-  box-shadow: 0 5px 8px rgba(0,0,0,0.5);
+  box-shadow: 0 5px 8px #6F74FB;
 
   transition: all 0.3s ease;
 }
@@ -270,6 +270,10 @@ body {
   padding: 0;
 }
 
+.form-control{
+  margin: 0;
+}
+
 
 .selection-option{
   width: fit-content;
@@ -291,18 +295,18 @@ body {
 .form-floating input:focus{
   font-weight: 600;
   border: 3px solid #6F74FB;
-  box-shadow: 0 0 10px #6F74FB;
+  box-shadow: 0 0 15px #6F74FB;
 
   transition: all 0.3s ease;
 }
 
 /* Styling for icons inside form inputs */
 .form-floating i{
-  font-size: 20px;
+  font-size: 25px;
   color: #6F74FB;
   position: absolute;
-  top: 0%;
-  left: calc(100% - 35px);
+  top: 50%;
+  left: calc(100% - (25px + 12px));
   transform: translateY(-50%);
 }
 

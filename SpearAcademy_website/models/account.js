@@ -2,13 +2,13 @@ const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
 class Account {
-    constructor(accId, fullName, dob, email, contactNo, password, role, photo, linkedIn){
+    constructor(accId, fullName, dob, email, contactNo, passwordHash, role, photo, linkedIn){
         this.AccId = accId;
         this.FullName = fullName;
         this.DOB = dob;
         this.Email = email;
         this.ContactNo = contactNo;
-        this.Password = password;
+        this.PasswordHash = passwordHash;
         this.role = role;
         this.Photo = photo;
         this.LinkedIn = linkedIn;
@@ -21,8 +21,9 @@ class Account {
     
         const request = connection.request();
         const result = await request.query(sqlQuery);
-    
         connection.close();
+
+        result.recordset.forEach(row => {
         return row
         ? new Account(
             row.AccId, 
@@ -30,13 +31,16 @@ class Account {
             row.DOB || null, 
             row.Email, 
             row.ContactNo || null, 
-            row.Password, 
+            row.PasswordHash, 
             row.role || null,
             row.Photo || null, 
             row.LinkedIn || null
         )
         : null;
         // Convert rows to Account objects
+        });
+
+        
     }
     
     static async getAccountById(accId) {
@@ -60,7 +64,7 @@ class Account {
                 row.DOB || null, 
                 row.Email, 
                 row.ContactNo || null, 
-                row.Password, 
+                row.PasswordHash,
                 row.role || null,
                 row.Photo || null, 
                 row.LinkedIn || null
@@ -68,20 +72,13 @@ class Account {
             : null;
     }
 
-    static async verifyAccount(accountData) {
-        const email = accountData.email;
-        const password = accountData.password || null;
+    static async verifyAccount(email) {
 
         const connection = await sql.connect(dbConfig);
     
         let sqlQuery = `SELECT * FROM Account WHERE Email = @Email`;
         const request = connection.request();
         request.input("Email", sql.VarChar(100), email);
-    
-        if (password !== null) {
-            sqlQuery += ` AND Password = @Password`;
-            request.input("Password", sql.VarChar(150), password);
-        }
     
         const result = await request.query(sqlQuery);
     
@@ -95,7 +92,7 @@ class Account {
                 row.DOB, 
                 row.Email, 
                 row.ContactNo, 
-                row.Password,
+                row.PasswordHash,
                 row.role || null, 
                 row.Photo || null, 
                 row.LinkedIn || null
@@ -104,22 +101,16 @@ class Account {
     }
     
     static async createAccount(newAccountData) {
-        
-        const existingAccount = await this.verifyAccount(newAccountData);
-        
-        if (existingAccount) {
-            return null;
-        }
-        
         const connection = await sql.connect(dbConfig);
 
-        const sqlQuery = `INSERT INTO Account (Email, Password) 
-                            VALUES (@email, @password) 
+        const sqlQuery = `INSERT INTO Account (Email, PasswordHash, Role) 
+                            VALUES (@email, @passwordHash, @role) 
                             select * from Account where AccId = SCOPE_IDENTITY()`;
     
         const request = connection.request();
         request.input("email", newAccountData.email);
-        request.input("password", newAccountData.password);
+        request.input("passwordHash", newAccountData.passwordHash);
+        request.input("role", newAccountData.role);
         
         const result = await request.query(sqlQuery);
         const row = result.recordset[0];
@@ -132,8 +123,8 @@ class Account {
             row.DOB || null, 
             row.Email, 
             row.ContactNo|| null, 
-            row.Password, 
-            row.role || null,
+            row.PasswordHash, 
+            row.role,
             row.Photo|| null, 
             row.LinkedIn|| null
         );
@@ -141,11 +132,6 @@ class Account {
     }
 
     static async updateAccount(accId, newAccountData) {
-        const existingAccount = await this.getAccountById(accId);
-        if (!existingAccount) {
-            return null;
-        }
-
         const connection = await sql.connect(dbConfig);
     
         const request = connection.request();
@@ -164,6 +150,14 @@ class Account {
         if (newAccountData.contactNo){
             request.input("contactNo", newAccountData.contactNo);
             query.push(`ContactNo = @contactNo`);
+        }
+        if (newAccountData.role){
+            request.input("role", newAccountData.role);
+            query.push(`role = @role`);
+        }
+        if (newAccountData.PasswordHash){
+            request.input("passwordHash", newAccountData.PasswordHash);
+            query.push(`PasswordHash = @passwordHash`);
         }
         if (newAccountData.photo){
             request.input("photo", newAccountData.photo);
@@ -191,7 +185,7 @@ class Account {
             row.DOB || null, 
             row.Email, 
             row.ContactNo || null, 
-            row.Password, 
+            row.PasswordHash, 
             row.role || null,
             row.Photo || null, 
             row.LinkedIn || null

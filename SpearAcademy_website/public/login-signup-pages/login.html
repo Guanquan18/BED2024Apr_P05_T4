@@ -74,23 +74,86 @@
             loginForm.addEventListener("submit",async function(event){
                 event.preventDefault();
 
+                let inputFields = document.querySelectorAll("#login-form .form-floating input");
+                let errorMessage = document.getElementById("login-validation-error");
+
                 // Get email and password inputs
                 const email = document.getElementById("login-email").value;
                 const password = document.getElementById("login-password").value;
                 
                 let role = null;
-                let verified = await verifyAccount();
-                
-                if(verified){
-                    if (role === "Student"){
-                        window.location.href = "../student-pages/student.html";
-                    }
-                    else if (role === "Educator"){
-                        window.location.href = "../educator-pages/creator.html";
-                    }
-                };
+                let verfied = false;
+                let authenticated = false;
+                let homePage = null;
 
-                async function verifyAccount(){
+                verfied = await validateInput();
+
+                if (verfied){
+                    authenticated = await authenticateAccount();
+                }
+
+                if(authenticated){
+                    window.location.href = homePage;
+                };
+                
+                async function validateInput(){
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+                    
+                    // Validate email
+                    if (email === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Email is required");
+                    }
+                    else if (!email.includes("@") || !email.includes(".")){
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Invalid email format");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    // Validate password
+                    if (password === "") {
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Password is required");
+                    }
+                    else if (password.length < 4){
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Password must be at least 4 characters long");
+                    }
+                    else{
+                        inputFields[1].classList.add("success");
+                    }
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        errorMessage.textContent = errorList.join(", ");
+                        return false;
+                    }
+                }
+
+                async function authenticateAccount(){
 
                     // Send login request to the server
                     const response = await fetch("/account/login",{
@@ -124,22 +187,21 @@
                         errorMessage.style.color = "green";
                         errorMessage.textContent = "Authenticated successfully";
 
-                        role = data.role;   // Get user role
-                        sessionStorage.setItem("user", JSON.stringify(data));   // Store user data in session storage
+                        homePage = data.homePage;
+                        sessionStorage.setItem("Token", data.token);   // Store user data in session storage
 
                         console.log("User Authenticated successfully");
 
                         /*
                         // Accessing Email property of the user object stored in session storage
 
-                        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+                        const storedUser = JSON.parse(sessionStorage.getItem("Account"));
                         console.log(storedUser.Email);
                         */
 
-                        return true
-                        
+                        return true 
                     }
-                    else if (response.status === 400 || response.status === 404){   // If authenticated failed
+                    else if (response.status === 400 || response.status === 401){   // If authenticated failed
 
                         inputFields.forEach((inputField) => {
                             if (inputField.classList.contains("success")){
@@ -159,6 +221,10 @@
                         }
                         console.log(errorMessage.textContent);
 
+                        return false;
+                    }
+                    else if (response.status === 500){   // If server error
+                        alert(data.message);
                         return false;
                     }
                 }

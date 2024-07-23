@@ -43,9 +43,12 @@ Pey Zhi Xun (S10258774E)
 
 
 Keshwindren Gandipanh (S10259469C)
-- 
--
--
+- app.get("/comments-QnA/:qnaId", commentsController.getCommentsByQnAId); 
+- app.get("/comments/:id", commentsController.getCommentById);  
+- app.post("/comments", commentsController.createComment);  
+- app.delete("/comments/:id", commentsController.deleteComment);
+- app.put("/comments/:id", commentsController.updateComment); 
+- app.get("/QnA/:courseId", qnaController.getQnAByCourseId);  
 */
   
 const express = require("express"); // Import the Express module
@@ -94,6 +97,7 @@ const sectionDetailsController = require("./controllers/sectionDetailController"
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
 const qnaController = require("./controllers/qnaController"); // importing the qna controller module Created by Keshwindren
+const commentsController = require("./controllers/commentsController"); // importing the comments controller module Created by Keshwindren
 
 const quizRouter = require("./controllers/quizController"); // Import the quizController. Created by PeyZhiXun
 const questionRouter = require("./controllers/questionController"); // Import the questionController. Created by PeyZhiXun
@@ -175,6 +179,12 @@ app.use("/api/quizzes", quizRouter);
 app.use("/api/questions", questionRouter);
 app.use("/api/options", optionRouter);
 
+// Routes for handling comment requests (Created by: Keshwindren S10259469C)
+app.get("/comments-QnA/:qnaId", commentsController.getCommentsByQnAId);  //get route to retrieve all message data from the database 
+app.get("/comments/:id", commentsController.getCommentById);  
+app.post("/comments", commentsController.createComment);  // put route for the posting of comments
+app.delete("/comments/:id", commentsController.deleteComment); // delete route to handle comment deletion
+app.put("/comments/:id", commentsController.updateComment); // Put route to handle comment update
 
 // /Routes for handling qna requests (Created by: Keshwindren S10259469C)
 app.get("/QnA/:courseId", qnaController.getQnAByCourseId);  //get route to retrieve all qna data from the database 

@@ -35,33 +35,35 @@ Keshwindren Gandipanh (S10259469C)
 let account = JSON.parse(sessionStorage.getItem("user")); // Retrieve the creator ID from the session storage
 let creatorId = account.AccId;
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
-function ViewActive(containerId) {
-  // Select all elements whose ID starts with 'view-btn' within the specified container
-  const viewButtons = document.querySelectorAll(`.educator-course-view-button`);
-
-  // Add click event listener to each view button
-  viewButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const courseId = button.id.split('-')[2];
-
-          if (containerId === 'educator-course-main-container') {
-             // Activate course view
-              const coursebtn = document.getElementById('courses-btn');
-              coursebtn.classList.add('active');
-              document.getElementById('educator-courses-container').style.display = 'none';
-              document.getElementById('educator-specific-course-container').style.display = 'block';
-              fetchCourseandSectionDetails(courseId);
-          } else if (containerId === 'educator-community-main-container') {
-            // Activate community view
-            const coursebtn = document.getElementById('community-btn');
-            coursebtn.classList.add('active');
-            document.getElementById('educator-community-container').style.display = 'none';
-            document.getElementById('educator-specific-community-container').style.display = 'block';
-            // Add getcommunitybycourseid section
-          }
+async function ViewActive(containerId) {
+    // Select all elements whose ID starts with 'view-btn' within the specified container
+    const viewButtons = document.querySelectorAll('.educator-course-view-button');
+  
+    // Add click event listener to each view button
+    viewButtons.forEach(button => {
+      button.addEventListener('click', async () => { // Make the event handler async
+        const courseId = button.id.split('-')[2];
+  
+        if (containerId === 'educator-course-main-container') {
+          // Activate course view
+          const coursebtn = document.getElementById('courses-btn');
+          coursebtn.classList.add('active');
+          document.getElementById('educator-courses-container').style.display = 'none';
+          document.getElementById('educator-specific-course-container').style.display = 'block';
+          await fetchCourseandSectionDetails(courseId); // Await fetchCourseandSectionDetails
+        } else if (containerId === 'educator-community-main-container') {
+          // Activate community view
+          const coursebtn = document.getElementById('community-btn');
+          coursebtn.classList.add('active');
+          document.getElementById('educator-community-container').style.display = 'none';
+          document.getElementById('educator-specific-community-container').style.display = 'block';
+  
+          await fetchQnA(courseId); // Await fetchQnA to ensure it completes
+          await fetchComments(); // Await fetchComments to ensure it runs after fetchQnA
+        }
       });
-  });
-}
+    });
+  }
 
 // Function to fetch courses created by a specific creator and display them. Created by: Sairam
 async function fetchCoursesByCreator(containerId) {
@@ -672,7 +674,222 @@ async function deleteCourse() {
     // Handle error as needed (e.g., show error message to user)
   }
 }
+
+
+
+// Function to retrieve QnA details by a courseId. Created by: Keshwindren 
+async function fetchQnA(CourseId) {
+    try {
+      const response = await fetch(`http://localhost:3000/QnA/${CourseId}`);
+      const data = await response.json();
+      console.log("QnA Data:", data);
   
+      // Handle the case where no QnA details are found
+      if (data.length === 0) {
+        alert("No QnA entries found for this course");
+        return;
+      }
+  
+      const qnaTitle = document.getElementById('qna-title');
+      const qnaPostDate = document.getElementById('qna-postdate');
+      const boxContainer = document.querySelector('.box-container');
+  
+      qnaTitle.innerText = data[0].QnAtitle;
+      qnaPostDate.innerText = "Created On: " + new Date(data[0].QnApostDate).toLocaleDateString();
+  
+      // Set the id attribute for the box-container element based on QnAId
+      boxContainer.id = `box-container-${data[0].id}`;
+      console.log(boxContainer.id)
+    } catch (error) {
+      console.error('Error fetching QnA details:', error);
+      alert('Failed to fetch QnA details. Please try again later.');
+    }
+  }
+// Function to retrieve comments details. Created by: Keshwindren 
+async function fetchComments() {
+    try {
+        // Get the box-container element
+        const boxContainer = document.querySelector('.box-container');
+        const qnaId = boxContainer.id.split('-')[2]; 
+        const response = await fetch(`http://localhost:3000/comments-QnA/${qnaId}`);
+        
+        // Handle non-JSON responses (e.g., HTML error page)
+        if (!response.ok) {
+            const text = await response.text();
+            console.error("Error fetching comments:", text);
+            return;
+        }
+        
+        const comments = await response.json();
+        const commentsSection = document.getElementById("comments-section");
+
+        // Clear existing comments
+        commentsSection.innerHTML = '';
+
+        comments.forEach(comment => {
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("post");
+
+            // Determine the name to display
+            let displayName;
+            if (comment.messageAccount === creatorId) {
+                displayName = "You";
+            } else {
+                displayName = comment.fullName;
+            }
+            commentDiv.innerHTML = `
+                <p><strong>${displayName}</strong> - ${new Date(comment.msgDate).toLocaleString()}</p>
+                <p>${comment.msgText}</p>
+            `;
+            commentsSection.appendChild(commentDiv);
+        });
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+    }
+}
+
+// Function to retrieve post comments. Created by: Keshwindren  
+async function postComment() {
+    const commentInput = document.getElementById("comment-input");
+    const msgText = commentInput.value;
+
+    if (msgText.trim() !== "") {
+        try {
+            // Get the QnA ID from the box-container element 
+            const boxContainer = document.querySelector('.box-container');
+            const qnaId = boxContainer.id.split('-')[2]; 
+
+            const accountId = creatorId;  
+            const response = await fetch("/comments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    msgText,
+                    messageAccount: accountId,
+                    messageQnA: qnaId
+                })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText);
+            }
+
+            const newComment = await response.json();
+            const commentsSection = document.getElementById("comments-section");
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("post");
+            commentDiv.id = `comment-${newComment.id}`; // addition of the comment ID to the div
+            commentDiv.innerHTML = `
+                <p><strong>You</strong> - <span class="comment-date">${new Date(newComment.msgDate).toLocaleString()}</span></p>
+                <p class="comment-text">${newComment.msgText}</p> 
+                <button onclick="deleteComment(${newComment.id})">Delete</button> 
+                <button onclick="editComment(${newComment.id})">Edit</button>
+
+            `; // having the delete button appear after posting comments
+            // having the edit button appear after posting comments
+            commentsSection.appendChild(commentDiv);
+            commentInput.value = "";
+        } catch (error) {
+            console.error("Error posting comment:", error);
+        }
+    }
+}
+
+// Function to delete comment. Created by : Keshwindren 
+async function deleteComment(commentId) {
+    try {
+        // Send a DELETE request to the server
+        const response = await fetch(`/comments/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+
+        // Remove the comment element from the DOM
+        const commentElement = document.getElementById(`comment-${commentId}`);
+        if (commentElement) {
+            commentElement.remove();
+        }
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+    }
+}
+
+// Function to update posted comments. Created by : Keshwindren 
+async function updateComment(commentId, newText) {
+    try {
+        const response = await fetch(`/comments/${commentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ msgText: newText })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText);
+        }
+
+        const updatedComment = await response.json(); 
+
+        const commentElement = document.getElementById(`comment-${commentId}`);
+        if (commentElement) {
+            const commentTextElement = commentElement.querySelector('.comment-text'); 
+            const commentDateElement = commentElement.querySelector('.comment-date'); 
+            commentTextElement.textContent = newText;
+            commentDateElement.textContent = new Date(updatedComment.msgDate).toLocaleString(); 
+        }
+    } catch (error) {
+        console.error('Error updating comment:', error);
+    }
+}
+
+// Continuation of the update feature. Created by : Keshwindren     
+function editComment(commentId) {
+    const commentElement = document.getElementById(`comment-${commentId}`);
+    if (!commentElement) {
+        console.error(`Comment element with ID comment-${commentId} not found`);
+        return;
+    }
+    const commentTextElement = commentElement.querySelector('.comment-text');
+    if (!commentTextElement) {
+        console.error(`Comment text element with class .comment-text not found in comment-${commentId}`);
+        return;
+    }
+    const currentText = commentTextElement.textContent;
+
+    // Ceate input field with the current comment text
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.value = currentText;
+    inputField.classList.add('edit-input');
+
+    // Create a save button to save the edited comment
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Save';
+    saveButton.onclick = function() {
+        const newText = inputField.value;
+        updateComment(commentId, newText).then(() => {
+            commentTextElement.textContent = newText;
+            commentElement.removeChild(inputField);
+            commentElement.removeChild(saveButton);
+        });
+    };
+
+    // Add the input field and save button to the comment element
+    commentElement.appendChild(inputField);
+    commentElement.appendChild(saveButton);
+}
 
 
 // Functions created by: Pey Zhi Xun

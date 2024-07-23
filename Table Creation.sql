@@ -154,7 +154,7 @@ create table QnA
 
 insert into Account(FullName,DOB,Email,ContactNo,PasswordHash,role,Photo,LinkedIn) 
 values 
-('Chang Guan Quan', '2000-01-01','changguanquan@gmail.com','12345678','$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator','Photo','www.linkedin.com/changguanquan'),
+('Alex Chang', '2006-01-01','alex.chang@gmail.com','12345678','$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator','Photo','www.linkedin.com/changguanquan'),
 ('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','$2b$10$wNR9IXTUGSkKdYF6Icajg.Zk5Ft2KXB628lc.4GMctmExKY4WBinS','Student','Photo','www.linkedin.com/mariagarcia'),
 ('John Smith', '1988-12-22','john.smith@example.com','23456789','$2b$10$58zUWuF2GEMoamCHtzpBfuZV5nBmuE/h.p5BXbpRUXod.DfIyDbGG','Educator','Photo','www.linkedin.com/johnsmith'),
 ('Aisha Khan', '1993-07-08','aisha.khan@example.com','34567890','$2b$10$nJ3xjkiIDwoC4HLolMSKcOhia9R2V1O8KUY0mU1UdCtE6Yw1TeaG.','Student','Photo','www.linkedin.com/aishakhan'),

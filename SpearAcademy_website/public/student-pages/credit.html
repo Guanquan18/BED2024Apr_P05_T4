@@ -1,0 +1,193 @@
+ <!-- Team Component -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Spear Academy</title>
+     <link rel="stylesheet" href="../styles/styles.css">
+     <!-- Bootstrap CSS -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+     <!--Font Awesome Link-->
+     <script src="https://kit.fontawesome.com/543bcc20b3.js" crossorigin="anonymous"></script>
+     <style>
+         .navigation-panel {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 10px 30px;
+             background-color: #FAF8FF;
+             border-bottom: 2px solid black;
+         }
+     
+         .right-section, .left-section {
+             display: flex;
+             align-items: center;
+         }
+     
+         .left-section h1 {
+             font-size: 2em;
+             margin-left: 20px;
+         }
+     
+         .right-section a {
+             font-size: 1.4em;
+             margin-right: 20px;
+             text-decoration: none;
+             color: #333;
+             transition: color 0.3s ease; /* Smooth transition */
+         }
+         .right-section a:hover {
+             color: #6F74FB; /* Change to your desired hover color */
+         }
+     
+         /* Search box styling */
+         .box {
+             height: 40px;
+             display: flex;
+             cursor: pointer;
+             padding: 10px;
+             background-color: #6F74FB;
+             border-radius: 60px;
+             align-items: center;
+             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+             margin-right: 20px;
+         }
+     
+         .box:hover input {
+             width: 400px;
+         }
+     
+         .box:hover {
+             border-radius: 10px;
+         }
+     
+         .box input {
+             width: 0;
+             outline: none;
+             border: none;
+             font-weight: 500;
+             transition: 0.8s;
+             background: transparent;
+         }
+     
+         .box .fa {
+             color: #fff;
+             font-size: 19px;
+         }
+     
+         .box input::placeholder {
+             color: #fff; /* Placeholder text color */
+         }
+     
+         /* Profile icon styling */
+         .profile-icon {
+             position: relative;
+         }
+     
+         #profile {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             cursor: pointer;
+         }
+     
+         #profile-icon {
+             width: 50px;
+             height: 50px;
+             border-radius: 50%;
+         }
+     
+         #profile p {
+             margin: 0;
+             font-size: 1em;
+             color: #333;
+             text-align: center;
+         }
+     
+         .icon {
+             width: 80px;
+             height: 80px;
+         }
+     
+         /* Credits section styling */
+         .credits-container {
+             margin: 20px auto;
+             padding: 20px;
+             max-width: 800px;
+             background-color: #f9f9f9;
+             border-radius: 8px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+         }
+     
+         .credits-container h2 {
+             font-size: 2em;
+             margin-bottom: 20px;
+             color: #333;
+         }
+     
+         .credits-container p {
+             font-size: 1.2em;
+             margin-bottom: 15px; 
+             line-height: 1.6;
+             color: #555;
+             position: relative;
+             padding-left: 30px; 
+         }
+     
+         .credits-container p::before {
+             content: "\2022"; 
+             position: absolute;
+             left: 0;
+             color: #6F74FB; 
+             font-size: 1.5em; 
+             line-height: 1;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="navigation-panel">
+         <div class="left-section">
+             <img class="icon" id="website-icon" src="../Images/icon.png" alt="icon">
+             <h1>Spear Academy</h1>
+         </div>
+         <div class="right-section">
+             <a href="./student.html">Home</a>
+             <a href="./credit.html">Credit</a>
+             <div class="box">
+                 <input type="text" placeholder="Search....">
+                 <i class="fa fa-search"></i>
+             </div>
+             <div class="profile-icon">
+                 <div id="profile">
+                     <img class="icon" id="profile-icon" src="..//Images/student-profile.jpg" alt="icon">
+                     <p> My Profile </p>
+                 </div>
+             </div>
+         </div>
+     </div>
+ 
+     <!-- Credits Section -->
+     <div class="credits-container">
+         <h2>Credits</h2>
+         <p>
+             FreePik. (n.d.). Premium vector: Cute girl working on computer cartoon vector icon illustration. people and technology icon concept isolated premium vector. Flat Cartoon style. 
+             <a href="https://www.freepik.com/premium-vector/cute-girl-working-computer-cartoon-vector-icon-illustration-people-technology-icon-concept-isolated-premium-vector-flat-cartoon-style_9072435.htm" target="_blank" rel="noopener noreferrer">Freepik</a>.
+         </p>
+         <p>
+             Garrate, C. (2022, July 19). The role of Python in Machine Learning | Twine. Twine Blog. 
+             <a href="https://www.twine.net/blog/role-of-python-in-machine-learning/" target="_blank" rel="noopener noreferrer">Twine Blog</a>.
+         </p>
+         <p>
+             Team, M. (n.d.). Artificial Intelligence tutorial | AI Tutorial for Beginners | Intellipaat. 
+             <a href="https://morioh.com/a/a4060ce82aee/artificial-intelligence-tutorial-or-ai-tutorial-for-beginners-or-intellipaat" target="_blank" rel="noopener noreferrer">Intellipaat</a>.
+         </p>
+         <!-- Add more citations as needed -->
+     </div>
+     
+ 
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+     <script src="../scripts/script.js"></script>
+ </body>
+ </html>
+ 

@@ -7,13 +7,79 @@
     <link rel="stylesheet" href="../styles/styles.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--Internal CSS-->
+    <style>
+        .box-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    }
+
+    .thread {
+        margin-bottom: 20px;
+    }
+
+    .post {
+        background-color: #f9f9f9;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .post p {
+        margin: 0;
+    }
+
+    .post button {
+        margin-right: 5px;
+        background-color: #6F74FB;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .post button:hover {
+        background-color: #42459b;
+    }
+
+    .comment-box {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .comment-box input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .comment-box button {
+        background-color: #6F74FB;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .comment-box button:hover {
+        background-color: #42459b;
+    }
+    </style>
 </head>
 <body>
     <div class="educator-navigation-sidebar">
         <div class="educator-navigation-sidebar-header">SPEAR ACADEMY</div>
         <a id="courses-btn" href="creator.html">Courses</a>
         <a id="community-btn" href="community.html" class = "active">Community</a>
-        <a id="quiz-btn" href="quiz.html">Quiz</a>
+        <a id="quiz-btn" href="manage-quizzes.html">Quiz</a>
         <a id="profile-btn" href="profile.html" >Profile</a>
     </div>
     <div id="educator-community-container" class = "content-container">   
@@ -23,7 +89,19 @@
         <div class="main-container" id="educator-community-main-container"></div>
     </div>
     <div id="educator-specific-community-container" class="content-container"  style="display: none">
-        <p>hi</p>
+        <div class="box-container">
+            <div class="top-content">
+                <h1 id = "qna-title"></h1>
+                <h1 id = "qna-postdate"></h1>
+            </div>
+            <div class="thread" id="comments-section">
+                <!-- Comments will be dynamically inserted here -->
+            </div>
+            <div class="comment-box">
+                <input type="text" id="comment-input" placeholder="Write a reply...">
+                <button type="submit" id="post-btn" class="post-btn" onclick="postComment()">Post</button>
+            </div>
+        </div>
     </div>
     <!-- Bootstrap JavaScript Bundle (popper.js and bootstrap.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

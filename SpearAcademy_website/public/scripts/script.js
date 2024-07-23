@@ -35,33 +35,35 @@ Keshwindren Gandipanh (S10259469C)
 let account = JSON.parse(sessionStorage.getItem("user")); // Retrieve the creator ID from the session storage
 let creatorId = account.AccId;
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
-function ViewActive(containerId) {
-  // Select all elements whose ID starts with 'view-btn' within the specified container
-  const viewButtons = document.querySelectorAll(`.educator-course-view-button`);
-
-  // Add click event listener to each view button
-  viewButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          const courseId = button.id.split('-')[2];
-
-          if (containerId === 'educator-course-main-container') {
-             // Activate course view
-              const coursebtn = document.getElementById('courses-btn');
-              coursebtn.classList.add('active');
-              document.getElementById('educator-courses-container').style.display = 'none';
-              document.getElementById('educator-specific-course-container').style.display = 'block';
-              fetchCourseandSectionDetails(courseId);
-          } else if (containerId === 'educator-community-main-container') {
-            // Activate community view
-            const coursebtn = document.getElementById('community-btn');
-            coursebtn.classList.add('active');
-            document.getElementById('educator-community-container').style.display = 'none';
-            document.getElementById('educator-specific-community-container').style.display = 'block';
-            // Add getcommunitybycourseid section
-          }
+async function ViewActive(containerId) {
+    // Select all elements whose ID starts with 'view-btn' within the specified container
+    const viewButtons = document.querySelectorAll('.educator-course-view-button');
+  
+    // Add click event listener to each view button
+    viewButtons.forEach(button => {
+      button.addEventListener('click', async () => { // Make the event handler async
+        const courseId = button.id.split('-')[2];
+  
+        if (containerId === 'educator-course-main-container') {
+          // Activate course view
+          const coursebtn = document.getElementById('courses-btn');
+          coursebtn.classList.add('active');
+          document.getElementById('educator-courses-container').style.display = 'none';
+          document.getElementById('educator-specific-course-container').style.display = 'block';
+          await fetchCourseandSectionDetails(courseId); // Await fetchCourseandSectionDetails
+        } else if (containerId === 'educator-community-main-container') {
+          // Activate community view
+          const coursebtn = document.getElementById('community-btn');
+          coursebtn.classList.add('active');
+          document.getElementById('educator-community-container').style.display = 'none';
+          document.getElementById('educator-specific-community-container').style.display = 'block';
+  
+          await fetchQnA(courseId); // Await fetchQnA to ensure it completes
+          await fetchComments(); // Await fetchComments to ensure it runs after fetchQnA
+        }
       });
-  });
-}
+    });
+  }
 
 // Function to fetch courses created by a specific creator and display them. Created by: Sairam
 async function fetchCoursesByCreator(containerId) {
@@ -673,6 +675,35 @@ async function deleteCourse() {
   }
 }
   
+// Function to retrieve QnA details by a courseId. Created by: Keshwindren 
+async function fetchQnA(CourseId) {
+    try {
+      const response = await fetch(`http://localhost:3000/QnA/${CourseId}`);
+      const data = await response.json();
+      console.log("QnA Data:", data);
+  
+      // Handle the case where no QnA details are found
+      if (data.length === 0) {
+        alert("No QnA entries found for this course");
+        return;
+      }
+  
+      const qnaTitle = document.getElementById('qna-title');
+      const qnaPostDate = document.getElementById('qna-postdate');
+      const boxContainer = document.querySelector('.box-container');
+  
+      qnaTitle.innerText = data[0].QnAtitle;
+      qnaPostDate.innerText = "Created On: " + new Date(data[0].QnApostDate).toLocaleDateString();
+  
+      // Set the id attribute for the box-container element based on QnAId
+      boxContainer.id = `box-container-${data[0].id}`;
+      console.log(boxContainer.id)
+    } catch (error) {
+      console.error('Error fetching QnA details:', error);
+      alert('Failed to fetch QnA details. Please try again later.');
+    }
+  }
+
 
 
 // Functions created by: Pey Zhi Xun

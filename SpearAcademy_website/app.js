@@ -93,10 +93,12 @@ const coursesController = require("./controllers/courseController"); // Import t
 const sectionDetailsController = require("./controllers/sectionDetailController"); // Import the cectionDetailController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
+const qnaController = require("./controllers/qnaController"); // importing the qna controller module Created by Keshwindren
 
 const quizRouter = require("./controllers/quizController"); // Import the quizController. Created by PeyZhiXun
 const questionRouter = require("./controllers/questionController"); // Import the questionController. Created by PeyZhiXun
 const optionRouter = require("./controllers/optionController"); // Import the optionController. Created by PeyZhiXun
+
 
 const app = express(); // Create an Express application
 const port = process.env.PORT || 3000; // Use environment variable or default port
@@ -172,6 +174,10 @@ app.post("/educator/createEducator/:eduId", validateEducator.validateQualificati
 app.use("/api/quizzes", quizRouter);
 app.use("/api/questions", questionRouter);
 app.use("/api/options", optionRouter);
+
+
+// /Routes for handling qna requests (Created by: Keshwindren S10259469C)
+app.get("/QnA/:courseId", qnaController.getQnAByCourseId);  //get route to retrieve all qna data from the database 
 
 // Start the server and connect to the database
 app.listen(port, async () => {

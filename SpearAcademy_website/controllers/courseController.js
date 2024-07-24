@@ -86,7 +86,7 @@ const updateCourseIcon = async (req, res) => {
     res.json(updatedIcon); // Send the updated course icon data as JSON response
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error updating course');
+    res.status(500).send('Error updating course icon');
   }
 };
 

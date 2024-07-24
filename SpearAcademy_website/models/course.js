@@ -267,20 +267,23 @@ class Courses {
      // Static method to create a new course
     // Created By: Sairam (S10259930H)
     static async createCourse(creatorId, newCourseData) {
-        const connection = await sql.connect(dbConfig); // Connect to the database
-        
+      let connection;
+    
+      try {
+        connection = await sql.connect(dbConfig); // Connect to the database
+    
         // Base SQL query for creating a new course
         let sqlQuery = 'INSERT INTO Course (Creator, CourseTitle, SmallDescription, Description, Thumbnail';
         let values = ['@CreatorId', '@CourseTitle', '@SmallDescription', '@Description', '@CourseIcon'];
         const request = connection.request();
-        
+    
         // Handle mandatory fields
         request.input('CreatorId', creatorId);
         request.input('CourseTitle', newCourseData.CourseTitle);
         request.input('SmallDescription', newCourseData.SmallDescription);
         request.input('Description', newCourseData.Description);
         request.input('CourseIcon', newCourseData.Thumbnail);
-        
+    
         // Handle optional fields
         if (newCourseData.Label !== undefined) {
           sqlQuery += ', Label';
@@ -292,25 +295,29 @@ class Courses {
           values.push('@Badge');
           request.input('Badge', newCourseData.Badge);
         }
-        
+    
         // Complete the SQL query
         sqlQuery += ', LastUpdated) VALUES (' + values.join(', ') + ', getdate()); SELECT SCOPE_IDENTITY() AS id;';
-        
-        try {
-          // Execute the query and retrieve the ID of the inserted record
-          const result = await request.query(sqlQuery);
-          const newCourseId = result.recordset[0].id;
-          
-          // Return the newly created course with its sections
-          return this.getCourseByCreator(creatorId);
-        } catch (error) {
-          // Rethrow or handle the error as needed
-          throw new Error(`Error creating course: ${error.message}`);
-        } finally {
-          // Ensure the connection is always closed
+    
+        // Execute the query and retrieve the ID of the inserted record
+        const result = await request.query(sqlQuery);
+        const newCourseId = result.recordset[0].id;
+    
+        // Return the newly created course with its sections
+        return await this.getCourseByCreator(creatorId);
+      } catch (error) {
+        // Rethrow or handle the error as needed
+        throw new Error(`Error creating course: ${error.message}`);
+      } finally {
+        // Ensure the connection is always closed
+        if (connection) {
           connection.close();
         }
+      }
     }
+    
+    
+    
 
     // Static method to delete a course and its associated details
     // Created By: Sairam (S10259930H)

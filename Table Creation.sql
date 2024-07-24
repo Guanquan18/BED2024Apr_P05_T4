@@ -10,7 +10,7 @@ create table Account
 	Email			varchar(100)				not null unique,
 	ContactNo		varchar(20)					null unique,
 	PasswordHash	varchar(200)				not null, 
-	role			varchar(10)					null CHECK(role in ('Student','Educator')),
+	Role			varchar(10)					null CHECK(Role in ('Student','Educator')),
 	Photo			varchar(200)				null,
 	LinkedIn		varchar(150)				null, 
 	constraint PK_Account primary key (AccId)
@@ -154,7 +154,7 @@ create table Message
 
 
 
-insert into Account(FullName,DOB,Email,ContactNo,PasswordHash,role,Photo,LinkedIn) 
+insert into Account(FullName,DOB,Email,ContactNo,PasswordHash,Role,Photo,LinkedIn) 
 values 
 ('Alex Chang', '2006-01-01','alex.chang@gmail.com','12345678','$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator','Photo','www.linkedin.com/alexchang'),
 ('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','$2b$10$wNR9IXTUGSkKdYF6Icajg.Zk5Ft2KXB628lc.4GMctmExKY4WBinS','Student','Photo','www.linkedin.com/mariagarcia'),

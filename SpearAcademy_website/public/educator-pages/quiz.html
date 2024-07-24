@@ -68,14 +68,27 @@
         let score = 0;
         let currentQuestionIndex = 0;
 
+        const token = sessionStorage.getItem('token');
+
         async function fetchQuizData(quizId) {
             try {
-                const response = await fetch(`/api/quizzes/${quizId}`);
+                console.log('Fetching quiz data...');
+                const response = await fetch(`/api/quizzes/${quizId}`,{
+                    method: 'GET',
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
                 if (!response.ok) throw new Error('Failed to fetch quiz data');
                 const quizData = await response.json();
 
                 for (const question of quizData.questions) {
-                    const optionsResponse = await fetch(`/api/options/${question.QuestionNo}`);
+                    const optionsResponse = await fetch(`/api/options/${question.QuestionNo}`,{
+                        method: 'GET',
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
                     if (!optionsResponse.ok) throw new Error('Failed to fetch options');
                     const options = await optionsResponse.json();
                     question.options = options.map(option => ({

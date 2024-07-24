@@ -1,6 +1,9 @@
 const express = require('express');
 const sql = require('mssql');
 const dbConfig = require('../dbConfig');
+const verifyJWT = require('../middlewares/verifyJWT');
+
+const firstpath = '/api/options';
 
 const router = express.Router();
 
@@ -16,7 +19,15 @@ router.use(async (req, res, next) => {
 });
 
 // Get options for a question
-router.get('/:questionId', async (req, res) => {
+router.get('/:questionId', 
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}${url}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+    
+    async (req, res) => {
     const { questionId } = req.params;
     try {
         const result = await req.pool.request()

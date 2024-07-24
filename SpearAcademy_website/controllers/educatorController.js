@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");    // Import jsonwebtoken for creating toke
 require('dotenv').config(); // Import dotenv for environment variables
 
 const createEducator = async (req, res) => {
-    const eduId = req.account.AccId;
+    const eduId = req.params.eduId;
     const newEducatorData = req.body;
 
     try {

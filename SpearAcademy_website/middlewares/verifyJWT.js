@@ -18,9 +18,12 @@ function verifyJWT(req, res, next) {
   
       // Check user role for authorization (replace with your logic)
       const authorizedRoles = {
-        "/account/update/updatePersonalDetails": ["Student", "Educator"], // Any signed in users can update personal details
-        "/educator/createEducator": ["Educator"], // Only Educators can create Educators
 
+        /*  Chang Guan Quan's Paths   */
+        "/account/update/updatePersonalDetails/[0-9]+": ["Student", "Educator"], // Any signed in users can update personal details
+        "/educator/createEducator/[0-9]+": ["Educator"], // Only Educators can create Educators
+
+        /*  S.Sairam's Paths   */
         "/courses-creator/[0-9]+" : ["Educator"], // Only Educators can view their courses
         "/courses" : ["Student", "Educator"], // Students and Educator can view all courses in student.html
         "/courses-with-sections-id/[0-9]+" : ["Educator"], // Only Educators can view their courses and sections
@@ -29,13 +32,24 @@ function verifyJWT(req, res, next) {
         "/new-course/[0-9]+" : ["Educator"],// Only Educators can create courses
         "/delete-course/[0-9]+" : ["Educator"],// Only Educators can delete their courses
 
+        /*  S.Sairam's Paths   */
         "/sectionDetails-id/[0-9]+/[0-9]+" : ["Educator"],// Only Educators can view their sectionDetails
         "/sectionDetails/[0-9]+/[0-9]+" : ["Educator"],// Only Educators update their sectionDetails
         "/new-sectionDetails/[0-9]+" : ["Educator"],// O// Only Educators can create their sectionDetails
         "/delete-sectionDetails/[0-9]+" : ["Educator"],// Only Educators can delete their sectionDetails
+
+        /*  PeyZhiXun's Paths   */
+        "/api/quizzes/[0-9]+" : ["Educator"],// Only Educators can view quizzes
+        "/api/quizzes" : ["Educator"],// Only Educators can view quizzes
+        "/api/questions/[0-9]+/questions" : ["Educator"],// Only Educators can view questions
+        "/api/options/[0-9]+" : ["Educator"],// Only Educators can view options
+
+        /*  Keshwindren's Paths   */
+        "/comments-QnA/[0-9]+" : ["Educator"],// Students and Educators can view comments
+        "/comments/[0-9]+" : ["Educator"],// Students and Educators can view comments
+        "/comments" : ["Educator"],// Students and Educators can view comments
       };
 
-  
       const requestedEndpoint = req.url;  // Get the requested endpoint
       const accountRole = decoded.Role;  // Get the user role from the decoded token
 

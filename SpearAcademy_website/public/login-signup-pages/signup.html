@@ -359,7 +359,7 @@
                         console.log(data.message);
 
                         sessionStorage.setItem("token",data.token);  // Store user object in session storage
-                        sessionStorage.setItem("acccId",data.accId);
+                        sessionStorage.setItem("accId",data.accId);
                         /*
                         Accessing Email property of the user object
                         const storedUser = JSON.parse(sessionStorage.getItem("Account"));
@@ -401,6 +401,8 @@
             
             signupPersonalDetailsFormButton.addEventListener("click",async function(event){
                 event.preventDefault();
+
+                const acccId = sessionStorage.getItem("accId");
 
                 // Get personal details inputs
                 const fullname = document.getElementById("signup-fullname").value;
@@ -497,7 +499,7 @@
                 // function to authenticate personal details of the user by sending a request to the server
                 async function authenticatePersonalDetails(){
 
-                    const response = await fetch(`/account/update/updatePersonalDetails`,{
+                    const response = await fetch(`/account/update/updatePersonalDetails/${acccId}`,{
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -563,6 +565,8 @@
             signupQualificationFormButton.addEventListener("click",async function(event){
                 event.preventDefault();
 
+                const eduId = sessionStorage.getItem("accId");
+
                 // Get qualification inputs
                 const professionalTitle = document.getElementById("signup-professional-title").value;
                 const organisation = document.getElementById("signup-Organisation").value;
@@ -580,7 +584,7 @@
                 }
 
                 if (qualificationAuthenticated){
-                    window.location.href = "../educator-pages/educator.html";   // Redirect to educator home page
+                    window.location.href = "../educator-pages/creator.html";   // Redirect to educator home page
                 }
 
                 async function validatePersonalDetails(){
@@ -671,7 +675,7 @@
                 // function to verify qualification of the user by sending a request to the server
                 async function verifyQualification(){
 
-                    const response = await fetch(`/educator/createEducator`,{
+                    const response = await fetch(`/educator/createEducator/${eduId}`,{
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

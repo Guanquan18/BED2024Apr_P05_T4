@@ -23,10 +23,10 @@ Account routes
 - app.get("/account/:accId", accountController.getAccountById);
 - app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 - app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-- app.put("/account/update/updatePersonalDetails",validateAccount.validatePersonalDetails, validateAccount.verifyJWT, accountController.updateAccount);
+- app.put("/account/update/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
 
 Eductor routes
-- app.post("/educator/createEducator", validateEducator.validateQualification,validateAccount.verifyJWT, educatorController.createEducator);
+- app.post("/educator/createEducator/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.createEducator);
 
 
 Pey Zhi Xun (S10258774E)
@@ -142,10 +142,10 @@ app.get("/accounts", accountController.getAllAccounts);
 app.get("/account/:accId", accountController.getAccountById);
 app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-app.put("/account/update/updatePersonalDetails",validateAccount.validatePersonalDetails, verifyJWT.verifyJWT, accountController.updateAccount);
+app.put("/account/update/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
-app.post("/educator/createEducator", validateEducator.validateQualification,verifyJWT.verifyJWT, educatorController.createEducator);
+app.post("/educator/createEducator/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.createEducator);
 
 // Mount the routers for handling quiz-related requests (Created by: Pey Zhi Xun)
 app.use("/api/quizzes", quizRouter);
@@ -153,11 +153,11 @@ app.use("/api/questions", questionRouter);
 app.use("/api/options", optionRouter);
 
 // Routes for handling comment requests (Created by: Keshwindren S10259469C)
-app.get("/comments-QnA/:qnaId", commentsController.getCommentsByQnAId);  //get route to retrieve all message data from the database 
-app.get("/comments/:id", commentsController.getCommentById);  
-app.post("/comments", commentsController.createComment);  // put route for the posting of comments
-app.delete("/comments/:id", commentsController.deleteComment); // delete route to handle comment deletion
-app.put("/comments/:id", commentsController.updateComment); // Put route to handle comment update
+app.get("/comments-QnA/:qnaId", verifyJWT.verifyJWT, commentsController.getCommentsByQnAId);  //get route to retrieve all message data from the database 
+app.get("/comments/:id", verifyJWT.verifyJWT, commentsController.getCommentById);  
+app.post("/comments", verifyJWT.verifyJWT, commentsController.createComment);  // put route for the posting of comments
+app.delete("/comments/:id", verifyJWT.verifyJWT, commentsController.deleteComment); // delete route to handle comment deletion
+app.put("/comments/:id", verifyJWT.verifyJWT, commentsController.updateComment); // Put route to handle comment update
 
 // Routes for handling qna requests (Created by: Keshwindren S10259469C)
 app.get("/QnA/:courseId", qnaController.getQnAByCourseId);  //get route to retrieve all qna data from the database 

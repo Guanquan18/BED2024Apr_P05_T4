@@ -1,6 +1,9 @@
 const express = require('express');
 const sql = require('mssql');
 const dbConfig = require('../dbConfig');
+const verifyJWT = require('../middlewares/verifyJWT');
+
+const firstpath = '/api/questions';
 
 const router = express.Router();
 
@@ -16,7 +19,15 @@ router.use(async (req, res, next) => {
 });
 
 // Get questions for a quiz
-router.get('/:quizId/questions', async (req, res) => {
+router.get('/:quizId/questions', 
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}${url}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+    
+    async (req, res) => {
     const { quizId } = req.params;
     try {
         const result = await req.pool.request()

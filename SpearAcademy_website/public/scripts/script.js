@@ -943,8 +943,8 @@ async function deleteComment(commentId) {
         const response = await fetch(`/comments/${commentId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Include the token in the request headers
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Include the token in the request headers
             }
         });
 

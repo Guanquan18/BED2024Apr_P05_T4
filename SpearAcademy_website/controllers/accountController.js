@@ -52,7 +52,7 @@ const loginAccount = async (req, res) => {
         };
         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3600s" }); // Expires in 1 hour
         
-        if (account.role === "Student"){
+        if (account.Role === "Student"){
             return res.status(200).json({ token : token, accId : account.AccId, homePage: "../student-pages/student.html" });
         }
         else{
@@ -103,8 +103,9 @@ const createAccount = async (req, res) => {
 };
 
 const updateAccount = async (req, res) => {
-    const accId = req.account.AccId;
+    const accId = req.params.accId;
     const newAccountData = req.body;
+    console.log("accId", accId);
 
     try {
         // Check if account exists

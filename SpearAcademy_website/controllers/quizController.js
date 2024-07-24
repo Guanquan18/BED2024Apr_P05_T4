@@ -1,6 +1,9 @@
 const express = require('express');
 const sql = require('mssql');
 const dbConfig = require('../dbConfig');
+const verifyJWT = require('../middlewares/verifyJWT');
+
+const firstpath = '/api/quizzes';
 
 const router = express.Router();
 
@@ -16,7 +19,15 @@ router.use(async (req, res, next) => {
 });
 
 // Fetch all quizzes
-router.get('/', async (req, res) => {
+router.get('/', 
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+
+    async (req, res) => {
     try {
         const result = await req.pool.request().query(`
             SELECT 
@@ -41,7 +52,15 @@ router.get('/', async (req, res) => {
 
 
 // Create a new quiz with questions and options
-router.post('/', async (req, res) => {
+router.post('/', 
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+
+    async (req, res) => {
     const { QuizTitle, Section_Quiz, Course_Quiz, questions } = req.body;
     const transaction = new sql.Transaction(req.pool);
 
@@ -87,7 +106,15 @@ router.post('/', async (req, res) => {
 });
 
 // Delete Quiz
-router.delete('/:quizId', async (req, res) => {
+router.delete('/:quizId',
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}${url}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+
+    async (req, res) => {
     const { quizId } = req.params;
     const transaction = new sql.Transaction(req.pool);
 
@@ -141,7 +168,16 @@ router.delete('/:quizId', async (req, res) => {
 });
 
 // Fetch specific quiz details including questions and options
-router.get('/:quizId', async (req, res) => {
+router.get('/:quizId',
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}${url}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+
+    async (req, res) => {
+    console.log('Fetching quiz details');
     const { quizId } = req.params;
     try {
         const quizRequest = new sql.Request(req.pool);
@@ -198,7 +234,15 @@ router.get('/:quizId', async (req, res) => {
 
 
 
-router.put('/:quizId', async (req, res) => {
+router.put('/:quizId', 
+    async (req, res, next) => {
+        let url = req.url;
+        req.url = `${firstpath}${url}`;
+        next();
+    },
+    verifyJWT.verifyJWT,
+
+    async (req, res) => {
     const { quizId } = req.params;
     const { QuizTitle, questions } = req.body;
     const transaction = new sql.Transaction(req.pool);

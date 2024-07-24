@@ -2,14 +2,14 @@
 Function Created
 Sairam (S10255930H)
 - editSection
-- ViewActive(containerId)
+- viewActive(containerId)
 - fetchAllCourses()
 - fetchCoursesByCreator(containerId)
 - fetchCourseandSectionDetails(CourseId)
-- UpdateCourse()
+- updateCourse()
 - fetchSectionDetails()
-- UpdateSectionDetails(0)
-- UpdateCourseIcon()
+- updateSectionDetails(0)
+- updateCourseIcon()
 - createNewCourse()
 - createSectionDetails()
 - deleteSectionDetails()
@@ -36,7 +36,7 @@ const creatorId = JSON.parse(sessionStorage.getItem("accId")); // Retrieve the c
 const token = sessionStorage.getItem("token"); // Retrieve the token from the session storage
 
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
-async function ViewActive(containerId) {
+async function viewActive(containerId) {
     // Select all elements whose ID starts with 'view-btn' within the specified container
     const viewButtons = document.querySelectorAll('.educator-course-view-button');
   
@@ -171,7 +171,7 @@ async function fetchCoursesByCreator(containerId) {
     // Append the row to the container
     courseList.appendChild(row);
     // Initialize the view button event handlers
-    ViewActive(containerId);
+    viewActive(containerId);
   }
 }
 
@@ -363,7 +363,7 @@ async function fetchCourseandSectionDetails(CourseId) {
 }
 
 // Function to update course details with the data from the form. Created by: Sairam
-async function UpdateCourse() {
+async function updateCourse() {
     // Get the course ID from the popup's ID attribute
   const pop_up_edit_container = document.querySelector('.popup-content');
   const courseId = pop_up_edit_container.id.split('-')[2];
@@ -475,7 +475,7 @@ async function fetchSectionDetails(courseId, SectionNo) {
 }
 
 // Function to update course icon by a courseId. Created by: Sairam 
-async function UpdateCourseIcon() {
+async function updateCourseIcon() {
     // Get the popup container and extract the course ID from its ID attribute
   const pop_up_edit_container = document.querySelector('.popup-content');
   const courseId = pop_up_edit_container.id.split('-')[2];
@@ -528,7 +528,7 @@ async function UpdateCourseIcon() {
   }
 }
 // Function to update section details by a courseId. Created by: Sairam 
-async function UpdateSectionDetails() {
+async function updateSectionDetails() {
     // Select the section item button to retrieve section and course IDs
   const edit_section_btn = document.querySelector('.section-item');
   const sectionNo = edit_section_btn.id.split('-')[2];

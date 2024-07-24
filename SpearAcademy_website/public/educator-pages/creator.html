@@ -338,7 +338,7 @@
                 <!-- File input field with restrictions to accept only images -->
                 <input type="file" id="course-icon" name="thumbnail" accept="image/*" class="form-control"><br><br>
                  <!-- Button to save changes, triggering the UpdateCourseIcon function -->
-                <button type="button" class="btn btn-primary" onclick="UpdateCourseIcon()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="updateCourseIcon()">Save changes</button>
             </form>
         </div>
     </div>
@@ -371,7 +371,7 @@
                     <input type="text" class="form-control" id="edit-Course-Badge" placeholder="Edit content here">
                 </div>
                  <!-- Button to save changes, triggering the UpdateCourse function -->
-                <button type="button" class="btn btn-primary" onclick="UpdateCourse()">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="updateCourse()">Save changes</button>
             </form>
         </div>
     </div>
@@ -438,8 +438,8 @@
                 <input type="file" id="section-detail-video" name="video" accept="video/mp4" class="form-control"><br><br>
                   <!-- Button container -->
                 <div class="button-container">
-                    <!-- Button to save changes, triggering the UpdateSectionDetails function -->
-                    <button type="button" class="btn btn-primary" onclick="UpdateSectionDetails()">Save changes</button>
+                    <!-- Button to save changes, triggering the updateSectionDetails function -->
+                    <button type="button" class="btn btn-primary" onclick="updateSectionDetails()">Save changes</button>
                     <!-- Button to delete section, triggering a confirmation popup -->
                     <button type="button" class="delete-button" onclick="showPopup('section-confirmation-pop-up')">Delete Section</button>
                 </div>

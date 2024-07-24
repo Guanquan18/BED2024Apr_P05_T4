@@ -45,19 +45,18 @@ const loginAccount = async (req, res) => {
         if (!isPasswordMatch) {
             return res.status(401).json({ message: "Incorrect credentials." });
         }
-        
         // Create a token
         const payload = {
             AccId: account.AccId,
-            Role: account.role,
+            Role: account.Role,
         };
         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3600s" }); // Expires in 1 hour
         
         if (account.role === "Student"){
-            return res.status(200).json({ token : token, homePage: "../student-pages/student.html" });
+            return res.status(200).json({ token : token, accId : account.AccId, homePage: "../student-pages/student.html" });
         }
         else{
-            return res.status(200).json({ token : token, homePage: "../educator-pages/creator.html" });
+            return res.status(200).json({ token : token, accId : account.AccId, homePage: "../educator-pages/creator.html" });
         }
         
     } catch (error) {
@@ -91,11 +90,11 @@ const createAccount = async (req, res) => {
         // Create a token
         const payload = {
             AccId: account.AccId,
-            Role: account.role,
+            Role: account.Role,
         };
         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "3600s" }); // Expires in 1 hour
 
-        res.status(201).json({ token: token, message: "Account created successfully." });
+        res.status(201).json({ token: token, accId : account.AccId, message: "Account created successfully." });
 
     } catch (error) {
         console.error(error);

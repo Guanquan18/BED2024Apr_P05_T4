@@ -358,7 +358,8 @@
                         errorMessage.textContent = data.message;
                         console.log(data.message);
 
-                        sessionStorage.setItem("Token",data.token);  // Store user object in session storage
+                        sessionStorage.setItem("token",data.token);  // Store user object in session storage
+                        sessionStorage.setItem("acccId",data.accId);
                         /*
                         Accessing Email property of the user object
                         const storedUser = JSON.parse(sessionStorage.getItem("Account"));
@@ -500,7 +501,7 @@
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${sessionStorage.getItem("Token")}` // Include JWT token in the Authorization header
+                            "Authorization": `Bearer ${sessionStorage.getItem("token")}` // Include JWT token in the Authorization header
                         },
                         body: JSON.stringify({
                             fullName: fullname,
@@ -674,7 +675,7 @@
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${sessionStorage.getItem("Token")}` // Include JWT token in the Authorization header
+                            "Authorization": `Bearer ${sessionStorage.getItem("token")}` // Include JWT token in the Authorization header
                         },
                         body: JSON.stringify({
                             professionalTitle: professionalTitle,

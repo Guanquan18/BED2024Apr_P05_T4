@@ -2,14 +2,14 @@ const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
 class Account {
-    constructor(accId, fullName, dob, email, contactNo, passwordHash, role, photo, linkedIn){
+    constructor(accId, fullName, dob, email, contactNo, passwordHash, Role, photo, linkedIn){
         this.AccId = accId;
         this.FullName = fullName;
         this.DOB = dob;
         this.Email = email;
         this.ContactNo = contactNo;
         this.PasswordHash = passwordHash;
-        this.role = role;
+        this.Role = Role;
         this.Photo = photo;
         this.LinkedIn = linkedIn;
     }
@@ -32,7 +32,7 @@ class Account {
             row.Email, 
             row.ContactNo || null, 
             row.PasswordHash, 
-            row.role || null,
+            row.Role || null,
             row.Photo || null, 
             row.LinkedIn || null
         )
@@ -65,7 +65,7 @@ class Account {
                 row.Email, 
                 row.ContactNo || null, 
                 row.PasswordHash,
-                row.role || null,
+                row.Role || null,
                 row.Photo || null, 
                 row.LinkedIn || null
             )
@@ -93,7 +93,7 @@ class Account {
                 row.Email, 
                 row.ContactNo, 
                 row.PasswordHash,
-                row.role || null, 
+                row.Role || null, 
                 row.Photo || null, 
                 row.LinkedIn || null
             )
@@ -124,7 +124,7 @@ class Account {
             row.Email, 
             row.ContactNo|| null, 
             row.PasswordHash, 
-            row.role,
+            row.Role,
             row.Photo|| null, 
             row.LinkedIn|| null
         );
@@ -186,7 +186,7 @@ class Account {
             row.Email, 
             row.ContactNo || null, 
             row.PasswordHash, 
-            row.role || null,
+            row.Role || null,
             row.Photo || null, 
             row.LinkedIn || null
         );

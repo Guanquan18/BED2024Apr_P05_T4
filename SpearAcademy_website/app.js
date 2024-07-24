@@ -87,7 +87,7 @@ const videostorage = multer.diskStorage({
 });
 const videoupload = multer({ storage: videostorage }); // Initialize multer with storage configuration
 
-
+const verifyJWT = require("./middlewares/verifyJWT"); // Import the verifyJWT middleware. Created by Chang Guan Quan
 
 const validateCourse = require("./middlewares/validateCourse");  // Import the validateCourse middleware. Created by Sairam
 const validateSection = require("./middlewares/validateSection"); // Import the validateSection. Created by Sairam
@@ -123,29 +123,29 @@ app.get('/', (req, res) => {
 
 
 // Routes for handling course-related requests (Created by: Sairam S10259930)
-app.get("/courses-creator/:creator", coursesController.getCourseByCreator); // Get courses by creator
-app.get("/courses", coursesController.getCourses); // Get courses by creator
-app.get("/courses-with-sections-id/:CourseId", coursesController.getCourseWithSectionById); // Get course and section by ID
-app.put("/courses-id/:CourseId",validateCourse, coursesController.updateCourse); // Update course by ID
-app.put("/courses-icon/:CourseId", imageupload.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
-app.post("/new-course/:creatorId", imageupload.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
-app.delete("/delete-course/:courseId", coursesController.deleteCourseAndDetails); // delete new course
+app.get("/courses-creator/:creator", verifyJWT.verifyJWT, coursesController.getCourseByCreator); // Get courses by creator
+app.get("/courses", verifyJWT.verifyJWT, coursesController.getCourses); // Get courses by creator
+app.get("/courses-with-sections-id/:CourseId", verifyJWT.verifyJWT, coursesController.getCourseWithSectionById); // Get course and section by ID
+app.put("/courses-id/:CourseId", verifyJWT.verifyJWT, validateCourse, coursesController.updateCourse); // Update course by ID
+app.put("/courses-icon/:CourseId", verifyJWT.verifyJWT, imageupload.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
+app.post("/new-course/:creatorId", verifyJWT.verifyJWT, imageupload.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
+app.delete("/delete-course/:courseId", verifyJWT.verifyJWT, coursesController.deleteCourseAndDetails); // delete new course
 
 // Routes for handling sections-related requests (Created by: Sairam S10259930)
-app.get("/sectionDetails-id/:id/:SectionNo", sectionDetailsController.getSectionDetailsById); // Get sections by sectiion no and CourseId
-app.put("/sectionDetails/:id/:SectionNo", videoupload.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
-app.post("/new-sectionDetails/:courseId", videoupload.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
-app.delete("/delete-sectionDetails/:sectionNo", sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
+app.get("/sectionDetails-id/:id/:SectionNo", verifyJWT.verifyJWT, sectionDetailsController.getSectionDetailsById); // Get sections by sectiion no and CourseId
+app.put("/sectionDetails/:id/:SectionNo", verifyJWT.verifyJWT, videoupload.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
+app.post("/new-sectionDetails/:courseId", verifyJWT.verifyJWT, videoupload.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
+app.delete("/delete-sectionDetails/:sectionNo", verifyJWT.verifyJWT, sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
 
 // Routes for handling account-related requests (Created by: Chang Guan Quan)
 app.get("/accounts", accountController.getAllAccounts);
 app.get("/account/:accId", accountController.getAccountById);
 app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-app.put("/account/update/updatePersonalDetails",validateAccount.validatePersonalDetails, validateAccount.verifyJWT, accountController.updateAccount);
+app.put("/account/update/updatePersonalDetails",validateAccount.validatePersonalDetails, verifyJWT.verifyJWT, accountController.updateAccount);
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
-app.post("/educator/createEducator", validateEducator.validateQualification,validateAccount.verifyJWT, educatorController.createEducator);
+app.post("/educator/createEducator", validateEducator.validateQualification,verifyJWT.verifyJWT, educatorController.createEducator);
 
 // Mount the routers for handling quiz-related requests (Created by: Pey Zhi Xun)
 app.use("/api/quizzes", quizRouter);

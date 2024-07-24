@@ -1,8 +1,8 @@
 {
-  "name": "books-api-mvc-db",
+  "name": "spearacademy_website",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,11 +12,13 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "brcypt": "^1.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "joi": "^17.13.1",
-    "mssql": "^10.0.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mssql": "^11.0.1",
     "multer": "^1.4.5-lts.1",
     "path": "^0.12.7",
     "swagger-autogen": "^2.23.7",

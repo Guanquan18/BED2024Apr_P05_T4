@@ -32,8 +32,9 @@ Keshwindren Gandipanh (S10259469C)
 */
 
 
-let account = JSON.parse(sessionStorage.getItem("user")); // Retrieve the creator ID from the session storage
-let creatorId = account.AccId;
+const creatorId = JSON.parse(sessionStorage.getItem("accId")); // Retrieve the creator ID from the session storage
+const token = sessionStorage.getItem("token"); // Retrieve the token from the session storage
+
 // Function to handle the "View" button click events and activate the specific course/community/profile view    Created by: Sairam
 async function ViewActive(containerId) {
     // Select all elements whose ID starts with 'view-btn' within the specified container
@@ -70,7 +71,13 @@ async function fetchCoursesByCreator(containerId) {
   const courseList = document.getElementById(containerId);
   if (courseList) {
     // Proceed with fetching courses only if the container exists
-    const response = await fetch(`http://localhost:3000/courses-creator/${creatorId}`);
+    const response = await fetch(`http://localhost:3000/courses-creator/${creatorId}`,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
     
     const data = await response.json();
     console.log(data);
@@ -161,9 +168,16 @@ async function fetchCoursesByCreator(containerId) {
 
 // Function to fetch all courses  and display them. Created by: Sairam
 async function fetchAllCourses() {
+    console.log("creatorId:", creatorId);
   courseList = document.getElementById("student-course-main-container")
     // Proceed with fetching courses only if the container exists
-    const response = await fetch(`http://localhost:3000/courses/`);
+    const response = await fetch(`http://localhost:3000/courses`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
     
     const data = await response.json();
     if (data.length === 0) {
@@ -249,7 +263,13 @@ async function fetchAllCourses() {
 let originalCourseDetails = {}; // Object to store original course details for comparison
 async function fetchCourseandSectionDetails(CourseId) {
   try {
-    const response = await fetch(`http://localhost:3000/courses-with-sections-id/${CourseId}`);
+    const response = await fetch(`http://localhost:3000/courses-with-sections-id/${CourseId}`,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            }
+    });
     console.log("CourseId:", CourseId);
     console.log("Constructed URL:", response); // Log the constructed URL for debugging
     const data = await response.json();
@@ -349,7 +369,8 @@ async function UpdateCourse() {
     const response = await fetch(`http://localhost:3000/courses-id/${courseId}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json' // Specify content type as JSON
+        'Content-Type': 'application/json', // Specify content type as JSON
+        'Authorization': `Bearer ${token}` // Include the token in the request headers
       },
       body: JSON.stringify(updatedCourse)  // Convert the updated course object to JSON for the request body
     });
@@ -388,7 +409,13 @@ async function editSection(CourseId, sectionNo) {
 // Function to fetch sections by a specific course and sectionNo. Created by: Sairam
 async function fetchSectionDetails(courseId, SectionNo) {
     // Fetch the section details from the server using the provided courseId and SectionNo
-  const response = await fetch(`http://localhost:3000/sectionDetails-id/${courseId}/${SectionNo}`);
+  const response = await fetch(`http://localhost:3000/sectionDetails-id/${courseId}/${SectionNo}`,{
+        method: 'GET',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+        },
+  });
  // Parse the response JSON data
   const data = await response.json();
   console.log(data);
@@ -432,6 +459,10 @@ async function UpdateCourseIcon() {
       // Send PUT request to update course icon
       const response = await fetch(`http://localhost:3000/courses-icon/${courseId}`, {
           method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+            },
           body: formData,
       });
 
@@ -479,6 +510,10 @@ async function UpdateSectionDetails() {
       // Send PUT request to update section details
       const response = await fetch(`http://localhost:3000/sectionDetails/${courseId}/${sectionNo}`, {
           method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+            },
           body: formData,
       });
 
@@ -535,6 +570,10 @@ async function createNewCourse() {
       // Send POST request to create new course
       const response = await fetch(`http://localhost:3000/new-course/${creatorId}`, {
           method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+            },
           body: formData,
       });
 
@@ -588,6 +627,10 @@ async function createSectionDetails() {
       // Send PUT request to update section details
       const response = await fetch(`http://localhost:3000/new-sectionDetails/${courseId}`, {
           method: 'POST',
+          headers: {
+            'Application-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+          },
           body: formData,
       });
 
@@ -628,6 +671,7 @@ async function deleteSectionDetails() {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Include the token in the request headers
       },
     });
      // Check if the response indicates success
@@ -656,6 +700,7 @@ async function deleteCourse() {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Include the token in the request headers
       },
     });
     // Check if the response indicates success
@@ -680,7 +725,13 @@ async function deleteCourse() {
 // Function to retrieve QnA details by a courseId. Created by: Keshwindren 
 async function fetchQnA(CourseId) {
     try {
-      const response = await fetch(`http://localhost:3000/QnA/${CourseId}`);
+      const response = await fetch(`http://localhost:3000/QnA/${CourseId}`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       console.log("QnA Data:", data);
   
@@ -711,7 +762,14 @@ async function fetchComments() {
         // Get the box-container element
         const boxContainer = document.querySelector('.box-container');
         const qnaId = boxContainer.id.split('-')[2]; 
-        const response = await fetch(`http://localhost:3000/comments-QnA/${qnaId}`);
+        const response = await fetch(`http://localhost:3000/comments-QnA/${qnaId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the request headers
+            }
+        }
+        );
         
         // Handle non-JSON responses (e.g., HTML error page)
         if (!response.ok) {
@@ -763,7 +821,8 @@ async function postComment() {
             const response = await fetch("/comments", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Include the token in the request headers
                 },
                 body: JSON.stringify({
                     msgText,
@@ -805,7 +864,8 @@ async function deleteComment(commentId) {
         const response = await fetch(`/comments/${commentId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the request headers
             }
         });
 
@@ -830,7 +890,8 @@ async function updateComment(commentId, newText) {
         const response = await fetch(`/comments/${commentId}`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the request headers
             },
             body: JSON.stringify({ msgText: newText })
         });
@@ -924,7 +985,13 @@ async function openEditForm(quizId, currentTitle) {
     const editQuestionContainer = document.getElementById('edit-question-container');
     
     try {
-        const response = await fetch(`/api/quizzes/${quizId}`);
+        const response = await fetch(`/api/quizzes/${quizId}`,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        });
         if (!response.ok) throw new Error('Failed to fetch quiz details');
         const quizData = await response.json();
 
@@ -1093,7 +1160,10 @@ document.getElementById('save-quiz-button').addEventListener('click', async () =
   try {
       const response = await fetch(`/api/quizzes/${currentQuizId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+        },
           body: JSON.stringify(payload)
       });
       if (!response.ok) throw new Error('Failed to update quiz');
@@ -1137,7 +1207,13 @@ function viewQuiz(quizId) {
 // Function to fetch and display quizzes
 async function fetchQuizzes(forManage = false) {
   try {
-      const response = await fetch('/api/quizzes');
+      const response = await fetch('/api/quizzes',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the request headers
+            }
+      });
       if (!response.ok) throw new Error(`Failed to fetch quizzes: ${response.statusText}`);
       const quizzes = await response.json();
       displayQuizzes(quizzes, forManage);
@@ -1246,7 +1322,10 @@ document.addEventListener('DOMContentLoaded', function () {
           try {
               const response = await fetch(`/api/quizzes/${currentQuizId}`, {
                   method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` // Include the token in the request headers
+                 },
                   body: JSON.stringify({ QuizTitle: newTitle, questions })
               });
               if (!response.ok) throw new Error('Failed to update quiz');
@@ -1333,7 +1412,10 @@ document.getElementById('save-quiz-button').addEventListener('click', async () =
   try {
       const response = await fetch(`http://localhost:3000/api/quizzes/${currentQuizId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include the token in the request headers
+         },
           body: JSON.stringify({ QuizTitle: newTitle, questions: questions })
       });
       if (!response.ok) throw new Error('Failed to update quiz');
@@ -1366,7 +1448,11 @@ async function deleteQuiz(quizId) {
     try {
         console.log(`Sending DELETE request for quizId: ${quizId}`);
         const response = await fetch(`/api/quizzes/${quizId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the request headers
+            }
         });
         if (!response.ok) throw new Error(`Failed to delete quiz: ${response.statusText}`);
         alert('Quiz deleted successfully');
@@ -1381,7 +1467,10 @@ async function createQuiz(quizData) {
     try {
         const response = await fetch('/api/quizzes', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Include the token in the request headers
+             },
             body: JSON.stringify(quizData)
         });
         if (!response.ok) throw new Error('Failed to create quiz');

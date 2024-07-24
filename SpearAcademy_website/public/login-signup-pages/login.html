@@ -57,7 +57,7 @@
             
             <!-- Signup link -->
             <div class="login-signup-link">
-                <p>Don't have an SPEAR account? <a href="/signup" id="signup-link">Sign up</a></p>
+                <p>Don't have an SPEAR account? <a href="../login-signup-pages/signup.html" id="signup-link">Sign up</a></p>
             </div>
 
         </form>
@@ -188,7 +188,8 @@
                         errorMessage.textContent = "Authenticated successfully";
 
                         homePage = data.homePage;
-                        sessionStorage.setItem("Token", data.token);   // Store user data in session storage
+                        sessionStorage.setItem("token", data.token);   // Store user data in session storage
+                        sessionStorage.setItem("accId", data.accId);
 
                         console.log("User Authenticated successfully");
 

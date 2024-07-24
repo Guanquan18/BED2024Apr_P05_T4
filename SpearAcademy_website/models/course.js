@@ -336,6 +336,13 @@ class Courses {
                 INNER JOIN Course c ON r.Review_Course = c.CourseId
                 WHERE c.CourseId = @CourseId;
 
+                 -- Delete from Message table
+                DELETE m
+                FROM Message m
+                INNER JOIN QnA qna ON m.Message_QnA = qna.QnAId
+                INNER JOIN Course c ON qna.QnA_Course = c.CourseId
+                WHERE c.CourseId = @CourseId;
+
                 -- Delete from QnA table
                 DELETE qna
                 FROM QnA qna

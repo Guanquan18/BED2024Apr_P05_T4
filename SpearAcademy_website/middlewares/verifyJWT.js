@@ -22,18 +22,19 @@ function verifyJWT(req, res, next) {
         "/educator/createEducator": ["Educator"], // Only Educators can create Educators
 
         "/courses-creator/[0-9]+" : ["Educator"], // Only Educators can view their courses
-        "/courses" : ["Student"], // Students can view courses
-        "/courses-with-sections-id/[0-9]+" : ["Student","Educator"],
-        "/courses-id/[0-9]+" : ["Student","Educator"], 
-        "/courses-icon/[0-9]+" : ["Student","Educator"],
-        "/new-course/[0-9]+" : ["Student","Educator"],
-        "/delete-course/[0-9]+" : ["Student","Educator"],
+        "/courses" : ["Student", "Educator"], // Students and Educator can view all courses in student.html
+        "/courses-with-sections-id/[0-9]+" : ["Educator"], // Only Educators can view their courses and sections
+        "/courses-id/[0-9]+" : ["Educator"], // Only Educators can update course details
+        "/courses-icon/[0-9]+" : ["Educator"],// Only Educators can update course icon
+        "/new-course/[0-9]+" : ["Educator"],// Only Educators can create courses
+        "/delete-course/[0-9]+" : ["Educator"],// Only Educators can delete their courses
 
-        "/sectionDetails-id/[0-9]+/[0-9]+" : ["Student","Educator"],
-        "/sectionDetails/[0-9]+/[0-9]+" : ["Student","Educator"],
-        "/new-sectionDetails/[0-9]+" : ["Student","Educator"],
-        "/delete-sectionDetails/[0-9]+" : ["Student","Educator"],
+        "/sectionDetails-id/[0-9]+/[0-9]+" : ["Educator"],// Only Educators can view their sectionDetails
+        "/sectionDetails/[0-9]+/[0-9]+" : ["Educator"],// Only Educators update their sectionDetails
+        "/new-sectionDetails/[0-9]+" : ["Educator"],// O// Only Educators can create their sectionDetails
+        "/delete-sectionDetails/[0-9]+" : ["Educator"],// Only Educators can delete their sectionDetails
       };
+
   
       const requestedEndpoint = req.url;  // Get the requested endpoint
       const accountRole = decoded.Role;  // Get the user role from the decoded token

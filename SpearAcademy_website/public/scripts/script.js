@@ -78,7 +78,16 @@ async function fetchCoursesByCreator(containerId) {
             'Authorization': `Bearer ${token}`,
         },
     });
-    
+
+     // Check if the response status is 403 Forbidden
+     if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to view these courses.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
+
     const data = await response.json();
     console.log(data);
     console.log(`Data fetched for container ${containerId}:`, data);
@@ -270,6 +279,16 @@ async function fetchCourseandSectionDetails(CourseId) {
             'Authorization': `Bearer ${token}`,
             }
     });
+
+     // Check if the response status is 403 Forbidden
+     if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to view these courses and sections.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
+
     console.log("CourseId:", CourseId);
     console.log("Constructed URL:", response); // Log the constructed URL for debugging
     const data = await response.json();
@@ -374,6 +393,14 @@ async function UpdateCourse() {
       },
       body: JSON.stringify(updatedCourse)  // Convert the updated course object to JSON for the request body
     });
+     // Check if the response status is 403 Forbidden
+     if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to update these courses.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
     // Handle non-OK responses (errors)
     if (!response.ok) {
       const errorData = await response.json(); // Parse error response as JSON
@@ -416,6 +443,16 @@ async function fetchSectionDetails(courseId, SectionNo) {
             'Authorization': `Bearer ${token}` // Include the token in the request headers
         },
   });
+
+   // Check if the response status is 403 Forbidden
+   if (response.status === 403) {
+    // Alert the user that only educators have permission to view these courses
+    alert("Forbidden: Only educators have permissions to view section details.");
+    // Redirect the user to the login page as they lack proper permissions
+    window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+    return;
+  }
+
  // Parse the response JSON data
   const data = await response.json();
   console.log(data);
@@ -460,11 +497,19 @@ async function UpdateCourseIcon() {
       const response = await fetch(`http://localhost:3000/courses-icon/${courseId}`, {
           method: 'PUT',
           headers: { 
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // Include the token in the request headers
             },
           body: formData,
       });
+
+       // Check if the response status is 403 Forbidden
+       if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to update course icon.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
 
       // Check if response is ok
       if (!response.ok) {
@@ -511,12 +556,18 @@ async function UpdateSectionDetails() {
       const response = await fetch(`http://localhost:3000/sectionDetails/${courseId}/${sectionNo}`, {
           method: 'PUT',
           headers: { 
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // Include the token in the request headers
             },
           body: formData,
       });
-
+       // Check if the response status is 403 Forbidden
+       if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to update section details.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
 
       // Check if response is ok
       if (!response.ok) {
@@ -571,12 +622,18 @@ async function createNewCourse() {
       const response = await fetch(`http://localhost:3000/new-course/${creatorId}`, {
           method: 'POST',
           headers: { 
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}` // Include the token in the request headers
             },
           body: formData,
       });
-
+       // Check if the response status is 403 Forbidden
+       if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to create new courses.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
       // Check if response is ok
       if (!response.ok) {
           const errorData = await response.json(); // Parse response body as JSON
@@ -628,12 +685,18 @@ async function createSectionDetails() {
       const response = await fetch(`http://localhost:3000/new-sectionDetails/${courseId}`, {
           method: 'POST',
           headers: {
-            'Application-Type': 'application/json',
             'Authorization': `Bearer ${token}` // Include the token in the request headers
           },
           body: formData,
       });
-
+       // Check if the response status is 403 Forbidden
+       if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to create new sections.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
 
       // Check if response is ok
       if (!response.ok) {
@@ -674,6 +737,14 @@ async function deleteSectionDetails() {
         'Authorization': `Bearer ${token}` // Include the token in the request headers
       },
     });
+     // Check if the response status is 403 Forbidden
+     if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to delete these sections.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
      // Check if the response indicates success
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -703,6 +774,14 @@ async function deleteCourse() {
         'Authorization': `Bearer ${token}` // Include the token in the request headers
       },
     });
+     // Check if the response status is 403 Forbidden
+     if (response.status === 403) {
+        // Alert the user that only educators have permission to view these courses
+        alert("Forbidden: Only educators have permissions to delete these courses.");
+        // Redirect the user to the login page as they lack proper permissions
+        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        return;
+      }
     // Check if the response indicates success
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

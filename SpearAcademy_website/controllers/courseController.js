@@ -35,7 +35,7 @@ const getCourses = async (req, res) => {
 // Controller function to get course and section by ID. 
 // Created By: Sairam (S10259930H)
 const getCourseWithSectionById = async (req, res) => {
-  const id = parseInt(req.params.CourseId);  // Parse the CourseId from request parameters
+  const id = parseInt(req.params.courseId);  // Parse the CourseId from request parameters
   try {
     const course = await Course.getCourseWithSectionById(id); // Attempt to fetch course details by id
     if (!course) {
@@ -52,7 +52,7 @@ const getCourseWithSectionById = async (req, res) => {
 // Controller function to update a course. 
 // Created By: Sairam (S10259930H)
 const updateCourse = async (req, res) => {
-  const CourseId = parseInt(req.params.CourseId); // Parse course ID from request parameters
+  const CourseId = parseInt(req.params.courseId); // Parse course ID from request parameters
   const newCourseData = req.body; // Get new course data from request body
 
   try {
@@ -70,7 +70,7 @@ const updateCourse = async (req, res) => {
 // Controller function to update a course icon.  
 // Created By: Sairam (S10259930H)
 const updateCourseIcon = async (req, res) => {
-  const CourseId = parseInt(req.params.CourseId); // Parse course ID from request parameters
+  const CourseId = parseInt(req.params.courseId); // Parse course ID from request parameters
 
   try {
     const newCourseIcon = {

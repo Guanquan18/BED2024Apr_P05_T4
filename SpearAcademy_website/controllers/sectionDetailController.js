@@ -8,7 +8,7 @@ const Section = require("../models/sectionDetail");
 const getSectionDetailsById = async (req, res) => {
   // Parse CourseId and SectionNo from request parameters
   const courseId = parseInt(req.params.id);
-  const sectionNo = parseInt(req.params.SectionNo); 
+  const sectionNo = parseInt(req.params.sectionNo); 
   try {
     const section = await Section.getSectionDetailsById(courseId,sectionNo);   // Fetch section details using CourseId and SectionNo
     if (!section) {
@@ -25,7 +25,7 @@ const getSectionDetailsById = async (req, res) => {
 // Created By: Sairam (S10259930H)
 const updateSectionDetails = async (req, res) => {
 const CourseId = parseInt(req.params.id); // Parse course ID from request parameters
-const sectionNo = parseInt(req.params.SectionNo);
+const sectionNo = parseInt(req.params.sectionNo);
 
 try {
   const sectionTitle = req.body.SectionTitle; // Get section title from request body

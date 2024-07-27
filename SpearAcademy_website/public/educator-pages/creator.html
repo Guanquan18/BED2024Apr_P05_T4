@@ -202,6 +202,13 @@
             max-width: 100%;
             height: 200px;
         }
+        /* Style for required labels */
+        .required::after {
+        content: '*'; 
+        color: red; 
+        margin-left: 4px; 
+        font-weight: bold; 
+        }
     </style>
 </head>
 <body>
@@ -291,22 +298,22 @@
             <form id="new-course-form" enctype="multipart/form-data">
                 <div class="mb-3">
                       <!-- New Course Title -->
-                    <label for="new-course-title" class="form-label">Course Title</label>
+                    <label for="new-course-title" class="form-label required">Course Title</label>
                     <input type="text" class="form-control" id="new-course-title" name="CourseTitle" placeholder="Enter course title" required>
                 </div>
                 <div class="mb-3">
                       <!-- New Course Brief Description -->
-                    <label for="new-small-description" class="form-label">Small Description</label>
+                    <label for="new-small-description" class="form-label required">Small Description</label>
                     <textarea class="form-control" id="new-small-description" name="SmallDescription" rows="3" placeholder="Enter small description" required></textarea>
                 </div>
                 <div class="mb-3">
                       <!-- New Course Description -->
-                    <label for="new-description" class="form-label">Description</label>
+                    <label for="new-description" class="form-label required">Description</label>
                     <textarea class="form-control" id="new-description" name="Description" rows="5" placeholder="Enter description" required></textarea>
                 </div>
                 <div class="mb-3">
                       <!-- New Course Label -->
-                    <label for="new-label" class="form-label">Label</label>
+                    <label for="new-label" class="form-label ">Label</label>
                     <input type="text" class="form-control" id="new-label" name="Label" placeholder="Enter label">
                 </div>
                 <div class="mb-3">
@@ -316,7 +323,7 @@
                 </div>
                 <div class="mb-3">
                       <!-- New Course Thumbnail -->
-                    <label for="new-course-thumbnail">Choose a Thumbnail:</label>
+                    <label for="new-course-thumbnail" class="form-label required">Choose a Thumbnail:</label>
                     <input type="file" id="new-course-thumbnail" name="Thumbnail" accept="image/*" class="form-control" required>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="createNewCourse()">Create Course</button>
@@ -421,8 +428,10 @@
             <h2></h2>
             <!-- Video header -->
             <h5>Video</h5>
-            <!-- Video player for the section video -->
-            <video id="video-item" controls>
+            <!-- Youtube Video player for the section video -->
+            <iframe id="youtube-video" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+            <!-- Local Video player for the section video -->
+            <video id="video-item" controls style="display: none;">
                 <source id="video-source" src="" type="video/mp4">
             </video>
             <!-- Form for editing section details -->

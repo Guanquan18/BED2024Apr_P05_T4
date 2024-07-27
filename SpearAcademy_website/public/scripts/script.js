@@ -119,10 +119,13 @@ async function fetchCoursesByCreator(containerId) {
       const cardBody = document.createElement('div');
       cardBody.classList.add('educator-course-card-body');
       
-      // Create a span element for the course label
-      const label = document.createElement('span');
-      label.classList.add('educator-course-label');
-      label.textContent = course.Label;
+      // Check if the label exists before creating the label element
+      if (course.Label) {
+        const label = document.createElement('span');
+        label.classList.add('educator-course-label');
+        label.textContent = course.Label;
+        cardBody.appendChild(label); // Append label if it exists
+      }
       
       // Create an h2 element for the course title
       const title = document.createElement('h2');
@@ -149,8 +152,7 @@ async function fetchCoursesByCreator(containerId) {
       viewButton.id = `view-btn-${course.CourseId}`;
       viewButton.textContent = 'View';
     
-       // Append label, title, and description to the card body
-      cardBody.appendChild(label);
+       // Append title, and description to the card body
       cardBody.appendChild(title);
       cardBody.appendChild(description);
       
@@ -217,10 +219,13 @@ async function fetchAllCourses() {
       const cardBody = document.createElement('div');
       cardBody.classList.add('student-course-card-body');
       
-      // Create a span element for the course label
-      const label = document.createElement('span');
-      label.classList.add('student-course-label');
-      label.textContent = course.Label;
+      // Check if the label exists before creating the label element
+      if (course.Label) {
+        const label = document.createElement('span');
+        label.classList.add('student-course-label');
+        label.textContent = course.Label;
+        cardBody.appendChild(label); // Append label if it exists
+        }
       
       // Create an h2 element for the course title
       const title = document.createElement('h2');
@@ -246,7 +251,6 @@ async function fetchAllCourses() {
       rating.innerHTML = `Rating: <span class="rating">${course.Ratings}</span>`;
     
        // Append label, title, and description to the card body
-      cardBody.appendChild(label);
       cardBody.appendChild(title);
       cardBody.appendChild(description);
       cardBody.appendChild(fullname);
@@ -464,13 +468,26 @@ async function fetchSectionDetails(courseId, SectionNo) {
   const sectionDetailsPopUp = document.getElementById('sectionDetails-Popup');
   // Set the section title in the popup header
   sectionDetailsPopUp.querySelector('.popup-content h2').innerText = data.SectionTitle;
-  // Update the video source URL in the popup
-  const videoSourceElement = sectionDetailsPopUp.querySelector('#video-source');
-  videoSourceElement.src = data.Video; 
-  // Reload the video to apply the new source
-  const videoElement = sectionDetailsPopUp.querySelector('#video-item');
-  videoElement.load(); // Reload the video element to apply the new source
-  //pre fill section title 
+  
+    const videoSourceElement = document.getElementById('video-source');  // For local videos
+    const localVideoElement = document.getElementById('video-item');  // The video player element
+    const youtubeVideoElement = document.getElementById('youtube-video'); // The YouTube iframe element
+
+    if (data.Video.includes('youtube.com') || data.Video.includes('youtu.be')) {
+         // Directly use the provided embed URL for the YouTube iframe
+        youtubeVideoElement.src = data.Video;
+         // Display the YouTube iframe and hide the local video player
+        youtubeVideoElement.style.display = 'block';
+        localVideoElement.style.display = 'none';
+    } else {
+        // Set the source for the local video element
+        videoSourceElement.src = data.Video;
+        // Reload the local video player to apply the new source
+        localVideoElement.load();
+          // Display the local video player and hide the YouTube iframe
+        localVideoElement.style.display = 'block';
+        youtubeVideoElement.style.display = 'none';
+    }
   document.getElementById('section-title').value = data.SectionTitle; // Pre-fill the section title input field with the fetched section title
 }
 
@@ -649,6 +666,8 @@ async function createNewCourse() {
       // If successful, show success message and update UI
       alert("Course created successfully!");
       hidePopup('newCoursePopup');
+      document.getElementById('new-course-form').reset();
+      fileInput.value = '';
       fetchCoursesByCreator('educator-course-main-container')
   } catch (error) {
       // Log and show error message if request fails
@@ -713,6 +732,11 @@ async function createSectionDetails() {
       // If successful, show success message and update UI
       alert("Section details updated successfully!");
       hidePopup('newSection-Pop-Up');
+        // Reset the form
+        document.getElementById('create-section-detail-form').reset();
+        
+        // Clear the file input
+        newvideofileInput.value = '';
       fetchCourseandSectionDetails(courseId); // Refresh displayed details after update
   } catch (error) {
       // Log and show error message if request fails

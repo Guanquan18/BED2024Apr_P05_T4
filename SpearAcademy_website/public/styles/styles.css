@@ -111,8 +111,9 @@ body {
 .student-course-card{
   height: 450px;
 }
-.educator-course-card, .student-course-card:hover {
-  transform: scale(1.05);
+.main-container .educator-course-card:hover, 
+.main-container .student-course-card:hover {
+  transform: scale(1.05); 
 }
 
 .educator-course-card-img-top,.student-course-card-img-top{

@@ -25,7 +25,7 @@ function verifyJWT(req, res, next) {
 
         /*  S.Sairam's Paths   */
         "/courses-creator/[0-9]+" : ["Educator"], // Only Educators can view their courses
-        "/courses" : ["Student", "Educator"], // Students and Educator can view all courses in student.html
+        "/courses" : ["Student"], // Students can view all courses in student.html
         "/courses-with-sections-id/[0-9]+" : ["Educator"], // Only Educators can view their courses and sections
         "/courses-id/[0-9]+" : ["Educator"], // Only Educators can update course details
         "/courses-icon/[0-9]+" : ["Educator"],// Only Educators can update course icon

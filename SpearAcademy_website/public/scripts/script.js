@@ -26,9 +26,12 @@ Pey Zhi Xun (S10258774E)
 -
 
 Keshwindren Gandipanh (S10259469C)
-- 
--
--
+- fetchQnA(CourseId)
+- fetchComments()
+- postComments()
+- deleteComment(commentId)
+- updateComment(commentId, newText)
+- editComment (commentId)
 */
 
 

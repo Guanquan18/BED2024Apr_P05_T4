@@ -21,9 +21,33 @@ Chang Guan Quan (S10257825A)
 
 
 Pey Zhi Xun (S10258774E)
-- 
--
--
+- openEditForm()
+- handleNextOptionEdit()
+- handlePrevOptionEdit()
+- handleNextQuestionEdit()
+- handlePrevQuestionEdit()
+- updateEditOptionNavigationButton()
+- updateEditQuestionNavigationButton()
+- viewQuiz()
+- fetchQuizzes()
+- displayQuizzes()
+- handleSaveNewQuiz()
+- attachDeleteListeners()
+- deleteQuiz(quizId)
+- createQuiz(quizData)
+- handleNextOption()
+- handleAddQuestion()
+- openCreateQuizForm()
+
+- In Line Scripting in quiz.html
+- fetchQuizData(quizId)
+- buildQuestion(questionIndex)
+- loadQuiz(quizId)
+- showResults()
+- nextQuestion()
+- showFinalResults()
+- reviewAllAnswers()
+- backToResults()
 
 Keshwindren Gandipanh (S10259469C)
 - fetchQnA(CourseId)

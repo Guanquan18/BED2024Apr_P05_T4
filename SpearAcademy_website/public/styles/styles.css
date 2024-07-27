@@ -10,7 +10,7 @@ body {
 
 /* Styling for creator.html and student.html  Created by: Sairam (S10259930H)*/ 
 .educator-navigation-sidebar {
-  width: 400px;
+  width: 250px;
   height: 100vh;
   background-color: #FAF8FF;
   color: black;
@@ -43,25 +43,25 @@ body {
 .educator-navigation-sidebar a:hover {
   background-color:  #42459b;
   color: white;
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
-  width: 350px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  width: 90%;
 }
 
 .educator-navigation-sidebar a.active {
   background-color: #6F74FB;
   color: white;
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
-  width: 350px;
+  border-top-right-radius:50px;
+  border-bottom-right-radius: 50px;
+  width: 90%;
 }
 
 .content-container {
   display: flex;
   flex-direction: column;
-  margin-left: 400px; 
+  margin-left: 250px; 
   margin-right: 50px;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .top-content {
@@ -94,7 +94,6 @@ body {
   width: 100%;
   height: auto;
   margin: 20px;
-  padding: 15px;
 }
 
 .main-container .educator-course-card, .student-course-card {
@@ -168,6 +167,224 @@ body {
   margin-bottom: 10px;
 }
 
+/* Stle for profile page Created by: Guan Quan (S10257825) */
+.educator-profile-container{
+  width: 100%; 
+  height: fit-content; 
+  margin-bottom:20px;
+  
+  display: flex;
+  justify-content: space-between;
+  /* background-color: aqua;  */
+}
+
+#educator-profile-main-container h3{
+  font-size: larger;
+  font-weight: bold;
+}
+
+#educator-profile-picture{
+  width: 35%; 
+  height: 200px;
+  background-color: #FAF8FF;
+  border: 1px solid #6F74FB;
+}
+
+.educator-profile-picture-header{
+  width: 100%; 
+  height: fit-content;
+  display: flex;  
+  justify-content: space-between;
+  align-items: center;
+}
+
+.educator-profile-picture-container{
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.educator-profile-picture-container img{
+  width: 125px;
+  height: 125px;
+  border-radius: 25px;
+  object-fit: cover;
+  object-position: center;
+
+  box-shadow: 0 0 10px #6F74FB;
+}
+
+#educator-profile-personal-details{
+  width: 60%; 
+  height: 200px;
+  background-color: #FAF8FF;
+  border: 1px solid #6F74FB;
+}
+
+.educator-profile-container-header{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.educator-edit-button{
+  color: #6F74FB;
+  font-weight: bold;
+  margin: 0;
+}
+
+.educator-edit-button:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.educator-profile-content-container{
+  width: 100%;
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.educator-profile-content-container ul{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.educator-profile-content-container ul li:last-child{
+  font-weight: bold;
+}
+
+#educator-profile-qualification, #educator-profile-social-media, #educator-profile-password{
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 20px;
+}
+
+#educator-profile-qualification-details{
+  width: 100%; 
+  height: 225px;
+
+  background-color: #FAF8FF;
+  border: 1px solid #6F74FB;
+}
+
+#educator-profile-social-media-details, #educator-profile-password-details{
+  width: 100%;
+  height: fit-content;
+  background-color: #FAF8FF;
+  border: 1px solid #6F74FB;
+}
+
+
+.educator-profile-delete-account{
+  width: 100%;
+  height: fit-content;
+
+  display: flex;
+  justify-content: center;
+}
+
+.profile-popup-overlay {
+  display: none;
+  position: fixed;
+  z-index: 900;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-popup-overlay .profile-popup-content{
+  width: 600px;
+  height: fit-content;
+  background-color: #FAF8FF;
+  border-radius: 20px;
+  border: 2px solid #6C63FF;
+  box-shadow: 0px 0px 25px 0px #6C63FF;
+}
+
+.profile-popup-content-header{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-popup-content-header h3{
+  margin: 0;
+  color: #6C63FF;
+  font-weight: bold;
+}
+.profile-popup-content-header p{
+  margin: 0;
+  color: #6C63FF;
+}
+.profile-popup-content-header p:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.profile-edit-main-content{
+  width: 100%;
+  height: fit-content;
+  padding: 30px 0 ;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 600;
+  color: #6C63FF;
+}
+
+#profile-edit-password-otp-message, #profile-edit-delete-account-otp-message{
+  width: 100%;
+  height: fit-content;
+  padding: 30px 0 ;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  color: #6C63FF;
+}
+
+.profile-edit-popup-lottie-player-container{
+  width: 100%;
+  height: 100%;
+  z-index: 901;
+  position: absolute;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+
+@media screen and (max-width: 768px) {
+  #educator-profile-personal-details-container {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  #educator-profile-picture{
+    flex-basis: 100%;
+  }
+  #educator-profile-personal-details{
+    flex-basis: 100%;
+  }
+}
+
 /* Style for login and signup page Created by: Guan Quan (S10257285A) */
 .login-signup{
   width: 100vw;
@@ -229,42 +446,6 @@ body {
   align-items: center;
 }
 
-.third-party-login-signup-btn{
-  height: 3.75rem;
-  padding: 0 .75rem;
-  margin: 15px 0;
-
-  background-color: white;
-  border: 3px solid #6F74FB;
-  border-radius: 32px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.third-party-login-signup-btn:hover{
-  transform: translateY(-4px);
-  box-shadow: 0 5px 8px #6F74FB;
-
-  transition: all 0.3s ease;
-}
-
-.third-party-login-signup-btn div{
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.third-party-login-signup-btn img{
-  height:70%;
-  
-  position: relative;
-}
-
 /* Styling for floating form inputs */
 .form-floating{
   margin: 15px 0;
@@ -296,7 +477,8 @@ body {
 .form-floating input:focus{
   font-weight: 600;
   border: 3px solid #6F74FB;
-  box-shadow: 0 0 15px #6F74FB;
+  box-shadow: 0 5px 8px #6F74FB;
+
 
   transition: all 0.3s ease;
 }
@@ -345,7 +527,7 @@ body {
 
 .login-signup-buttons.btn.rounded-pill.col-12:hover{
   transform: translateY(-4px);
-  box-shadow: 0 5px 8px rgba(0,0,0,0.5);
+  box-shadow: 0 5px 8px #6F74FB;
 
   transition: all 0.3s ease;
 }
@@ -376,6 +558,15 @@ body {
 #login-forget-password:hover, .login-signup-link a:hover{
   text-decoration: underline;
 }
+
+.profile-popup-overlay .form-floating input.error{
+  border: 3px solid rgb(255, 0, 0);
+}
+
+.profile-popup-overlay .form-floating input.success{
+  border: 3px solid rgb(0, 190, 25);
+}
+
 
 /* End of login and signup style */
 

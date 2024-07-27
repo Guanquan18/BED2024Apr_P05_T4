@@ -19,9 +19,23 @@ function verifyJWT(req, res, next) {
       // Check user role for authorization (replace with your logic)
       const authorizedRoles = {
 
+        "/authenticated": ["Student", "Educator"], // Any signed in users can access this endpoint
+
         /*  Chang Guan Quan's Paths   */
-        "/account/update/updatePersonalDetails/[0-9]+": ["Student", "Educator"], // Any signed in users can update personal details
+        "/account/[0-9]+": ["Student", "Educator"], // Any signed in users can view their profile details
+        "/account/updatePersonalDetails/[0-9]+": ["Student", "Educator"], // Any signed in users can update personal details
+        "/account/updateProfilePicture/[0-9]+": ["Student", "Educator"], // Any signed in users can update profile picture
+        "/account/updateSocialMedia/[0-9]+": ["Student", "Educator"], // Any signed in users can update social media
+        "/account/resetPassword/[0-9]+": ["Student", "Educator"], // Any signed in users can reset password
+        "/account/requestDeleteAccountOTP/[0-9]+": ["Student", "Educator"], // Any signed in users can request OTP for account deletion
+        "/account/deleteAccount/[0-9]+": ["Student", "Educator"], // Any signed in users can delete account
+        "/account/updateSocialMedia/[0-9]+": ["Student", "Educator"], // Any signed in users can update social media
+        "/account/updatePassword/[0-9]+": ["Student", "Educator"], // Any signed in users can update password
+
+        /*  Chang Guan Quan's Paths   */
         "/educator/createEducator/[0-9]+": ["Educator"], // Only Educators can create Educators
+        "/educator/[0-9]+": ["Educator"], // Only Educators can view Educators
+        "/educator/update/[0-9]+": ["Educator"], // Only Educators can update Educators
 
         /*  S.Sairam's Paths   */
         "/courses-creator/[0-9]+" : ["Educator"], // Only Educators can view their courses
@@ -65,10 +79,21 @@ function verifyJWT(req, res, next) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
+      // Ensure that the user can only access their own Account data if params secifies an account ID
+      if(req.params.accId){
+        req.params.accId = decoded.AccId;
+      }
+      // Ensure that the user can only access their own Account data if params secifies an account ID
+      if(req.params.eduId){
+        req.params.eduId = decoded.AccId;
+      }
+
       req.account = decoded; // Attach decoded user information to the request object
       next();
     });
 }
+
+
 
 module.exports = {
   verifyJWT

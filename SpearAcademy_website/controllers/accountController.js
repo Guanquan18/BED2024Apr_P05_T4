@@ -2,6 +2,7 @@ const Account = require("../models/account");
 const bcrypt = require("bcrypt");   // Import bcrypt for password hashing
 const jwt = require("jsonwebtoken");    // Import jsonwebtoken for creating tokens
 require('dotenv').config(); // Import dotenv for environment variables
+const TokenStore = require('../services/tokenStore');
 
 const getAllAccounts = async (req, res) => {
 
@@ -9,13 +10,13 @@ const getAllAccounts = async (req, res) => {
         const accounts = await Account.getAllAccounts();
         res.json(accounts);
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Error retrieving accounts. Please try again later." })
     }
 };
 
 const getAccountById = async (req, res) => {
-    const accId = req.params.accId;
+    const accId = parseInt(req.params.accId);
     
     try {
         const account = await Account.getAccountById(accId);
@@ -25,7 +26,7 @@ const getAccountById = async (req, res) => {
         }
         res.json(account);
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Error retrieving account. Please try again later." });
     }
 };
@@ -60,7 +61,7 @@ const loginAccount = async (req, res) => {
         }
         
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message : "Error Authentication user. Please try again later." });
     }
 };
@@ -97,15 +98,20 @@ const createAccount = async (req, res) => {
         res.status(201).json({ token: token, accId : account.AccId, message: "Account created successfully." });
 
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Error creating account. Please try again later." });
     }
 };
 
 const updateAccount = async (req, res) => {
     const accId = req.params.accId;
-    const newAccountData = req.body;
-    console.log("accId", accId);
+    let newAccountData = {};
+
+    // Check if there is a file for profile picture
+    if (req.file){
+        newAccountData.photo = '../Images/profiles/' + req.file.filename;
+    }
+    else{ newAccountData = { ...req.body }; }
 
     try {
         // Check if account exists
@@ -115,11 +121,92 @@ const updateAccount = async (req, res) => {
         }
 
         const account = await Account.updateAccount(accId, newAccountData);
-        res.status(201).json(account);
+        res.status(200).json(account);
 
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Error updating account. Please try again later." });
+    }
+};
+
+
+const deleteAccount = async (req, res) => {
+    const accId = req.params.accId;
+
+    try {
+        // Check if account exists
+        const existingAccount = await Account.getAccountById(accId);   
+        if (!existingAccount) {
+            return res.status(404).json({ message: "Account not found." });
+        }
+
+        await Account.deleteAccount(accId);
+        res.status(200).json({ message: "Account deleted successfully." });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error deleting account. Please try again later." });
+    }
+}
+
+
+/**
+ * 
+ * Functions to store and retrieve tokens from the token store
+ * 
+ */
+
+// Retrieve a token
+const getTokenHandler = async (req, res, next) => {
+    
+    let identity;   // Get the identity from the request body
+    if (req.params.accId){
+        identity = req.params.accId;
+    }else{
+        identity = req.identity;
+    }
+    
+    try{
+        const token = TokenStore.getToken(identity);
+        if (token) {
+
+            // Set the identity and token in the next handler
+            req.identity = identity;
+            req.body.token = token;
+            next();
+            
+        } else {
+            res.status(404).json({ message: 'Token not found' });
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: 'Error retrieving token' });
+    }
+};
+
+// Create and store a token
+const setToken = (req, res) =>{
+    try{
+        const identity = req.identity;
+        const token = req.body.token;
+        TokenStore.storeToken(identity, token);
+
+        res.json({ message: 'Token created and stored successfully' });
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: 'Error storing token' });
+    }
+};
+
+// Delete a token
+const deleteTokenHandler = (req, res) => {
+    let identity = req.identity;
+    try{
+        TokenStore.deleteToken(identity);
+        res.status(200).json({ message: 'OTP Authentication successful' }); // Respond to the client
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: 'Error deleting token' });
     }
 };
 
@@ -128,5 +215,9 @@ module.exports = {
     getAccountById,
     loginAccount,
     createAccount,
-    updateAccount
+    updateAccount,
+    setToken,
+    getTokenHandler,
+    deleteTokenHandler,
+    deleteAccount
 };

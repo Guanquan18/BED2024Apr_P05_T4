@@ -1,6 +1,6 @@
 const express = require('express');
 const sql = require('mssql');
-const dbConfig = require('../dbConfig'); // Ensure the path is correct
+const dbConfig = require('../config/dbConfig'); // Ensure the path is correct
 
 const router = express.Router();
 

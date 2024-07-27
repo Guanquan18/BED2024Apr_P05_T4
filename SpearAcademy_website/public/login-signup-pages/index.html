@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="https://kit.fontawesome.com/cc3cb1dbea.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+</head>
+
+<body class="login-signup">
+    <article class="login-signup-wrapper">
+        <form class="login-signup-form" id="login-form">
+
+            <h1 class="login-signup-header">Welcome to SPEAR Academy</h1>
+            <h2 class="login-signup-subheader">We Inspire to learn and teach</h2>
+            
+            <!-- Email input field -->
+            <div class="form-floating col-12">
+                <input type="text" id="login-email" name="login-email" class="form-control rounded-pill"
+                placeholder="Enter email">
+                <label for="login-username">Email</label>
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <!-- Password input field -->
+            <div class="form-floating col-12">
+                <input type="password" id="login-password" name="login-password" class="form-control rounded-pill"
+                placeholder="Enter password">
+                <label for="login-password">Password</label>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <!-- Validation Error message -->
+            <p class="loginsignup-validation-error" id="login-validation-error">Error Message</p>
+            
+            <!-- Login button -->
+            <button type="submit" id="login-submit" class="login-signup-buttons btn rounded-pill col-12">Log In</button>
+
+            <!-- Remember me and Forget password links -->
+            <p id="login-forget-password" onclick="showPopUp('edit-password-popup')">Forget Password?</p>
+            
+            <!-- Signup link -->
+            <div class="login-signup-link">
+                <p>Don't have an SPEAR account? <a href="../login-signup-pages/signup.html" id="signup-link">Sign up</a></p>
+            </div>
+        </form>
+        <!-- Reset Password Form  -->
+        <div id="edit-password-popup" class="profile-popup-overlay">
+            <section class="card profile-popup-content">
+                <div class="card-body">
+                    <div class="profile-popup-content-header">
+                        <h3 class="card-title">Reset Password</h3>
+                        <p class="close-popup" onclick="closePopUp('edit-password-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                    </div>
+                    <div class="profile-edit-main-content">
+                        Enter Email to get OTP
+                    </div>
+                    <form id="profile-edit-password-form">
+                        <!-- Email input field -->
+                        <div class="form-floating col-12">
+                            <input type="text" id="profile-edit-login-email" name="profile-edit-login-email" class="form-control rounded-pill"
+                            placeholder="Enter email">
+                            <label for="login-username">Email</label>
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <!-- Get OTP Button -->
+                        <button id="profile-edit-password-button" type="submit" class="btn btn-lg btn-primary w-100">Send OTP</button>
+                    </form>
+                </div>
+                <div class="profile-edit-popup-lottie-player-container">
+                    <dotlottie-player id="profile-edit-popup-password-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                    speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+                </div>
+            </section>
+        </div>
+
+        <!-- Reset Password OTP Form  -->
+        <div id="edit-password-otp-popup" class="profile-popup-overlay">
+            <section class="card profile-popup-content">
+                <div class="card-body">
+                    <div class="profile-popup-content-header">
+                        <h3 class="card-title">Reset Password</h3>
+                        <p class="close-popup" onclick="closePopUp('edit-password-otp-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                    </div>
+                    <div id="profile-edit-password-otp-message">An OTP has been sent to email</div>
+                    <form id="profile-edit-password-otp-form">
+                        <!-- OTP input field -->
+                        <div class="form-floating col-12">
+                            <input type="text" id="profile-edit-password-otp" name="profile-edit-password-otp" class="form-control rounded-pill"
+                            placeholder="Enter OTP">
+                            <label for="profile-edit-password-otp">OTP</label>
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <!-- Password input field -->
+                        <div class="form-floating col-12">
+                            <input type="password" id="profile-edit-password-newpassword" name="profile-edit-password-newpassword" class="form-control rounded-pill"
+                            placeholder="Enter password">
+                            <label for="profile-edit-password-newpassword">Password</label>
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <button id="profile-edit-password-otp-button" type="submit" class="btn btn-lg btn-primary w-100">Reset Password</button>
+                    </form>
+                </div>
+                <div class="profile-edit-popup-lottie-player-container">
+                    <dotlottie-player id="profile-edit-popup-password-otp-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                    speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+                </div>
+            </section>
+        </div>
+    </article>
+
+    <script>
+
+        function showPopUp(popupId){
+            document.getElementById(popupId).style.display = "flex";
+        }
+
+        function closePopUp(popupId){
+            document.getElementById(popupId).style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const checkAuthenticated = async () => {
+                const response = await fetch("/authenticated",{
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                    }
+                })
+                const data = await response.json();
+
+                if (response.status === 200){
+                    aalert("You are already logged in");
+                    window.location.href = data.homePage;
+                }
+                else{
+                    sessionStorage.clear();
+                }
+            }
+
+            //Check if user is already logged in
+            if (sessionStorage.getItem("token") !== null){
+                checkAuthenticated();
+            }
+
+            // Get login form
+            const loginForm = document.getElementById("login-form");
+            const resetPasswordForm = document.getElementById("profile-edit-password-form");
+            const resetPasswordOTPForm = document.getElementById("profile-edit-password-otp-form");
+            let resetEmail = null;
+
+            loginForm.addEventListener("submit", async function(event){
+                event.preventDefault();
+
+                let inputFields = document.querySelectorAll("#login-form .form-floating input");
+                let errorMessage = document.getElementById("login-validation-error");
+
+                // Get email and password inputs
+                const email = document.getElementById("login-email").value;
+                const password = document.getElementById("login-password").value;
+                
+                let role = null;
+                let verfied = false;
+                let authenticated = false;
+                let homePage = null;
+
+                verfied = validateInput();
+
+                if (verfied){
+                    authenticated = await authenticateAccount();
+                }
+                console.log(authenticated);
+
+                if(authenticated){
+                    window.location.href = homePage;
+                };
+
+                function validateInput(){
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+                    
+                    // Validate email
+                    if (email === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Email is required");
+                    }
+                    else if (!email.includes("@") || !email.includes(".")){
+                        
+                        inputFields[0].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Invalid email format");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    // Validate password
+                    if (password === "") {
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Password is required");
+                    }
+                    else if (password.length < 4){
+                        inputFields[1].classList.add("error");
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        errorList.push("Password must be at least 4 characters long");
+                    }
+                    else{
+                        inputFields[1].classList.add("success");
+                    }
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        errorMessage.textContent = errorList.join(", ");
+                        return false;
+                    }
+                }
+
+                async function authenticateAccount(){
+                    // Send login request to the server
+                    const response = await fetch("/account/login",{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            password: password
+                        })
+                    });
+
+                    const data = await response.json(); // Convert response to JSON
+
+                    let inputFields = document.querySelectorAll("#login-form .form-floating input");
+                    let errorMessage = document.getElementById("login-validation-error");
+
+
+                    if (response.status === 200) {  // If user is authenticated successfully
+
+                        inputFields.forEach((inputField) => {
+                            if (inputField.classList.contains("error")){
+                                inputField.classList.remove("error");   // Remove Red Border
+                            }
+                            inputField.classList.add("success");    // Add Green Border
+                        });
+
+                        // Display success message
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "green";
+                        errorMessage.textContent = "Authenticated successfully";
+
+                        homePage = data.homePage;
+                        sessionStorage.setItem("token", data.token);   // Store user data in session storage
+                        sessionStorage.setItem("accId", data.accId);
+
+                        console.log("User Authenticated successfully");
+
+                        /*
+                        // Accessing Email property of the user object stored in session storage
+
+                        const storedUser = JSON.parse(sessionStorage.getItem("Account"));
+                        console.log(storedUser.Email);
+                        */
+
+                        return true 
+                    }
+                    else if (response.status === 400 || response.status === 401){   // If authenticated failed
+
+                        inputFields.forEach((inputField) => {
+                            if (inputField.classList.contains("success")){
+                                inputField.classList.remove("success"); // Remove Green Border
+                            }
+                            inputField.classList.add("error");  // Add Red Border
+                        });
+
+                        // Display error message
+                        errorMessage.style.visibility = "visible";
+                        errorMessage.style.color = "red";
+                        if (data.errors){
+                            errorMessage.textContent = data.errors;
+                        }
+                        else{
+                            errorMessage.textContent = data.message;
+                        }
+                        console.log(errorMessage.textContent);
+
+                        return false;
+                    }
+                    else if (response.status === 500){   // If server error
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            
+            },false)
+
+            resetPasswordForm.addEventListener("submit", async function(event){
+                event.preventDefault();
+
+                let inputFields = document.querySelectorAll("#profile-edit-password-form .form-floating input");
+                const resetPasswordFormButton = document.getElementById("profile-edit-password-button");
+                const resetPasswordFormLottiePlayer = document.getElementById("profile-edit-popup-password-lottie-player").parentElement;
+
+                resetPasswordFormButton.setAttribute("aria-disabled", "true");
+                resetPasswordFormLottiePlayer.style.display = "flex";
+
+
+                // Get email input
+                const email = document.getElementById("profile-edit-login-email").value;
+
+                let verfied = false;
+                let otpSent = false;
+
+                verfied = validateEmail();
+
+                if (verfied){
+                    otpSent = await sendOTP();
+                }
+
+                if (otpSent){
+                    document.getElementById("profile-edit-password-otp-message").textContent = "An OTP has been sent to email";
+                    resetEmail = email;
+                    closePopUp("edit-password-popup");
+                    showPopUp("edit-password-otp-popup");
+                }
+
+                resetPasswordFormButton.setAttribute("aria-disabled", "true");
+                resetPasswordFormLottiePlayer.style.display = "none";
+
+                function validateEmail(){
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+                    
+                    // Validate email
+                    if (email === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorList.push("Email is required");
+                    }
+                    else if (!email.includes("@") || !email.includes(".")){
+                        
+                        inputFields[0].classList.add("error");
+                        errorList.push("Invalid email format");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        alert(errorList.join(", "));
+                        return false;
+                    }
+                }
+
+                async function sendOTP(){
+                    // Send login request to the server
+                    const response = await fetch(`/account/requestResetPassOTP/${email}`,{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                    });
+
+                    const data = await response.json(); // Convert response to JSON
+                    const status = response.status;
+
+                    if (status === 200) {  // If OTP is sent successfully
+
+                        inputFields.forEach((inputField) => {
+                            if (inputField.classList.contains("error")){
+                                inputField.classList.remove("error");   // Remove Red Border
+                            }
+                            inputField.classList.add("success");    // Add Green Border
+                        });
+
+                        return true 
+                    }
+                    else if (status === 400 || status === 401 || status === 403 || status === 404 || status === 500){   // If OTP failed
+
+                        inputFields.forEach((inputField) => {
+                            if (inputField.classList.contains("success")){
+                                inputField.classList.remove("success"); // Remove Green Border
+                            }
+                            inputField.classList.add("error");  // Add Red Border
+                        });
+
+                        // Display error message
+                        alert(data.message);
+                        return false;
+                    }
+                    else if (response.status === 500){   // If server error
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            })
+
+            resetPasswordOTPForm.addEventListener("submit", async function(event){
+                event.preventDefault();
+
+                let inputFields = document.querySelectorAll("#profile-edit-password-otp-form .form-floating input");
+                const resetPasswordOTPFormButton = document.getElementById("profile-edit-password-otp-button");
+                const resetPasswordOTPFormLottiePlayer = document.getElementById("profile-edit-popup-password-otp-lottie-player").parentElement;
+
+                resetPasswordOTPFormButton.setAttribute("aria-disabled", "true");
+                resetPasswordOTPFormLottiePlayer.style.display = "flex";
+
+                // Get OTP and new password inputs
+                const otp = document.getElementById("profile-edit-password-otp").value;
+                const newPassword = document.getElementById("profile-edit-password-newpassword").value;
+
+                let verfied = false;
+                let successful = false;
+
+                verfied = validateOTP();
+
+                if (verfied){
+                    successful = await resetPassword();
+                }
+
+                if (successful){
+                    alert("Password reset successfully");
+                    window.location.reload();
+                }
+
+                resetPasswordOTPFormButton.setAttribute("aria-disabled", "true");
+                resetPasswordOTPFormLottiePlayer.style.display = "none";
+
+                function validateOTP(){
+                    let errorList = [];
+
+                    inputFields.forEach((inputField) => {
+                        if (inputField.classList.contains("error")){
+                            inputField.classList.remove("error");   // Remove Red Border
+                        }
+                        if (inputField.classList.contains("success")){
+                            inputField.classList.remove("success");   // Remove Green Border
+                        }
+                    });
+                    
+                    // Validate OTP
+                    if (otp === "") {
+                        
+                        inputFields[0].classList.add("error");
+                        errorList.push("OTP is required");
+                    }
+                    else if (otp.length !== 6){
+                        
+                        inputFields[0].classList.add("error");
+                        errorList.push("Invalid OTP format");
+                    }
+                    else{
+                        inputFields[0].classList.add("success");
+                    }
+
+                    // Validate password
+                    if (newPassword === "") {
+                        inputFields[1].classList.add("error");
+                        errorList.push("Password is required");
+                    }
+                    else if (newPassword.length < 4){
+                        inputFields[1].classList.add("error");
+                        errorList.push("Password must be at least 4 characters long");
+                    }
+                    else{
+                        inputFields[1].classList.add("success");
+                    }
+
+                    if (errorList.length === 0){
+                        return true;
+                    }
+                    else{
+                        alert(errorList.join(", "));
+                        return false;
+                    }
+                }
+            
+                async function resetPassword(){
+                    const body = {
+                        otp: otp,
+                        newPassword: newPassword
+                    };
+
+                    const response = await fetch(`/account/resetPassword/${resetEmail}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    const data = await response.json();
+                    const status = response.status;
+
+                    if (response.status === 200) {
+                        return true;
+                    }
+                    else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                        alert(data.message);
+                        return false;
+                    }
+                }
+            })
+        })
+        
+
+            
+        
+        
+        
+
+    
+    
+    </script>
+</body>
+</html>

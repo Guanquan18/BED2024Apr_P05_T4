@@ -24,9 +24,9 @@ const validatePersonalDetails = (req, res, next) => {
       .pattern(/^[0-9]{10,}$/) // Ensure the phone number is at least 10 digits
       .required(),
     dob: Joi.string().required()
-      .pattern(/^\d{2}\/\d{2}\/\d{4}$/) // Ensure the format is dd/MM/yyyy
-      .custom(customDateValidation, "custom date validation")
-      .required(),
+    .pattern(/^\d{4}\/\d{2}\/\d{2}$/) // Ensure the format is yyyy/MM/dd
+    .custom(customDateValidation, "custom date validation")
+    .required(),
   });
 
   const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body
@@ -40,7 +40,7 @@ const validatePersonalDetails = (req, res, next) => {
 }
 
 const customDateValidation = (value, helpers) => {
-  const [day, month, year] = value.split('/').map(Number);
+  const [year, month, day] = value.split('/').map(Number);
   const date = new Date(year, month - 1, day);
 
   if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
@@ -49,7 +49,38 @@ const customDateValidation = (value, helpers) => {
   return helpers.error("any.invalid"); // Invalid date
 };
 
+const validateSocialMedia = (req, res, next) => {
+  const schema = Joi.object({
+    linkedIn: Joi.string().uri().optional(),
+  });
+
+  const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body
+
+  if (validation.error) {
+    const errors = validation.error.details.map((error) => error.message);
+    return res.status(400).json({ message: "Validation failed", errors });
+  }
+
+  next(); // If validation passes, proceed to the next route handler
+}
+
+const validatePassword = (req, res, next) => {
+  const schema = Joi.object({
+    password: Joi.string().min(4).max(20).required(),
+  });
+
+  const validation = schema.validate(req.body, { abortEarly: false }); // Validate request body
+
+  if (validation.error) {
+    const errors = validation.error.details.map((error) => error.message);
+    return res.status(400).json({ message: "Validation failed", errors });
+  }
+
+  next(); // If validation passes, proceed to the next route handler
+}
+
 module.exports = {
   validateEmailPassword, 
   validatePersonalDetails,
+  validateSocialMedia
 };

@@ -179,8 +179,7 @@ async function fetchCoursesByCreator(containerId) {
 
 // Function to fetch all courses  and display them. Created by: Sairam
 async function fetchAllCourses() {
-    console.log("creatorId:", creatorId);
-  courseList = document.getElementById("student-course-main-container")
+    courseList = document.getElementById("student-course-main-container")
     // Proceed with fetching courses only if the container exists
     const response = await fetch(`http://localhost:3000/courses`, {
         method: 'GET',
@@ -1707,3 +1706,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (submitButton) submitButton.addEventListener('click', showResults);
     if (nextButton) nextButton.addEventListener('click', nextQuestion);
 });
+
+
+/*--------------------------------  Guan Quan Functions --------------------------------*/

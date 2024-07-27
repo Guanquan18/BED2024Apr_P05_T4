@@ -5,12 +5,12 @@ Sairam (S10255930H)
 - app.get("/courses", coursesController.getCourses); // Get courses by creator
 - app.get("/courses-with-sections-id/:CourseId", coursesController.getCourseWithSectionById); // Get course and section by ID
 - app.put("/courses-id/:CourseId",validateCourse, coursesController.updateCourse); // Update course by ID
-- app.put("/courses-icon/:CourseId", imageupload.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
-- app.post("/new-course/:creatorId", imageupload.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
+- app.put("/courses-icon/:CourseId", imageUploadCourse.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
+- app.post("/new-course/:creatorId", imageUploadCourse.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
 - app.delete("/delete-course/:courseId", coursesController.deleteCourseAndDetails); // delete new course
 - app.get("/sectionDetails-id/:id/:SectionNo", sectionDetailsController.getSectionDetailsById); // Get sections by sectiion no and CourseId
-- app.put("/sectionDetails/:id/:SectionNo", videoupload.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
-- app.post("/new-sectionDetails/:courseId", videoupload.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
+- app.put("/sectionDetails/:id/:SectionNo", videoUploadCourse.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
+- app.post("/new-sectionDetails/:courseId", videoUploadCourse.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
 - app.delete("/delete-sectionDetails/:sectionNo", sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
 - const CoursesController = require("./controllers/CoursesController");
 - const SectionDetailsController = require("./controllers/SectionDetailsController");
@@ -53,7 +53,7 @@ Keshwindren Gandipanh (S10259469C)
   
 const express = require("express"); // Import the Express module
 const sql = require("mssql"); // Import the mssql module
-const dbConfig = require("./dbConfig"); // Import the database configuration
+const dbConfig = require("./config/dbConfig"); // Import the database configuration
 const bodyParser = require("body-parser"); // Import body-parser for parsing request bodies
 const staticMiddleware = express.static("public"); // Middleware to serve static files from the public folder
 const multer = require("multer"); // Import multer for handling file uploads
@@ -61,9 +61,23 @@ const path = require('path'); // Import path module for working with file and di
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json"); // Import generated spec
 
-// Multer configuration for iamge upload 
+// Multer configuration for image upload
+// Created By: Guan Quan (S10257825A)
+const imageStorageProfile = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/Images/profiles'); // Destination folder for uploaded files.
+  },
+  filename: function (req, file, cb) {
+    // Ensure unique filenames to avoid overwriting
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const imageUploadProfile = multer({ storage: imageStorageProfile }); // Initialize multer with storage configuration
+
+// Multer configuration for image upload 
 // // Created By: Sairam (S10259930H)
-const imagestorage = multer.diskStorage({
+const imageStorageCource = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/Images/courses'); // Destination folder for uploaded files.
   },
@@ -72,11 +86,11 @@ const imagestorage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
-const imageupload = multer({ storage: imagestorage }); // Initialize multer with storage configuration,
+const imageUploadCourse = multer({ storage: imageStorageCource }); // Initialize multer with storage configuration,
 
 // Multer configuration for video upload 
 // // Created By: Sairam (S10259930H)
-const videostorage = multer.diskStorage({
+const videoStorageCourse = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/videos'); // Destination folder for uploaded files
   },
@@ -85,7 +99,7 @@ const videostorage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   }
 });
-const videoupload = multer({ storage: videostorage }); // Initialize multer with storage configuration
+const videoUploadCourse = multer({ storage: videoStorageCourse }); // Initialize multer with storage configuration
 
 const verifyJWT = require("./middlewares/verifyJWT"); // Import the verifyJWT middleware. Created by Chang Guan Quan
 
@@ -97,6 +111,7 @@ const validateEducator = require("./middlewares/validateEducator"); // Import th
 const coursesController = require("./controllers/courseController"); // Import the coursesController. Created by Sairam
 const sectionDetailsController = require("./controllers/sectionDetailController"); // Import the cectionDetailController. Created by Sairam
 const accountController = require("./controllers/accountController"); // Import the accountController. Created by Chang Guan Quan
+const authController = require("./controllers/authController"); // Import the authController. Created by Chang Guan Quan
 const educatorController = require("./controllers/educatorController"); // Import the educatorController. Created by Chang Guan Quan
 const qnaController = require("./controllers/qnaController"); // importing the qna controller module Created by Keshwindren
 const commentsController = require("./controllers/commentsController"); // importing the comments controller module Created by Keshwindren
@@ -116,36 +131,52 @@ app.use(staticMiddleware); // Mount the static middleware
 
 // Route to serve the login page HTML file (login page)
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + "/public/login-signup-pages/login.html");
+  res.sendFile(__dirname + "/public/login-signup-pages/index.html");
 });
-
-
-
+app.post("/authenticated", verifyJWT.verifyJWT, (req, res) => {  // Check if user is authenticated and redirect to the appropriate home page 
+  try{
+    if (req.account.Role === "Student") {
+      res.status(200).json({ homePage: "../student-pages/student.html" });
+    } else {
+      res.status(200).json({ homePage: "../educator-pages/creator.html" });
+    }
+  }catch{
+    res.status(400);
+  }
+});
 
 // Routes for handling course-related requests (Created by: Sairam S10259930)
 app.get("/courses-creator/:creator", verifyJWT.verifyJWT, coursesController.getCourseByCreator); // Get courses by creator
 app.get("/courses", verifyJWT.verifyJWT, coursesController.getCourses); // Get courses by creator
 app.get("/courses-with-sections-id/:courseId", verifyJWT.verifyJWT, coursesController.getCourseWithSectionById); // Get course and section by ID
 app.put("/courses-id/:courseId", verifyJWT.verifyJWT, validateCourse, coursesController.updateCourse); // Update course by ID
-app.put("/courses-icon/:courseId", verifyJWT.verifyJWT, imageupload.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
-app.post("/new-course/:creatorId", verifyJWT.verifyJWT, imageupload.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
+app.put("/courses-icon/:courseId", verifyJWT.verifyJWT, imageUploadCourse.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
+app.post("/new-course/:creatorId", verifyJWT.verifyJWT, imageUploadCourse.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
 app.delete("/delete-course/:courseId", verifyJWT.verifyJWT, coursesController.deleteCourseAndDetails); // delete new course
 
 // Routes for handling sections-related requests (Created by: Sairam S10259930)
 app.get("/sectionDetails-id/:id/:sectionNo", verifyJWT.verifyJWT, sectionDetailsController.getSectionDetailsById); // Get sections by sectiion no and CourseId
-app.put("/sectionDetails/:id/:sectionNo", verifyJWT.verifyJWT, videoupload.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
-app.post("/new-sectionDetails/:courseId", verifyJWT.verifyJWT, videoupload.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
+app.put("/sectionDetails/:id/:sectionNo", verifyJWT.verifyJWT, videoUploadCourse.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
+app.post("/new-sectionDetails/:courseId", verifyJWT.verifyJWT, videoUploadCourse.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
 app.delete("/delete-sectionDetails/:sectionNo", verifyJWT.verifyJWT, sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
 
 // Routes for handling account-related requests (Created by: Chang Guan Quan)
 app.get("/accounts", accountController.getAllAccounts);
-app.get("/account/:accId", accountController.getAccountById);
+app.get("/account/:accId", verifyJWT.verifyJWT, accountController.getAccountById);
 app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-app.put("/account/update/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
+app.put("/account/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
+app.put("/account/updateProfilePicture/:accId", verifyJWT.verifyJWT, imageUploadProfile.single('ProfilePicture'), accountController.updateAccount);
+app.put("/account/updateSocialMedia/:accId", verifyJWT.verifyJWT, validateAccount.validateSocialMedia, accountController.updateAccount);
+app.post("/account/requestResetPassOTP/:identity", authController.requestPasswordReset, accountController.setToken);
+app.post("/account/resetPassword/:identity", accountController.getTokenHandler, authController.resetPassword, accountController.deleteTokenHandler);
+app.post("/account/requestDeleteAccountOTP/:accId", verifyJWT.verifyJWT, authController.requestDeleteAccount, accountController.setToken);
+app.delete("/account/deleteAccount/:accId", verifyJWT.verifyJWT, accountController.getTokenHandler, authController.deleteAccount, accountController.deleteTokenHandler);
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
 app.post("/educator/createEducator/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.createEducator);
+app.get("/educator/:eduId",verifyJWT.verifyJWT, educatorController.getEducatorById);
+app.put("/educator/update/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.updateEducator);
 
 // Mount the routers for handling quiz-related requests (Created by: Pey Zhi Xun)
 app.use("/api/quizzes", quizRouter);

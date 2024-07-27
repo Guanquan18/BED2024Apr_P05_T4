@@ -1,7 +1,7 @@
 // Entirely Created By: Sairam (S10259930H)
 
 const sql = require("mssql");// Import the mssql module
-const dbConfig = require("../dbConfig"); // Import the database configuration
+const dbConfig = require("../config/dbConfig"); // Import the database configuration
 
 class Section {
     // Constructor to initialize Section properties

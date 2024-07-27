@@ -6,7 +6,15 @@
     <title>Spear Academy</title>
     <link rel="stylesheet" href="../styles/styles.css">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- FontAwsome -->
+    <script src="https://kit.fontawesome.com/cc3cb1dbea.js" crossorigin="anonymous"></script>
+    <!-- Lottie Animations -->
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+    <style>
+        
+
+    </style>
 </head>
 <body>
     <div class="educator-navigation-sidebar">
@@ -14,19 +22,1222 @@
         <a id="courses-btn" href="creator.html">Courses</a>
         <a id="community-btn" href="community.html">Community</a>
         <a id="quiz-btn" href="manage-quizzes.html">Quiz</a>
-        <a id="profile-btn" href="profile.html" class = "active">Profile</a>
+        <a id="profile-btn" href="profile.html" class="active">Profile</a>
     </div>
-    <div id="educator-profile-container" class = "content-container">   
+     <!-- Container for displaying courses -->
+    <div id="educator-profile-container" class="content-container">
         <div class="top-content">
-            <h1> My Profile </h1>
+            <h1>Profile</h1>
+            <!-- <button onclick="showProfilePopUp('newCoursePopup')"> + Create </button> -->
         </div>
-        <div class="main-container" id="educator-profile-main-container"></div>
+        <div class="main-container" id="educator-profile-main-container">
+
+            <section id="educator-profile-personal-details-container" class="educator-profile-container">
+                
+                <div id="educator-profile-picture" class="card">
+                    <div class="card-body educator-profile-picture-header">
+                        <h3 class="card-subtitle">Picture</h3>
+                        <p class="educator-edit-button" onclick="showProfilePopUp('edit-profile-picture-popup')"> Edit </p>
+                    </div>
+                    <div class="educator-profile-picture-container">
+                        <img src="" class="profile-picture" alt="Profile Picture" class="card-img" >
+                    </div>
+                </div>
+
+                <div id="educator-profile-personal-details" class="card">
+                    <div class="card-body">
+                        <div class="educator-profile-container-header">
+                            <h3 class="card-subtitle">Personal Details</h3>
+                            <p class="educator-edit-button" onclick="showProfilePopUp('edit-personal-details-popup')"> Edit </p>
+                        </div>
+                        <div class="card-text educator-profile-content-container" id="educator-profile-personal-details-content">
+                            <ul>
+                                <li>Full Name</li>
+                                <li id="profile-full-name">None</li>
+                            </ul>
+                            <ul>
+                                <li>Email Address</li>
+                                <li id="profile-email-address">None</li>
+                            </ul>
+                            <ul>
+                                <li>Contact No</li>
+                                <li id="profile-contact-no">None</li>
+                            </ul>
+                            <ul>
+                                <li>Date Of Birth</li>
+                                <li id="profile-dob">None</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="educator-profile-qualification">
+                <div id="educator-profile-qualification-details" class="card">
+                    <div class="card-body">
+                        <div class="educator-profile-container-header">
+                            <h3 class="card-subtitle">Qualifications</h3>
+                            <p class="educator-edit-button" onclick="showProfilePopUp('edit-qualification-details-popup')"> Edit </p>
+                        </div>
+                        <div class="card-text educator-profile-content-container" id="educator-profile-personal-details-content">
+                            <ul>
+                                <li>Professional Title</li>
+                                <li id="profile-professional-title">None</li>
+                            </ul>
+                            <ul>
+                                <li>Organisation</li>
+                                <li id="profile-organisation">None</li>
+                            </ul>
+                            <ul>
+                                <li>HighestDegree</li>
+                                <li id="profile-highest-degree">None</li>
+                            </ul>
+                            <ul>
+                                <li>YearsOfExperience</li>
+                                <li id="profile-years-of-experience">None</li>
+                            </ul>
+                            <ul>
+                                <li>FieldOfStudy</li>
+                                <li id="profile-field-of-study">None</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="educator-profile-social-media">
+                <div id="educator-profile-social-media-details" class="card">
+                    <div class="card-body">
+                        <div class="educator-profile-container-header">
+                            <h3 class="card-subtitle">Social Media</h3>
+                            <p class="educator-edit-button" onclick="showProfilePopUp('edit-social-media-popup')"> Edit </p>
+                        </div>
+                        <div class="card-text educator-profile-content-container" id="educator-profile-personal-details-content">
+                            <ul>
+                                <li>LinkedIn </li>
+                                <li id="profile-social-media-linkedIn">None</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="educator-profile-password">
+                <div id="educator-profile-password-details" class="card">
+                    <div class="card-body">
+                        <div class="educator-profile-container-header">
+                            <h3 class="card-subtitle">Password</h3>
+                            <p class="educator-edit-button" onclick="showProfilePopUp('edit-password-popup')"> Reset Password </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="educator-profile-container" style="justify-content: space-around;">
+                <button class="btn btn-lg btn-danger" onclick="showProfilePopUp('edit-delete-account-popup')"><strong>Delete Account</strong></button>
+                <button class="btn btn-lg btn-danger" onclick="logout()"><strong>Log out</strong></button>
+            </section>
+            
+        </div>
     </div>
+
+    <!-- Overlay for updating account and other related details  -->
+    
+
+    <!-- Update Profile Picture Form -->
+    <div id="edit-profile-picture-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Edit Personal Details</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-profile-picture-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <div class="profile-edit-main-content">
+                    Choose a new profile picture
+                </div>
+                <form id="profile-edit-profile-picture-form" enctype="multipart/form-data">
+                    <!-- Full Name input field -->
+                    <div class="col-12">
+                        <!-- File input field with restrictions to accept only images -->
+                        <input type="file" id="profile-edit-profile-picture" name="ProfilePicture" accept="image/*" class="form-control" style="border: 1px solid black;"><br><br>
+                    </div>
+                    <button id="profile-edit-profile-picture-button" type="submit" class="btn btn-lg btn-primary w-100">Save</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-profile-picture-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Update Personal Details Form -->
+    <div id="edit-personal-details-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Edit Personal Details</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-personal-details-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <form id="profile-edit-personal-details-form">
+                    <!-- Full Name input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-full-name" name="signup-fullname" class="form-control rounded-pill"
+                        placeholder="Enter fullname">
+                        <label for="signup-username">Full Name</label>
+                        <i class="fa-solid fa-id-badge"></i>
+                    </div>
+
+                    <!-- Contact No input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-contact-no" name="signup-contactno" class="form-control rounded-pill"
+                        placeholder="Enter contact no">
+                        <label for="login-password">Contact No</label>
+                        <i class="fa-solid fa-phone-volume"></i>
+                    </div>
+
+                    <!-- Date of Birth input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-dob" name="signup-dob" class="form-control rounded-pill"
+                        placeholder="Enter mobile no">
+                        <label for="login-password">Date of Birth (yyyy/MM/dd)</label>
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <button id="profile-edit-personal-details-button" type="submit" class="btn btn-lg btn-primary w-100">Save</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-personal-details-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Update Qualification Details Form -->
+    <div id="edit-qualification-details-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Edit qualification Details</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-qualification-details-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <form id="profile-edit-qualification-details-form">
+                    <!-- Professional Title input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-professional-title" name="signup-professional-title" class="form-control rounded-pill"
+                        placeholder="Enter Professional Title">
+                        <label for="signup-username">Professional Title</label>
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+
+                    <!-- Organisation input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-Organisation" name="signup-Organisation" class="form-control rounded-pill"
+                        placeholder="Enter Organisation/Institution">
+                        <label for="signup-username">Organisation/Institution</label>
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <!-- Highest Degree input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-highest-degree" name="signup-highest-degree" class="form-control rounded-pill"
+                        placeholder="Enter Highest Degree">
+                        <label for="login-password">Highest Degree</label>
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+
+                    <!-- Years of Experience input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-yearsOfExperience" name="signup-yearsOfExperience" class="form-control rounded-pill"
+                        placeholder="Enter Years of Experience">
+                        <label for="login-password">Years of Experience</label>
+                        <i class="fa-solid fa-person-chalkboard"></i>
+                    </div>
+
+                    <!-- Field of Study input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-fieldofstudy" name="signup-fieldofstudy" class="form-control rounded-pill"
+                        placeholder="Enter Field of Study">
+                        <label for="login-password">Field of Study</label>
+                        <i class="fa-solid fa-industry"></i>
+                    </div>
+                    <button id="profile-edit-qualification-details-button" type="submit" class="btn btn-lg btn-primary w-100">Save</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-qualification-details-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Update Social Media Form -->
+    <div id="edit-social-media-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Edit Social Media Link</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-social-media-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <div class="profile-edit-main-content">
+                    Enter LinkedIn Profile URL
+                </div>
+                <form id="profile-edit-social-media-form">
+                    <!-- Social Media input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-linkedIn" name="profile-edit-linkedIn" class="form-control rounded-pill"
+                        placeholder="Enter social-media Title">
+                        <label for="profile-edit-linkedIn">LinkedIn</label>
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <button id="profile-edit-social-media-button" type="submit" class="btn btn-lg btn-primary w-100">Save</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-social-media-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Reset Password Form  -->
+    <div id="edit-password-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Reset Password</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-password-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <div class="profile-edit-main-content">
+                    Get OTP to reset Password
+                </div>
+                <form id="profile-edit-password-form">
+                    <button id="profile-edit-password-button" type="submit" class="btn btn-lg btn-primary w-100">Send OTP</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-password-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Reset Password OTP Form  -->
+    <div id="edit-password-otp-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Reset Password</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-password-otp-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <div id="profile-edit-password-otp-message">An OTP has been sent to email</div>
+                <form id="profile-edit-password-otp-form">
+                    <!-- OTP input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-password-otp" name="profile-edit-password-otp" class="form-control rounded-pill"
+                        placeholder="Enter OTP">
+                        <label for="profile-edit-password-otp">OTP</label>
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <!-- Password input field -->
+                    <div class="form-floating col-12">
+                        <input type="password" id="profile-edit-password-newpassword" name="profile-edit-password-newpassword" class="form-control rounded-pill"
+                        placeholder="Enter password">
+                        <label for="profile-edit-password-newpassword">Password</label>
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <button id="profile-edit-password-otp-button" type="submit" class="btn btn-lg btn-primary w-100">Reset Password</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-password-otp-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100px; height: 100px" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Delete Account Form  -->
+    <div id="edit-delete-account-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Delete Account</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-delete-account-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <div class="profile-edit-main-content">
+                    Get OTP to Delete Account
+                </div>
+                <form id="profile-edit-delete-account-form">
+                    <button id="profile-edit-delete-account-button" type="submit" class="btn btn-lg btn-primary w-100">Send OTP</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-delete-account-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100px; height: 100px" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
+    <!-- Delete Account OTP Form  -->
+    <div id="edit-delete-account-otp-popup" class="profile-popup-overlay">
+        <section class="card profile-popup-content">
+            <div class="card-body">
+                <div class="profile-popup-content-header">
+                    <h3 class="card-title">Delete Account</h3>
+                    <p class="close-popup" onclick="closeProfilePopUp('edit-delete-account-otp-popup')" style="font-weight: bold; font-size: 25px;">X</p>
+                </div>
+                <div id="profile-edit-delete-account-otp-message">An OTP has been sent to email</div>
+                <form id="profile-edit-delete-account-otp-form">
+                    <!-- OTP input field -->
+                    <div class="form-floating col-12">
+                        <input type="text" id="profile-edit-delete-account-otp" name="profile-edit-delete-account-otp" class="form-control rounded-pill"
+                        placeholder="Enter OTP">
+                        <label for="profile-edit-delete-account-otp">OTP</label>
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <button id="profile-edit-delete-account-otp-button" type="submit" class="btn btn-lg btn-primary w-100">Reset Password</button>
+                </form>
+            </div>
+            <div class="profile-edit-popup-lottie-player-container">
+                <dotlottie-player id="profile-edit-popup-delete-account-otp-lottie-player" src="https://lottie.host/6309cd2d-f4f0-4d21-bfa4-a026b1b99ed0/int0RwJCoL.json" background="transparent" 
+                speed="1" style="width: 100%; height: 100%" loop autoplay></dotlottie-player>
+            </div>
+        </section>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
      <!-- Custom JavaScript -->
     <script src="../scripts/script.js"></script>
     <script>
 
+        const accId = sessionStorage.getItem('accId');
+        
+        function showProfilePopUp(popupId){
+            document.getElementById(popupId).style.display = 'flex';
+        }
+
+        function closeProfilePopUp(popupId){
+            document.getElementById(popupId).style.display = 'none';
+        }
+
+        function logout(){
+            sessionStorage.clear();
+            window.location = '/';
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {   
+            
+            const profile = await fetchEducatorProfile(accId);
+
+            let oldPersonalDetails;
+            let oldQulificationDetails;
+            if (profile !== null) {
+                oldPersonalDetails = profile.personalDetails;
+                oldQulificationDetails = profile.qualificationDetails;
+            }
+            document.getElementById('profile-edit-profile-picture-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-profile-picture-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-profile-picture-lottie-player');
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                const fileInput = document.getElementById('profile-edit-profile-picture');
+
+                let validated;
+                let successful; 
+                validated = validateProfilePicture(fileInput.files);
+
+                if (validated) {
+                    const formData = new FormData();
+                    formData.append('ProfilePicture', fileInput.files[0]);
+                    successful = await updateEducatorProfilePicture(accId, formData);
+                }
+                
+                if (successful) {
+                    window.location.reload();
+                }
+                button.setAttribute('aria-disabled', 'false');
+                lottiePlayerContainer.style.display = 'none';
+            });
+
+            document.getElementById('profile-edit-personal-details-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-personal-details-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-personal-details-lottie-player');
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                let changedContent = false;
+                let validated = false;
+                let successful = false;
+
+                const fullName = document.getElementById('profile-edit-full-name').value;
+                const contactNo = document.getElementById('profile-edit-contact-no').value;
+                const dob = document.getElementById('profile-edit-dob').value;
+
+                if (oldPersonalDetails.FullName !== fullName || oldPersonalDetails.ContactNo !== contactNo || oldPersonalDetails.DOB !== dob) {
+                    changedContent = true;
+                }
+
+                if (changedContent === true) {
+                    validated = validatePersonalDetails(fullName, contactNo, dob);
+                }
+                else{
+                    alert("No changes detected");
+                    return;
+                }
+                if (validated) {
+                    successful = await updateEducatorPersonalDetails(accId, fullName, contactNo, dob);
+                }
+                if (successful) {
+                    window.location.reload();
+                }
+
+                button.setAttribute('aria-disabled', 'false');
+            });
+
+            document.getElementById('profile-edit-qualification-details-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-qualification-details-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-qualification-details-lottie-player');
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                let changedContent = false;
+                let validated = false;
+                let successful = false;
+
+                const professionalTitle = document.getElementById('profile-edit-professional-title').value;
+                const organisation = document.getElementById('profile-edit-Organisation').value;
+                const highestDegree = document.getElementById('profile-edit-highest-degree').value;
+                const yearsOfExperience = document.getElementById('profile-edit-yearsOfExperience').value;
+                const fieldOfStudy = document.getElementById('profile-edit-fieldofstudy').value;
+
+                if (oldQulificationDetails.ProfessionalTitle !== professionalTitle || oldQulificationDetails.Organisation !== organisation || oldQulificationDetails.HighestDegree !== highestDegree || oldQulificationDetails.YearsOfExperience != yearsOfExperience || oldQulificationDetails.FieldOfStudy !== fieldOfStudy) {
+                    changedContent = true;
+                }
+                if (changedContent === true) {
+                    validated = validateQualificationDetails(professionalTitle, organisation, highestDegree, yearsOfExperience, fieldOfStudy);
+                }
+                else{
+                    alert("No changes detected");
+                    return;
+                }
+                if (validated === true) {
+                    successful = await updateEducatorQualificationDetails(accId, professionalTitle, organisation, highestDegree, yearsOfExperience, fieldOfStudy);
+                }
+                if (successful) {
+                    window.location.reload();
+                }
+                button.setAttribute('aria-disabled', 'false');
+            }); 
+
+            document.getElementById('profile-edit-social-media-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-social-media-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-social-media-lottie-player');
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                let changedContent = false;
+                let validated = false;
+                let successful = false;
+
+                const linkedIn = document.getElementById('profile-edit-linkedIn').value;
+                console.log(oldQulificationDetails.LinkedIn);
+
+                if (oldPersonalDetails.LinkedIn !== linkedIn) {
+                    changedContent = true;
+                }
+                if (changedContent === true) {
+                    validated = validateSocialMedia(linkedIn);
+                }
+                else{
+                    alert("No changes detected");
+                    return;
+                }
+                if (validated === true) {
+                    successful = await updateEducatorSocialMedia(accId, linkedIn);
+                }
+                if (successful) {
+                    window.location.reload();
+                }
+                button.setAttribute('aria-disabled', 'false');
+            });
+        
+            document.getElementById('profile-edit-password-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const button = document.getElementById('profile-edit-password-button')
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-password-lottie-player').parentElement;
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                let otpSend = await sendResetPassOTP(accId);
+
+                if (otpSend) {
+                    document.getElementById('profile-edit-password-otp-message').innerHTML = `An OTP has been sent to ${oldPersonalDetails.Email}`;
+                    closeProfilePopUp('edit-password-popup');
+                    showProfilePopUp('edit-password-otp-popup');
+                }
+                button.setAttribute('aria-disabled', 'false');
+            });
+
+            document.getElementById('profile-edit-password-otp-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-password-otp-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-password-lottie-player').parentElement;
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                const otp = document.getElementById('profile-edit-password-otp').value;
+                const newPassword = document.getElementById('profile-edit-password-newpassword').value;
+
+                let validated;
+                let successful;
+                validated = validateOTPForm(otp, newPassword);
+
+                if (validated) {
+                    successful = await resetPassword(accId, otp, newPassword);
+                }
+
+                if (successful) {
+                    window.location.reload();
+                }
+                else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
+                }
+
+            });
+            
+            document.getElementById('profile-edit-delete-account-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-delete-account-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-delete-account-lottie-player').parentElement;
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                let otpSend = await sendDeleteAccountOTP(accId);
+
+                if (otpSend) {
+                    document.getElementById('profile-edit-delete-account-otp-message').innerHTML = `An OTP has been sent to ${oldPersonalDetails.Email}`;
+                    closeProfilePopUp('edit-delete-account-popup');
+                    showProfilePopUp('edit-delete-account-otp-popup');
+                }
+                button.setAttribute('aria-disabled', 'false');
+            });
+
+            document.getElementById('profile-edit-delete-account-otp-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const button = document.getElementById('profile-edit-delete-account-otp-button');
+                const lottiePlayerContainer = document.getElementById('profile-edit-popup-delete-account-otp-lottie-player').parentElement;
+
+                button.setAttribute('aria-disabled', 'true');
+                lottiePlayerContainer.style.display = 'flex';
+
+                const otp = document.getElementById('profile-edit-delete-account-otp').value;
+
+                let validated;
+                let sucessful;
+                validated = validateOTPForm(otp);
+
+                if (validated) {
+                    successful = await deleteAccount(accId, otp);
+                }
+
+                if (successful) {
+                    sessionStorage.clear();
+                    window.location = '/';
+                }
+                else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
+                }
+            });
+
+        });
+
+        async function fetchEducatorProfile(accId) {
+                const personalDetailsResponse = await fetch(`/account/${accId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                let personalDetails = await personalDetailsResponse.json();
+
+                const qualificationDetailsResponse = await fetch(`/educator/${accId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                const qualificationDetails = await qualificationDetailsResponse.json();
+
+                if (personalDetailsResponse.status === 200 && qualificationDetailsResponse.status === 200) {
+
+                    // Format date of birth
+                    let dob = new Date(personalDetails.DOB);
+                    date = dob.getDate();
+                    if (date < 10) {
+                        date = `0${date}`;
+                    }
+                    let month = dob.getMonth()+1;
+                    if (month < 10) {
+                        month = `0${month}`;
+                    }
+                    let year = dob.getFullYear();
+                    personalDetails.DOB = `${year}/${month}/${date}`;
+
+                    loadEducatorProfile(personalDetails, qualificationDetails);
+                    return { personalDetails, qualificationDetails };
+                }
+                else if (personalDetailsResponse.status === 404 || qualificationDetailsResponse.status === 404) {
+                    let errorMessages = [];
+
+                    if (personalDetailsResponse.status === 404) {
+                        errorMessages.push(personalDetails.message);
+                    }
+                    if (qualificationDetailsResponse.status === 404) {
+                        errorMessages.push(qualificationDetails.message);
+                    }
+                    alert(errorMessages.join('\n'));
+
+                }
+                else if (personalDetailsResponse.status === 401 || qualificationDetailsResponse.status === 401) {
+                    let errorMessages = [];
+
+                    if (personalDetailsResponse.status === 401) {
+                        errorMessages.push(personalDetails.message);
+                    }
+                    if (qualificationDetailsResponse.status === 401) {
+                        errorMessages.push(qualificationDetails.message);
+                    }
+                    alert(errorMessages.join('\n'));
+                }
+                else if (personalDetailsResponse.status === 403 || qualificationDetailsResponse.status === 403) {
+                    let errorMessages = [];
+
+                    if (personalDetailsResponse.status === 403) {
+                        errorMessages.push(personalDetails.message);
+                    }
+                    if (qualificationDetailsResponse.status === 403) {
+                        errorMessages.push(qualificationDetails.message);
+                    }
+                    alert(errorMessages.join('\n'));
+                }
+                else if (personalDetailsResponse.status === 400 || qualificationDetailsResponse.status === 400) {
+                    let errorMessages = [];
+
+                    if (personalDetailsResponse.status === 400) {
+                        errorMessages.push(personalDetails.message);
+                    }
+                    if (qualificationDetailsResponse.status === 400) {
+                        errorMessages.push(qualificationDetails.message);
+                    }
+                    alert(errorMessages.join('\n'));
+                    
+                }
+                else if (personalDetailsResponse.status === 500 || qualificationDetailsResponse.status === 500) {
+                    let errorMessages = [];
+
+                    if (personalDetailsResponse.status === 500) {
+                        errorMessages.push(personalDetails.message);
+                    }
+                    if (qualificationDetailsResponse.status === 500) {
+                        errorMessages.push(qualificationDetails.message);
+                    }
+                    alert(errorMessages.join('\n'));
+                }
+                return null;
+            }
+
+        function loadEducatorProfile(personalDetails, qualificationDetails) {
+            // Load profile picture
+            if (personalDetails.Photo === null) {
+                document.querySelector(".profile-picture").src = "../images/profiles/default-profile.png";
+            }
+            else{
+                document.querySelector(".profile-picture").src = personalDetails.Photo;
+            }
+
+            // Load personal details
+            document.getElementById("profile-full-name").innerHTML = personalDetails.FullName;
+            document.getElementById("profile-email-address").innerHTML = personalDetails.Email;
+            document.getElementById("profile-contact-no").innerHTML = personalDetails.ContactNo;
+            document.getElementById("profile-dob").innerHTML = personalDetails.DOB;
+
+            // Laod personal details edit form
+            document.getElementById("profile-edit-full-name").value = personalDetails.FullName;
+            document.getElementById("profile-edit-contact-no").value = personalDetails.ContactNo;
+            document.getElementById("profile-edit-dob").value = personalDetails.DOB;
+            
+            // Load qualification details
+            document.getElementById("profile-professional-title").innerHTML = qualificationDetails.ProfessionalTitle;
+            document.getElementById("profile-organisation").innerHTML = qualificationDetails.Organisation;
+            document.getElementById("profile-highest-degree").innerHTML = qualificationDetails.HighestDegree;
+            document.getElementById("profile-years-of-experience").innerHTML = qualificationDetails.YearsOfExperience;
+            document.getElementById("profile-field-of-study").innerHTML = qualificationDetails.FieldOfStudy;
+
+            // Load qualification details edit form
+            document.getElementById("profile-edit-professional-title").value = qualificationDetails.ProfessionalTitle;
+            document.getElementById("profile-edit-Organisation").value = qualificationDetails.Organisation;
+            document.getElementById("profile-edit-highest-degree").value = qualificationDetails.HighestDegree;
+            document.getElementById("profile-edit-yearsOfExperience").value = qualificationDetails.YearsOfExperience;
+            document.getElementById("profile-edit-fieldofstudy").value = qualificationDetails.FieldOfStudy;
+            
+            // Load social media links
+            if (personalDetails.LinkedIn !== null) {
+                document.getElementById("profile-social-media-linkedIn").innerHTML = personalDetails.LinkedIn;
+                document.getElementById("profile-edit-linkedIn").value = personalDetails.LinkedIn;
+            }else{
+                document.getElementById("profile-social-media-linkedIn").innerHTML = "None";
+            }
+
+        }
+
+        function validateProfilePicture(file) {
+            // Ensure a file is selected
+            if (file.length === 0) {
+                alert('Please select a file to upload.');
+                return false;
+            }else if (file.length > 1) {
+                alert('Please select only one file to upload.');
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        async function updateEducatorProfilePicture(accId, formData, oldPersonalDetails) {
+            
+            const profilePictureResponse = await fetch(`/account/updateProfilePicture/${accId}`, {
+                method: 'PUT',
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            const profilePicture = await profilePictureResponse.json();
+            const status = profilePictureResponse.status;
+
+            if (status === 200) {
+                alert("Profile picture updated successfully");
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                alert(profilePicture.message);
+                return false;
+            }
+        }
+
+        function validatePersonalDetails(fullName, contactNo, dob) {
+            let inputFields = document.querySelectorAll("#profile-edit-personal-details-form .form-floating input");
+            let errorList = [];
+
+            inputFields.forEach((inputField) => {
+                if (inputField.classList.contains("error")){
+                    inputField.classList.remove("error");   // Remove Red Border
+                }
+                if (inputField.classList.contains("success")){
+                    inputField.classList.remove("success");   // Remove Green Border
+                }
+            });
+
+            // Validate full name
+            if (fullName === "") {
+                inputFields[0].classList.add("error");
+                errorList.push("Full Name is required");
+            }
+            else{
+                inputFields[0].classList.add("success");
+            }
+
+            // Validate contact no
+            if (contactNo === "") {
+                inputFields[1].classList.add("error");
+                errorList.push("Contact No is required");
+            }
+            else if (contactNo.length < 10){
+                inputFields[1].classList.add("error");
+                errorList.push("Contact No must be at least 10 characters long");
+            }
+            else{
+                inputFields[1].classList.add("success");
+            }
+
+            // Validate date of birth
+            const pattern = /^(\d{4})\/(\d{2})\/(\d{2})$/;
+            if (dob === "") {
+                inputFields[2].classList.add("error");
+                errorList.push("Date of Birth is required");
+            }
+            else if (pattern.test(dob) === false){
+                inputFields[2].classList.add("error");
+                errorList.push("Invalid Date of Birth format");
+            }
+            else{
+                inputFields[2].classList.add("success");
+            }
+
+            if (errorList.length != 0){
+                alert(errorList.join("\n"));
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+
+        async function updateEducatorPersonalDetails(accId, fullName, contactNo, dob) {
+            const body = {
+                fullName: fullName,
+                contactNo: contactNo,
+                dob: dob,
+            };
+
+            const personalDetailsResponse = await fetch(`/account/updatePersonalDetails/${accId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            const personalDetails = await personalDetailsResponse.json();
+            const status = personalDetailsResponse.status;
+
+            if (personalDetailsResponse.status === 200) {
+                alert("Profile updated successfully");
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                alert(personalDetails.errors);
+                return false;
+            }
+        }
+        
+        function validateQualificationDetails(professionalTitle, organisation, highestDegree, yearsOfExperience, fieldOfStudy) {
+            let inputFields = document.querySelectorAll("#profile-edit-qualification-details-form .form-floating input");
+            let errorList = [];
+
+            inputFields.forEach((inputField) => {
+                if (inputField.classList.contains("error")){
+                    inputField.classList.remove("error");   // Remove Red Border
+                }
+                if (inputField.classList.contains("success")){
+                    inputField.classList.remove("success");   // Remove Green Border
+                }
+            });
+
+            // Validate professional title
+            if (professionalTitle === "") {
+                inputFields[0].classList.add("error");
+                errorList.push("Professional Title is required");
+            }
+            else{
+                inputFields[0].classList.add("success");
+            }
+
+            // Validate organisation
+            if (organisation === "") {
+                inputFields[1].classList.add("error");
+                errorList.push("Organisation is required");
+            }
+            else{
+                inputFields[1].classList.add("success");
+            }
+
+            // Validate highest degree
+            if (highestDegree === "") {
+                inputFields[2].classList.add("error");
+                errorList.push("Highest Degree is required");
+            }
+            else{
+                inputFields[2].classList.add("success");
+            }
+
+            // Validate years of experience
+            if (yearsOfExperience === "") {
+                inputFields[3].classList.add("error");
+                errorList.push("Years of Experience is required");
+            }
+            else{
+                inputFields[3].classList.add("success");
+            }
+
+            // Validate field of study
+            if (fieldOfStudy === "") {
+                inputFields[4].classList.add("error");
+                errorList.push("Field of Study is required");
+            }
+            else{
+                inputFields[4].classList.add("success");
+            }
+
+            if (errorList.length != 0){
+                alert(errorList.join("\n"));
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        
+        async function updateEducatorQualificationDetails(accId, professionalTitle, organisation, highestDegree, yearsOfExperience, fieldOfStudy) {
+                const body = {
+                    professionalTitle: professionalTitle,
+                    organisation: organisation,
+                    highestDegree: highestDegree,
+                    yearsOfExperience: yearsOfExperience,
+                    fieldOfStudy: fieldOfStudy
+                };
+
+                const qualificationDetailsResponse = await fetch(`/educator/update/${accId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const qualificationDetails = await qualificationDetailsResponse.json();
+                const status = qualificationDetailsResponse.status;
+
+                if (qualificationDetailsResponse.status === 200) {
+                    alert("Profile updated successfully");
+                    return true;
+                }
+                else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                    alert(qualificationDetails.errors);
+                    return false;
+                }
+            }
+
+        function validateSocialMedia(linkedIn) {
+            let inputFields = document.querySelectorAll("#profile-edit-social-media-form .form-floating input");
+            let errorList = [];
+
+            inputFields.forEach((inputField) => {
+                if (inputField.classList.contains("error")){
+                    inputField.classList.remove("error");   // Remove Red Border
+                }
+                if (inputField.classList.contains("success")){
+                    inputField.classList.remove("success");   // Remove Green Border
+                }
+            });
+
+            // Validate linkedIn
+            if (linkedIn === "") {
+                inputFields[0].classList.add("error");
+                errorList.push("LinkedIn is required");
+            }
+            else{
+                inputFields[0].classList.add("success");
+            }
+
+            if (errorList.length != 0){
+                alert(errorList.join("\n"));
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        
+        async function updateEducatorSocialMedia(accId, linkedIn) {
+            const body = {
+                linkedIn: linkedIn
+            };
+
+            const socialMediaResponse = await fetch(`/account/updateSocialMedia/${accId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            const socialMedia = await socialMediaResponse.json();
+            const status = socialMediaResponse.status;
+
+            if (socialMediaResponse.status === 200) {
+                alert("Profile updated successfully");
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                alert(socialMedia.errors);
+                return false;
+            }
+        }
+        
+        async function sendResetPassOTP(accId) {
+            const response = await fetch(`/account/requestResetPassOTP/${accId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+            const status = response.status;
+
+            if (response.status === 200) {
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                alert(data.errors);
+                return false;
+            }
+        }
+
+        function validateOTPForm(otp, newPassword = null) {
+            let inputFields = document.querySelectorAll("#profile-edit-password-otp-form .form-floating input");
+            let errorList = [];
+
+            inputFields.forEach((inputField) => {
+                if (inputField.classList.contains("error")){
+                    inputField.classList.remove("error");   // Remove Red Border
+                }
+                if (inputField.classList.contains("success")){
+                    inputField.classList.remove("success");   // Remove Green Border
+                }
+            });
+
+            // Validate OTP
+            if (otp === "") {
+                inputFields[0].classList.add("error");
+                errorList.push("OTP is required");
+            }
+            else if (otp.length < 6){
+                inputFields[0].classList.add("error");
+                errorList.push("OTP must be at least 6 characters long");
+            }
+            else{
+                inputFields[0].classList.add("success");
+            }
+
+            // Check if new password is not null
+            if (newPassword !== null){
+                // Validate new password
+                if (newPassword === "") {
+                    inputFields[1].classList.add("error");
+                    errorList.push("New Password is required");
+                }
+                else if (newPassword.length < 4){
+                    inputFields[1].classList.add("error");
+                    errorList.push("Password must be at least 4 characters long");
+                }
+                else{
+                    inputFields[1].classList.add("success");
+                }
+            }
+
+            if (errorList.length != 0){
+                alert(errorList.join("\n"));
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    
+        async function resetPassword(accId, otp, newPassword) {
+            const body = {
+                otp: otp,
+                newPassword: newPassword
+            };
+
+            const response = await fetch(`/account/resetPassword/${accId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+
+            const data = await response.json();
+            const status = response.status;
+
+            if (response.status === 200) {
+                alert(`Password reset successfully\n${data.message}`);
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                alert(data.message);
+                return false;
+            }
+        }
+
+        async function sendDeleteAccountOTP(accId) {
+            const response = await fetch(`/account/requestDeleteAccountOTP/${accId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            const status = response.status;
+
+            if (response.status === 200) {
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 500) {
+                alert(data.errors);
+                return false;
+            }
+        }
+    
+        async function deleteAccount(accId, otp) {
+            const body = {
+                otp: otp
+            };
+
+            const response = await fetch(`/account/deleteAccount/${accId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            const data = await response.json();
+            const status = response.status;
+
+            if (response.status === 200) {
+                alert("Account deleted successfully");
+                return true;
+            }
+            else if (status === 400 || status === 401 || status === 403 || status === 404 || status === 500) {
+                alert(data.message);
+                return false;
+            }
+        }
     </script>
 </body>
 </html>

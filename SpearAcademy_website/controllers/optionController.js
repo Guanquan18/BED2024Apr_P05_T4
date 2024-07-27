@@ -1,6 +1,6 @@
 const express = require('express');
 const sql = require('mssql');
-const dbConfig = require('../dbConfig');
+const dbConfig = require('../config/dbConfig');
 const verifyJWT = require('../middlewares/verifyJWT');
 
 const firstpath = '/api/options';

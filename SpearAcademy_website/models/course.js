@@ -1,7 +1,7 @@
 // Entirely Created By: Sairam (S10259930H)
 
 const sql = require("mssql"); // Import the mssql module
-const dbConfig = require("../dbConfig"); // Import the database configuration
+const dbConfig = require("../config/dbConfig"); // Import the database configuration
 
 class Courses {
   // Constructor to initialize course properties
@@ -68,7 +68,7 @@ class Courses {
                 ))
                 : []; // Return an empty array if no courses are found
         } catch (error) {
-            console.error('Error retrieving courses by creator:', error);
+            console.log('Error retrieving courses by creator:', error);
             throw error;
         } finally {
             connection.close(); // Close the connection
@@ -125,7 +125,7 @@ class Courses {
                 ))
                 : []; // Return an empty array if no courses are found
         } catch (error) {
-            console.error('Error retrieving courses:', error);
+            console.log('Error retrieving courses:', error);
             throw error;
         } finally {
             connection.close(); // Close the connection
@@ -392,7 +392,7 @@ class Courses {
           const result = await request.query(sqlQuery);
           return result.rowsAffected.some(count => count > 0); // Return true if any rows were affected
         } catch (error) {
-          console.error('Error deleting course and details:', error);
+          console.log('Error deleting course and details:', error);
           throw error;
         } finally {
           // Ensure the connection is always closed

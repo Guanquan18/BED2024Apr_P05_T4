@@ -12,7 +12,7 @@ const getCourseByCreator = async (req, res) => {
     }
     res.json(course); // Send the course data as JSON response
   } catch (error) {
-    console.error(error); // Log error to the console
+    console.log(error); // Log error to the console
     res.status(500).send("Error retrieving course"); // Send 500 status code for server error
   }
 };
@@ -27,7 +27,7 @@ const getCourses = async (req, res) => {
     }
     res.json(courses); // Send the course data as JSON response
   } catch (error) {
-    console.error(error); // Log error to the console
+    console.log(error); // Log error to the console
     res.status(500).send("Error retrieving courses"); // Send 500 status code for server error
   }
 };
@@ -43,7 +43,7 @@ const getCourseWithSectionById = async (req, res) => {
     }
     res.json(course);
   } catch (error) {
-    console.error(error);  // Log and respond with server error if retrieval fails
+    console.log(error);  // Log and respond with server error if retrieval fails
     res.status(500).send("Error retrieving course");
   }
 };
@@ -62,7 +62,7 @@ const updateCourse = async (req, res) => {
     }
     res.json(updatedCourse); // Send the updated course data as JSON response
   } catch (error) {
-    console.error(error);  // Log error to the console
+    console.log(error);  // Log error to the console
     res.status(500).send("Error updating Course"); // Send 500 status code for server error
   }
 };
@@ -85,7 +85,7 @@ const updateCourseIcon = async (req, res) => {
     
     res.json(updatedIcon); // Send the updated course icon data as JSON response
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).send('Error updating course icon');
   }
 };
@@ -122,7 +122,7 @@ const createCourse = async (req, res) => {
     // Send the created course as the response
     res.status(201).json(createdCourse);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).send("Error creating course");
   }
 };
@@ -142,7 +142,7 @@ const deleteCourseAndDetails = async (req, res) => {
 
     res.status(204).send('Course and associated details successfully deleted');
   } catch (error) {
-    console.error('Error deleting course and details:', error);
+    console.log('Error deleting course and details:', error);
     res.status(500).send('Error deleting course and details');
   }
 };

@@ -1,5 +1,5 @@
 const sql = require("mssql");  // Import mssql
-const dbConfig = require("../dbConfig");  // Import database configuration
+const dbConfig = require("../config/dbConfig");  // Import database configuration
 
 class QnA {  // Defining a QnA class to represent QnA entries in the database with properties
     constructor(id, QnAtitle, QnApostDate, courseId) {

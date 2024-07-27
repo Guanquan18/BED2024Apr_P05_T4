@@ -63,20 +63,6 @@
             <section class="signup-form-layer-container" id="signup-form-email-password">
             
                 <h1 class="login-signup-header"></h1>
-
-                <!-- Google login -->
-                <button id="google-sign-in-btn" class="third-party-login-signup-btn col-12">
-                    <div>Signup with Google</div>
-                    <img src="../Images/google-icon.png" alt="Google Icon">
-                </button>
-                
-                <!-- Apple login -->
-                <button id="apple-sign-in-btn" class="third-party-login-signup-btn col-12">
-                    <div>Signup with Apple</div>
-                    <img src="../Images/apple-icon.png" alt="Google Icon">
-                </button>
-                    
-                <p class="selection-option">or</p>
                 
                 <!-- Email input field -->
                 <div class="form-floating col-12">
@@ -128,7 +114,7 @@
                 <div class="form-floating col-12">
                     <input type="text" id="signup-dob" name="signup-dob" class="form-control rounded-pill"
                     placeholder="Enter mobile no">
-                    <label for="login-password">Date of Birth (dd/MM/yyyy)</label>
+                    <label for="login-password">Date of Birth (yyyy/MM/dd)</label>
                     <i class="fa-solid fa-calendar-days"></i>
                 </div>
 
@@ -199,7 +185,30 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            sessionStorage.clear();  // Clear session storage
+            const checkAuthenticaed = async () => {
+                const response = await fetch("/authenticated",{
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                    }
+                })
+                const data = await response.json();
+
+                if (response.status === 200){
+                    alert("You are already logged in");
+                    window.location.href = data.homePage;
+                }
+                else{
+                    sessionStorage.clear();
+                }
+            }
+
+            //Check if user is already logged in
+            if (sessionStorage.getItem("token") !== null){
+                checkAuthenticaed();
+            }
+
 
             // Get Form Buttons
             const signupRoleStudentFormButton = document.getElementById("signup-role-student-submit");
@@ -215,7 +224,7 @@
             const signupQualificationForm = document.getElementById("signup-form-qualification");
 
             let emailPasswordVerified = false;
-            let emailPasswordAuthenticated;
+            let emailPasswordAuthenticated = false;
             let roleSelected;
             let personalDetailsVerified = false;
             let personalDetailsAuthenticated;
@@ -403,9 +412,10 @@
                 event.preventDefault();
 
                 const acccId = sessionStorage.getItem("accId");
+                const token = sessionStorage.getItem("token");
 
                 // Get personal details inputs
-                const fullname = document.getElementById("signup-fullname").value;
+                const fullName = document.getElementById("signup-fullname").value;
                 const contactNo = document.getElementById("signup-contactno").value;
                 const dob = document.getElementById("signup-dob").value;
 
@@ -441,7 +451,7 @@
                     });
 
                     // Validate full name
-                    if (fullname === "") {
+                    if (fullName === "") {
                         
                         inputFields[0].classList.add("error");
                         errorMessage.style.visibility = "visible";
@@ -470,7 +480,7 @@
                     }
 
                     // Validate date of birth
-                    const pattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+                    const pattern = /^(\d{4})\/(\d{2})\/(\d{2})$/;
                     if (dob === "") {
                         inputFields[2].classList.add("error");
                         errorMessage.style.visibility = "visible";
@@ -499,14 +509,14 @@
                 // function to authenticate personal details of the user by sending a request to the server
                 async function authenticatePersonalDetails(){
 
-                    const response = await fetch(`/account/update/updatePersonalDetails/${acccId}`,{
+                    const response = await fetch(`/account/updatePersonalDetails/${acccId}`,{
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${sessionStorage.getItem("token")}` // Include JWT token in the Authorization header
+                            "Authorization": `Bearer ${token}` // Include JWT token in the Authorization header
                         },
                         body: JSON.stringify({
-                            fullName: fullname,
+                            fullName: fullName,
                             contactNo: contactNo,
                             dob: dob,
                         })
@@ -514,7 +524,7 @@
 
                     const data = await response.json(); // Convert response to JSON
 
-                    if (response.status === 201){   // If user is created successfully
+                    if (response.status === 200){   // If user is created successfully
 
                         inputFields.forEach((inputField) => {
                             if (inputField.classList.contains("error")){
@@ -566,6 +576,7 @@
                 event.preventDefault();
 
                 const eduId = sessionStorage.getItem("accId");
+                const token = sessionStorage.getItem("token");
 
                 // Get qualification inputs
                 const professionalTitle = document.getElementById("signup-professional-title").value;
@@ -679,7 +690,7 @@
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${sessionStorage.getItem("token")}` // Include JWT token in the Authorization header
+                            "Authorization": `Bearer ${token}` // Include JWT token in the Authorization header
                         },
                         body: JSON.stringify({
                             professionalTitle: professionalTitle,

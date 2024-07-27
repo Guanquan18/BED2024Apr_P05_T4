@@ -1,5 +1,5 @@
 const sql = require("mssql");  // import mssql 
-const dbConfig = require("../dbConfig");  // import database configuration 
+const dbConfig = require("../config/dbConfig");  // import database configuration 
 
 class Comment {  // defining a comment class to represent the messages in the database with properties
     constructor(id, msgDate, msgText, messageAccount, messageQnA, fullName) {

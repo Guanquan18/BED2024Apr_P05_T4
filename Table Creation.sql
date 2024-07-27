@@ -1,5 +1,5 @@
---drop database SpearAcademy_db
---create database SpearAcademy_db
+-- drop database SpearAcademy_db
+-- create database SpearAcademy_db
 
 -- 1. Table (Account)
 create table Account
@@ -11,7 +11,7 @@ create table Account
 	ContactNo		varchar(20)					null unique,
 	PasswordHash	varchar(200)				not null, 
 	Role			varchar(10)					null CHECK(Role in ('Student','Educator')),
-	Photo			varchar(200)				null,
+	Photo			text						null,
 	LinkedIn		varchar(150)				null, 
 	constraint PK_Account primary key (AccId)
 )
@@ -107,6 +107,9 @@ create table [Option]
 		references Question (QuestionNo,Quiz_Question)
 )
 
+
+
+
 -- 11. Table (Review)
 create table Review
 (
@@ -153,47 +156,24 @@ create table Message
 
 insert into Account(FullName,DOB,Email,ContactNo,PasswordHash,Role,Photo,LinkedIn) 
 values 
-('Alex Chang', '2006-01-01','alex.chang@gmail.com','12345678','$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator','Photo','www.linkedin.com/alexchang'),
-('Maria Garcia', '1995-05-15','maria.garcia@example.com','87654321','$2b$10$wNR9IXTUGSkKdYF6Icajg.Zk5Ft2KXB628lc.4GMctmExKY4WBinS','Student','Photo','www.linkedin.com/mariagarcia'),
-('John Smith', '1988-12-22','john.smith@example.com','23456789','$2b$10$58zUWuF2GEMoamCHtzpBfuZV5nBmuE/h.p5BXbpRUXod.DfIyDbGG','Educator','Photo','www.linkedin.com/johnsmith'),
-('Aisha Khan', '1993-07-08','aisha.khan@example.com','34567890','$2b$10$nJ3xjkiIDwoC4HLolMSKcOhia9R2V1O8KUY0mU1UdCtE6Yw1TeaG.','Student','Photo','www.linkedin.com/aishakhan'),
-('David Brown', '1985-03-30','david.brown@example.com','45678901','$2b$10$16609bO.PiKYwro/hPyOB.vg47dGsyLVDJ99WLU/mJZbpMNPfVmoi','Educator','Photo','www.linkedin.com/davidbrown'),
-('Li Wei', '1999-09-19','li.wei@example.com','56789012','$2b$10$oRgVNhJFVsBPwwXp7evG0.F/03NAVV0f020Vj8xSU9nSuZLRtvmha','Student','Photo','www.linkedin.com/liwei'),
-('Anna Ivanova', '1992-11-11','anna.ivanova@example.com','67890123','$2b$10$s8TV1cnwPLQiSibzGPBzjernYRTNkEiaUuTq4vPRD3c35728Dpsdq','Educator','Photo','www.linkedin.com/annaivanova'),
-('Carlos Sanchez', '1990-02-20','carlos.sanchez@example.com','78901234','$2b$10$MdmXWJYFqEUd14iOS7RMMOb7pU6mHfoBalLgGgD/ggzn102RvzLMe','Student','Photo','www.linkedin.com/carlossanchez'),
-('Fatima Bint Ali', '1997-04-10','fatima.ali@example.com','89012345','$2b$10$MLaAnbOcSB1MebxK.EP6d.v8AWw6Kvm3eUPi8eLQAm6QHpCY5hmdO','Educator','Photo','www.linkedin.com/fatimaali'),
-('Mohammed El-Sayed', '1986-08-25','mohammed.sayed@example.com','90123456','$2b$10$mZYBgpGd4kB6ffNfOWY1DOqxQq03SWxxIpXNN4YzCkdGkJw31fBX.','Student','Photo','www.linkedin.com/mohammedsayed'),
-('Elena Petrova', '1994-03-05','elena.petrova@example.com','11234567','$2b$10$7B/K3FHQvxzxcUyoHnZ8PudeUBm.3UwACAVEeqcwPWesV0PBt6D3u','Educator','Photo','www.linkedin.com/elenapetrova'),
-('Robert Johnson', '1983-12-12','robert.johnson@example.com','22345678','$2b$10$5vAl0lbcjmJA8puj7eulceFU2CW9rh/3nUsl9y6R.gWQiywJumNgC','Student','Photo','www.linkedin.com/robertjohnson'),
-('Sofia Martinez', '1996-07-18','sofia.martinez@example.com','33456789','$2b$10$AHZU3vW1F1bGfknO2O93SOIcaeeNLLP9bHdWd1mGl7ol0/vxBznme','Educator','Photo','www.linkedin.com/sofiamartinez'),
-('Akira Yamamoto', '1989-06-14','akira.yamamoto@example.com','44567890','$2b$10$EuETruHp0KUj3y9IPfMNO.jr2LpyxlTRckJielB6/dYVeVssafnd2','Student','Photo','www.linkedin.com/akirayamamoto'),
-('Isabella Rossi', '1991-09-28','isabella.rossi@example.com','55678901','$2b$10$.JaJjLhYiSaNLg1gk3.A7uTdQ.fiobd8orB1Zsj8c1Jy69hvXwU2u','Educator','Photo','www.linkedin.com/isabellarossi'),
-('George Williams', '1987-05-17','george.williams@example.com','66789012','$2b$10$xdZY8dLj.geI.SW0yXK0fujEm3ZaiAt9o7KRU0Z0JzBRh0Ur1hv3G','Student','Photo','www.linkedin.com/georgewilliams'),
-('Yuki Tanaka', '1998-10-04','yuki.tanaka@example.com','77890123','$2b$10$A4tvFbtffPpB7uYGmHqNgee/dAVGzRr0eN36Q.88WADCh7bN3txv2','Educator','Photo','www.linkedin.com/yukitanaka'),
-('Emma Dubois', '1984-01-22','emma.dubois@example.com','88901234','$2b$10$NKFyhaKjjrQp/gIbJF8hSOC1/q5MFwg3puCQdmyUNUpVyX6XXYnWG','Student','Photo','www.linkedin.com/emmadubois'),
-('Hassan Ahmed', '1990-11-06','hassan.ahmed@example.com','99012345','$2b$10$81wGPn/galFkclSBZYQM2u8YhmpO.rirHhATkX92bmRQHfYdbdDCm','Educator','Photo','www.linkedin.com/hassanahmed'),
-('Laura Müller', '1993-02-18','laura.muller@example.com','10123456','$2b$10$oUNpPBP7ukl.AiqLr/3Ldua8EhiUbmgL.ijQyRUdjVnsNPtIcGyNS','Student','Photo','www.linkedin.com/lauramuller');
+('Alex Chang', '2006-01-01','alex.chang@gmail.com','6512345678',				'$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator',null,'www.linkedin.com/alexchang'),
+('Maria Garcia', '1995-05-15','maria.garcia@example.com','6587654321',			'$2b$10$wNR9IXTUGSkKdYF6Icajg.Zk5Ft2KXB628lc.4GMctmExKY4WBinS','Student',null,'www.linkedin.com/mariagarcia'),
+('John Smith', '1988-12-22','john.smith@example.com','6523456789',				'$2b$10$58zUWuF2GEMoamCHtzpBfuZV5nBmuE/h.p5BXbpRUXod.DfIyDbGG','Educator',null,'www.linkedin.com/johnsmith'),
+('Aisha Khan', '1993-07-08','aisha.khan@example.com','6534567890',				'$2b$10$nJ3xjkiIDwoC4HLolMSKcOhia9R2V1O8KUY0mU1UdCtE6Yw1TeaG.','Student',null,'www.linkedin.com/aishakhan'),
+('David Brown', '1985-03-30','david.brown@example.com','6545678901',			'$2b$10$16609bO.PiKYwro/hPyOB.vg47dGsyLVDJ99WLU/mJZbpMNPfVmoi','Educator',null,'www.linkedin.com/davidbrown');
 
 -- Even Number AccountID Are Student 
 INSERT INTO Student (StudentId)
 VALUES 
-(2),(4),(6),(8),(10),(12),(14),(16),(18),(20);
+(2),(4);
 
 -- Odd Number AccountID Are Educator
 insert into Educator(EducatorId,Organisation,ProfessionalTitle,YearsOfExperience,FieldOfStudy,HighestDegree)
 values 
 (1,'Ngee Ann Polytechnic','Professor',10,'Computer Science','PhD Degree'),
 (3,'Singapore Polytechnic','Professor',20,'Engineering','Master Degree'),
-(5,'Temasek Polytechnic','Senior Lecturer',15,'Information Technology','PhD Degree'),
-(7,'Republic Polytechnic','Associate Professor',12,'Mechanical Engineering','PhD Degree'),
-(9,'Nanyang Polytechnic','Lecturer',8,'Business Administration','Master Degree'),
-(11,'Institute of Technical Education','Professor',22,'Electrical Engineering','PhD Degree'),
-(13,'Singapore Management University','Assistant Professor',5,'Economics','PhD Degree'),
-(15,'National University of Singapore','Professor',30,'Biochemistry','PhD Degree'),
-(17,'Nanyang Technological University','Associate Professor',18,'Physics','PhD Degree'),
-(19,'Singapore University of Technology and Design','Senior Lecturer',14,'Architecture','Master Degree');
+(5,'Temasek Polytechnic','Senior Lecturer',15,'Information Technology','PhD Degree');
 
--- Insert into Course
 INSERT INTO Course (CourseTitle, SmallDescription, Description, Label, Badge, Thumbnail, Creator)
 VALUES 
 (	'Generalized AI for Beginners', 
@@ -212,23 +192,13 @@ VALUES
 	null,
     'https://th.bing.com/th/id/OIP.P_3XeZcQ1lOx2bILTWvGgwHaEK?rs=1&pid=ImgDetMain',
     1
-),
-(	'Global Warming Awareness', 
-	'Understanding the impact of global warming on our planet',
-	'This course raises awareness about the causes and effects of global warming, exploring climate change science, environmental impacts, and mitigation strategies. Ideal for individuals interested in understanding and combating climate change.',
-	'Featured Course',
-	null,
-	'https://th.bing.com/th/id/OIP.WghgdKlu-ntLUxvHZU6LNgHaE8?rs=1&pid=ImgDetMain', 
-	1
 );
-
 -- Insert into SectionDetails
 INSERT INTO SectionDetails (SectionTitle, Video, Section_Course)
 VALUES 
-('Introduction to AI', 'https://www.youtube.com/embed/ad79nYk2keg?si=umL5NNgp_aqXYO3Z', 1),
-('Advanced AI', 'https://www.youtube.com/embed/mFnnlafy2yI?si=9wptdiQkxZjRy88G', 1),
-('Google AI Principles', 'https://www.youtube.com/embed/WKtmjgTCzxA?si=2tma1bcyuujKloYe', 1),
-('Getting Started with Python for Machine Learning', 'https://www.youtube.com/embed/7eh4d6sabA0?si=ZhH3Tl_9C6JJALE5', 2);
+('Introduction to AI', 'intro_ai.mp4', 1),
+('Advanced AI', 'advanced_ai.mp4', 1),
+('Google AI Principles', 'google_ai_principles.mp4', 1);
 
 -- Insert data into Quiz table
 INSERT INTO Quiz (QuizTitle, Section_Quiz, Course_Quiz)
@@ -327,14 +297,14 @@ VALUES
 ('Collect a small amount of data to save energy.', 'While reducing energy consumption is important, data minimization is a core component of data privacy.', 0, 16, 2),
 ('Collect a small amount of data to make your model more efficient.', 'Collecting a small or large amount of data may not affect model performance.', 0, 16, 2);
 
+
+
+
 -- Insert into Review
 INSERT INTO Review (ReviewText, Ratings, Review_Course, Review_Account)
 VALUES 
 ('This is an excellent course for beginners. The content is well-structured and easy to understand.', 4.5, 1, 2),
-('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4),
-('Very informative and well-paced. The practical examples were very helpful.', 4.8, 2, 6),
-('Great introduction to machine learning with Python. Clear explanations and useful exercises.', 4.7, 2, 8);
-
+('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4);
 
 
 --Insert into QnA table

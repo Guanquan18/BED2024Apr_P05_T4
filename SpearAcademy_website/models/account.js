@@ -305,7 +305,7 @@ class Account {
                 INNER JOIN SectionDetails sd ON q.Section_Quiz = sd.SectionNo
                 INNER JOIN Course c ON sd.Section_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
                     
                 -- Delete from Question table
                 DELETE qu
@@ -314,7 +314,7 @@ class Account {
                 INNER JOIN SectionDetails sd ON q.Section_Quiz = sd.SectionNo
                 INNER JOIN Course c ON sd.Section_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
                     
                 -- Delete from Quiz table 
                 DELETE q
@@ -322,21 +322,21 @@ class Account {
                 INNER JOIN SectionDetails sd ON q.Section_Quiz = sd.SectionNo
                 INNER JOIN Course c ON sd.Section_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
                     
                 -- Delete from SectionDetails table
                 DELETE sd
                 FROM SectionDetails sd
                 INNER JOIN Course c ON sd.Section_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
                     
                 -- Delete from Review table
                 DELETE r
                 FROM Review r
                 INNER JOIN Course c ON r.Review_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
                             
                     -- Delete from Message table
                     DELETE m
@@ -344,31 +344,31 @@ class Account {
                 INNER JOIN QnA qna ON m.Message_QnA = qna.QnAId
                 INNER JOIN Course c ON qna.QnA_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
     
                 -- Delete from QnA table
                 DELETE qna
                 FROM QnA qna
                 INNER JOIN Course c ON qna.QnA_Course = c.CourseId
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
                     
                 -- Delete from Course table
                 DELETE c
                 FROM Course c
                 INNER JOIN Account a ON c.Creator = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
     
                 -- Delete from Educator Table
                 DELETE e
                 FROM Educator e
                 INNER JOIN Account a ON e.EducatorId = a.AccId
-                WHERE a.AccId = 1;
+                WHERE a.AccId = @accId;
     
                 -- Delete from Account Table
                 DELETE a
                 FROM Account a
-                WHERE A.AccId = 1;
+                WHERE A.AccId = @accId;
                     
                 COMMIT TRANSACTION;
             `;

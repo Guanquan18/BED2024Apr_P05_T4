@@ -458,9 +458,10 @@
                 
                 if (successful) {
                     window.location.reload();
+                }else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
                 }
-                button.setAttribute('aria-disabled', 'false');
-                lottiePlayerContainer.style.display = 'none';
             });
 
             document.getElementById('profile-edit-personal-details-form').addEventListener('submit', async (e) => {
@@ -496,9 +497,11 @@
                 }
                 if (successful) {
                     window.location.reload();
+                }else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
                 }
 
-                button.setAttribute('aria-disabled', 'false');
             });
 
             document.getElementById('profile-edit-qualification-details-form').addEventListener('submit', async (e) => {
@@ -553,7 +556,6 @@
                 let successful = false;
 
                 const linkedIn = document.getElementById('profile-edit-linkedIn').value;
-                console.log(oldQulificationDetails.LinkedIn);
 
                 if (oldPersonalDetails.LinkedIn !== linkedIn) {
                     changedContent = true;
@@ -570,8 +572,10 @@
                 }
                 if (successful) {
                     window.location.reload();
+                }else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
                 }
-                button.setAttribute('aria-disabled', 'false');
             });
         
             document.getElementById('profile-edit-password-form').addEventListener('submit', async (e) => {
@@ -589,8 +593,10 @@
                     document.getElementById('profile-edit-password-otp-message').innerHTML = `An OTP has been sent to ${oldPersonalDetails.Email}`;
                     closeProfilePopUp('edit-password-popup');
                     showProfilePopUp('edit-password-otp-popup');
+                }else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
                 }
-                button.setAttribute('aria-disabled', 'false');
             });
 
             document.getElementById('profile-edit-password-otp-form').addEventListener('submit', async (e) => {
@@ -638,8 +644,10 @@
                     document.getElementById('profile-edit-delete-account-otp-message').innerHTML = `An OTP has been sent to ${oldPersonalDetails.Email}`;
                     closeProfilePopUp('edit-delete-account-popup');
                     showProfilePopUp('edit-delete-account-otp-popup');
+                }else{
+                    button.setAttribute('aria-disabled', 'false');
+                    lottiePlayerContainer.style.display = 'none';
                 }
-                button.setAttribute('aria-disabled', 'false');
             });
 
             document.getElementById('profile-edit-delete-account-otp-form').addEventListener('submit', async (e) => {

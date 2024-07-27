@@ -16,7 +16,6 @@ create table Account
 	constraint PK_Account primary key (AccId)
 )
 
-
 -- 2. Table (Student)
 create table Student
 (
@@ -107,9 +106,6 @@ create table [Option]
 		references Question (QuestionNo,Quiz_Question)
 )
 
-
-
-
 -- 11. Table (Review)
 create table Review
 (
@@ -124,6 +120,7 @@ create table Review
 	constraint FK_Review_Account foreign key (Review_Account)
 		references Account (AccId)
 )
+
 -- 12. Table (QnA)
 create table QnA
 (
@@ -152,11 +149,9 @@ create table Message
 )
 
 
-
-
 insert into Account(FullName,DOB,Email,ContactNo,PasswordHash,Role,Photo,LinkedIn) 
 values 
-('Alex Chang', '2006-01-01','alex.chang@gmail.com','6512345678',				'$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator',null,'www.linkedin.com/alexchang'),
+('Alex Chang', '2006-01-01','alex.chang@gmail.com','6512345678',				'$2b$10$MT1MTQHZ1kT1JOLp8vP9tuYdDjk/wh2DdC85X6gtyQKNCCk3I4DHK','Educator','../Images/profiles/profile-picture1.JPG','www.linkedin.com/alexchang'),
 ('Maria Garcia', '1995-05-15','maria.garcia@example.com','6587654321',			'$2b$10$wNR9IXTUGSkKdYF6Icajg.Zk5Ft2KXB628lc.4GMctmExKY4WBinS','Student',null,'www.linkedin.com/mariagarcia'),
 ('John Smith', '1988-12-22','john.smith@example.com','6523456789',				'$2b$10$58zUWuF2GEMoamCHtzpBfuZV5nBmuE/h.p5BXbpRUXod.DfIyDbGG','Educator',null,'www.linkedin.com/johnsmith'),
 ('Aisha Khan', '1993-07-08','aisha.khan@example.com','6534567890',				'$2b$10$nJ3xjkiIDwoC4HLolMSKcOhia9R2V1O8KUY0mU1UdCtE6Yw1TeaG.','Student',null,'www.linkedin.com/aishakhan'),
@@ -296,8 +291,6 @@ VALUES
 ('Collect a small amount of data to reduce redundancies.', 'Data minimization may not reduce the number of redundancies.', 0, 16, 2),
 ('Collect a small amount of data to save energy.', 'While reducing energy consumption is important, data minimization is a core component of data privacy.', 0, 16, 2),
 ('Collect a small amount of data to make your model more efficient.', 'Collecting a small or large amount of data may not affect model performance.', 0, 16, 2);
-
-
 
 
 -- Insert into Review

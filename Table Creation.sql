@@ -315,5 +315,5 @@ VALUES
 ('What are the practical applications of Generalized AI?', 4, 1),
 
 -- Messages related to QnAId 2 ('Discussion Machine Learning')
-('What are the best practices for machine learning model evaluation?', 6, 2),
-('Can you recommend some advanced machine learning algorithms?', 8, 2);
+('What are the best practices for machine learning model evaluation?', 2, 2),
+('Can you recommend some advanced machine learning algorithms?', 4, 2);

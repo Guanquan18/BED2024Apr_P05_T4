@@ -1,3 +1,4 @@
+// Entirely Created By: Sairam (S10259930H)
 const sql = require("mssql");
 const Section = require("../models/sectionDetail"); // Adjust the path as necessary
 

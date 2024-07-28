@@ -1,3 +1,4 @@
+// Entirely Created By: Sairam (S10259930H)
 const sql = require("mssql");
 const Course = require("../models/course"); // Adjust the path as necessary
 

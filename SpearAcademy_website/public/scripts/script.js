@@ -14,11 +14,6 @@ Sairam (S10255930H)
 - createSectionDetails()
 - deleteSectionDetails()
 - deleteCourse()
-Chang Guan Quan (S10257825A)
-- 
--
--
-
 
 Pey Zhi Xun (S10258774E)
 - openEditForm()
@@ -111,7 +106,7 @@ async function fetchCoursesByCreator(containerId) {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to view these courses.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
 
@@ -315,7 +310,7 @@ async function fetchCourseandSectionDetails(CourseId) {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to view these courses and sections.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
 
@@ -428,7 +423,7 @@ async function updateCourse() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to update these courses.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
     // Handle non-OK responses (errors)
@@ -479,7 +474,7 @@ async function fetchSectionDetails(courseId, SectionNo) {
     // Alert the user that only educators have permission to view these courses
     alert("Forbidden: Only educators have permissions to view section details.");
     // Redirect the user to the login page as they lack proper permissions
-    window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+    window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
     return;
   }
 
@@ -550,7 +545,7 @@ async function updateCourseIcon() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to update course icon.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
 
@@ -608,7 +603,7 @@ async function updateSectionDetails() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to update section details.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
 
@@ -674,7 +669,7 @@ async function createNewCourse() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to create new courses.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
       // Check if response is ok
@@ -739,7 +734,7 @@ async function createSectionDetails() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to create new sections.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
 
@@ -792,7 +787,7 @@ async function deleteSectionDetails() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to delete these sections.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
      // Check if the response indicates success
@@ -829,7 +824,7 @@ async function deleteCourse() {
         // Alert the user that only educators have permission to view these courses
         alert("Forbidden: Only educators have permissions to delete these courses.");
         // Redirect the user to the login page as they lack proper permissions
-        window.location.href = '../login-signup-pages/login.html'; // Adjust the path if needed
+        window.location.href = '../login-signup-pages/index.html'; // Adjust the path if needed
         return;
       }
     // Check if the response indicates success

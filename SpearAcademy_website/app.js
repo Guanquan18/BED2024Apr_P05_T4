@@ -1,17 +1,17 @@
   /* 
 Function Created
 Sairam (S10255930H)
-- app.get("/courses-creator/:creator", coursesController.getCourseByCreator); // Get courses by creator=
-- app.get("/courses", coursesController.getCourses); // Get courses by creator
-- app.get("/courses-with-sections-id/:CourseId", coursesController.getCourseWithSectionById); // Get course and section by ID
-- app.put("/courses-id/:CourseId",validateCourse, coursesController.updateCourse); // Update course by ID
-- app.put("/courses-icon/:CourseId", imageUploadCourse.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
-- app.post("/new-course/:creatorId", imageUploadCourse.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
-- app.delete("/delete-course/:courseId", coursesController.deleteCourseAndDetails); // delete new course
-- app.get("/sectionDetails-id/:id/:SectionNo", sectionDetailsController.getSectionDetailsById); // Get sections by sectiion no and CourseId
-- app.put("/sectionDetails/:id/:SectionNo", videoUploadCourse.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
-- app.post("/new-sectionDetails/:courseId", videoUploadCourse.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
-- app.delete("/delete-sectionDetails/:sectionNo", sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
+- app.get("/courses-creator/:creator", verifyJWT.verifyJWT, coursesController.getCourseByCreator); // Get courses by creator=
+- app.get("/courses", verifyJWT.verifyJWT, coursesController.getCourses); // Get courses by creator
+- app.get("/courses-with-sections-id/:CourseId", verifyJWT.verifyJWT, coursesController.getCourseWithSectionById); // Get course and section by ID
+- app.put("/courses-id/:CourseId",verifyJWT.verifyJWT,validateCourse, coursesController.updateCourse); // Update course by ID
+- app.put("/courses-icon/:CourseId", verifyJWT.verifyJWT,imageUploadCourse.single('Thumbnail'), coursesController.updateCourseIcon); // Update course by ID
+- app.post("/new-course/:creatorId", verifyJWT.verifyJWT,imageUploadCourse.single('Thumbnail'), validateCourse,coursesController.createCourse); // Post new course
+- app.delete("/delete-course/:courseId", verifyJWT.verifyJWT,coursesController.deleteCourseAndDetails); // delete new course
+- app.get("/sectionDetails-id/:id/:SectionNo", verifyJWT.verifyJWT,sectionDetailsController.getSectionDetailsById); // Get sections by sectiion no and CourseId
+- app.put("/sectionDetails/:id/:SectionNo", verifyJWT.verifyJWT,videoUploadCourse.single('Video'),validateSection,sectionDetailsController.updateSectionDetails); // Update sections by sectiion no and CourseId
+- app.post("/new-sectionDetails/:courseId", verifyJWT.verifyJWT,videoUploadCourse.single('Video'),validateSection,sectionDetailsController.createSection); // Post sections by CourseId
+- app.delete("/delete-sectionDetails/:sectionNo", verifyJWT.verifyJWT,sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
 - const CoursesController = require("./controllers/CoursesController");
 - const SectionDetailsController = require("./controllers/SectionDetailsController");
 - const validateCourse = require("./middlewares/validateCourse");  // Import the validateCourse middleware. Created by Sairam
@@ -24,10 +24,16 @@ Account routes
 - app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 - app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
 - app.put("/account/update/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
-
+- app.put("/account/updateProfilePicture/:accId", verifyJWT.verifyJWT, imageUploadProfile.single('ProfilePicture'), accountController.updateAccount);
+- app.put("/account/updateSocialMedia/:accId", verifyJWT.verifyJWT, validateAccount.validateSocialMedia, accountController.updateAccount);
+- app.post("/account/requestResetPassOTP/:identity", authController.requestPasswordReset, accountController.setToken);
+- app.post("/account/resetPassword/:identity", accountController.getTokenHandler, authController.resetPassword, accountController.deleteTokenHandler);
+- app.post("/account/requestDeleteAccountOTP/:accId", verifyJWT.verifyJWT, authController.requestDeleteAccount, accountController.setToken);
+- app.delete("/account/deleteAccount/:accId", verifyJWT.verifyJWT, accountController.getTokenHandler, authController.deleteAccount, accountController.deleteTokenHandler);
 Eductor routes
 - app.post("/educator/createEducator/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.createEducator);
-
+- app.get("/educator/:eduId",verifyJWT.verifyJWT, educatorController.getEducatorById);
+- app.put("/educator/update/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.updateEducator);
 
 Pey Zhi Xun (S10258774E)
 - app.post("/api/quizzes", quizController.createQuiz);

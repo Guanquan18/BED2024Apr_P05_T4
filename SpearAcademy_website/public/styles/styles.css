@@ -61,14 +61,13 @@ body {
   flex-direction: column;
   margin-left: 250px; 
   margin-right: 50px;
-  padding: 0 20px;
+  padding: 20px;
 }
 
 .top-content {
   display: flex;
   justify-content: space-between; 
   align-items: center;
-  margin: 20px;
   width:  100%;
 }
 

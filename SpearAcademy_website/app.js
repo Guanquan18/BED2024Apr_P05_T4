@@ -1,5 +1,8 @@
   /* 
 Function Created
+Team
+- app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
+
 Sairam (S10255930H)
 - app.get("/courses-creator/:creator", verifyJWT.verifyJWT, coursesController.getCourseByCreator); // Get courses by creator=
 - app.get("/courses", verifyJWT.verifyJWT, coursesController.getCourses); // Get courses by creator
@@ -19,9 +22,7 @@ Sairam (S10255930H)
 
 Chang Guan Quan (S10257825A)
 Account routes
-- app.get("/accounts", accountController.getAllAccounts);
 - app.get("/account/:accId", accountController.getAccountById);
-- app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
 - app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
 - app.put("/account/update/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
 - app.put("/account/updateProfilePicture/:accId", verifyJWT.verifyJWT, imageUploadProfile.single('ProfilePicture'), accountController.updateAccount);
@@ -46,7 +47,6 @@ Pey Zhi Xun (S10258774E)
 - const quizRouter = require("./controllers/quizController");
 - const questionRouter = require("./controllers/questionController");
 - const optionRouter = require("./controllers/optionController"); 
-
 
 Keshwindren Gandipanh (S10259469C)
 - app.get("/comments-QnA/:qnaId", commentsController.getCommentsByQnAId); 
@@ -151,6 +151,9 @@ app.post("/authenticated", verifyJWT.verifyJWT, (req, res) => {  // Check if use
   }
 });
 
+// Route for team component
+app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount); // Post route for login
+
 // Routes for handling course-related requests (Created by: Sairam S10259930)
 app.get("/courses-creator/:creator", verifyJWT.verifyJWT, coursesController.getCourseByCreator); // Get courses by creator
 app.get("/courses", verifyJWT.verifyJWT, coursesController.getCourses); // Get courses by creator
@@ -167,17 +170,16 @@ app.post("/new-sectionDetails/:courseId", verifyJWT.verifyJWT, videoUploadCourse
 app.delete("/delete-sectionDetails/:sectionNo", verifyJWT.verifyJWT, sectionDetailsController.deleteSectionDetails); // Delete sections by sectiion no
 
 // Routes for handling account-related requests (Created by: Chang Guan Quan)
-app.get("/accounts", accountController.getAllAccounts);
 app.get("/account/:accId", verifyJWT.verifyJWT, accountController.getAccountById);
-app.post("/account/login", validateAccount.validateEmailPassword, accountController.loginAccount);
-app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount);
-app.put("/account/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);
-app.put("/account/updateProfilePicture/:accId", verifyJWT.verifyJWT, imageUploadProfile.single('ProfilePicture'), accountController.updateAccount);
-app.put("/account/updateSocialMedia/:accId", verifyJWT.verifyJWT, validateAccount.validateSocialMedia, accountController.updateAccount);
-app.post("/account/requestResetPassOTP/:identity", authController.requestPasswordReset, accountController.setToken);
-app.post("/account/resetPassword/:identity", accountController.getTokenHandler, authController.resetPassword, accountController.deleteTokenHandler);
-app.post("/account/requestDeleteAccountOTP/:accId", verifyJWT.verifyJWT, authController.requestDeleteAccount, accountController.setToken);
-app.delete("/account/deleteAccount/:accId", verifyJWT.verifyJWT, accountController.getTokenHandler, authController.deleteAccount, accountController.deleteTokenHandler);
+
+app.post("/account/signup/createAccount",validateAccount.validateEmailPassword, accountController.createAccount); // Post route for creating account
+app.put("/account/updatePersonalDetails/:accId", verifyJWT.verifyJWT, validateAccount.validatePersonalDetails, accountController.updateAccount);  // Put route for updating personal details
+app.put("/account/updateProfilePicture/:accId", verifyJWT.verifyJWT, imageUploadProfile.single('ProfilePicture'), accountController.updateAccount); // Put route for updating profile picture
+app.put("/account/updateSocialMedia/:accId", verifyJWT.verifyJWT, validateAccount.validateSocialMedia, accountController.updateAccount);  // Put route for updating social media
+app.post("/account/requestResetPassOTP/:identity", authController.requestPasswordReset, accountController.setToken);  // Post route for requesting OTP to reset password
+app.post("/account/resetPassword/:identity", accountController.getTokenHandler, authController.resetPassword, accountController.deleteTokenHandler);  // Post route for resetting password
+app.post("/account/requestDeleteAccountOTP/:accId", verifyJWT.verifyJWT, authController.requestDeleteAccount, accountController.setToken);  // Post route for requesting OTP to delete account
+app.delete("/account/deleteAccount/:accId", verifyJWT.verifyJWT, accountController.getTokenHandler, authController.deleteAccount, accountController.deleteTokenHandler);  // Delete route for deleting account
 
 // Routes for handling educator-related requests (Created by: Chang Guan Quan)
 app.post("/educator/createEducator/:eduId", verifyJWT.verifyJWT, validateEducator.validateQualification, educatorController.createEducator);

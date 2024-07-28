@@ -14,39 +14,6 @@ class Account {
         this.Photo = photo;
         this.LinkedIn = linkedIn;
     }
-
-    static async getAllAccounts() {
-        const connection = await sql.connect(dbConfig);
-        try{
-        
-            const sqlQuery = `SELECT * FROM Account`; // Replace with your actual table name
-        
-            const request = connection.request();
-            const result = await request.query(sqlQuery);
-            connection.close();
-    
-            result.recordset.forEach(row => {
-                return row
-                ? new Account(
-                    row.AccId, 
-                    row.FullName || null, 
-                    row.DOB || null, 
-                    row.Email, 
-                    row.ContactNo || null, 
-                    row.PasswordHash, 
-                    row.Role || null,
-                    row.Photo || null, 
-                    row.LinkedIn || null
-                )
-                : null; // Convert rows to Account objects
-            });
-        
-        }catch(error){        
-            throw error;
-        }finally{
-            connection.close();
-        }        
-    }
     
     static async getAccountById(accId) {
         const connection = await sql.connect(dbConfig);

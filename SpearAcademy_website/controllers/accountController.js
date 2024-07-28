@@ -4,17 +4,6 @@ const jwt = require("jsonwebtoken");    // Import jsonwebtoken for creating toke
 require('dotenv').config(); // Import dotenv for environment variables
 const TokenStore = require('../services/tokenStore');
 
-const getAllAccounts = async (req, res) => {
-
-    try {
-        const accounts = await Account.getAllAccounts();
-        res.json(accounts);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Error retrieving accounts. Please try again later." })
-    }
-};
-
 const getAccountById = async (req, res) => {
     const accId = parseInt(req.params.accId);
     
@@ -211,7 +200,6 @@ const deleteTokenHandler = (req, res) => {
 };
 
 module.exports = { 
-    getAllAccounts,
     getAccountById,
     loginAccount,
     createAccount,

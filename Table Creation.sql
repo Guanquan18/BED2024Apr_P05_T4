@@ -1,5 +1,5 @@
--- drop database SpearAcademy_db
--- create database SpearAcademy_db
+--drop database SpearAcademy_db
+--create database SpearAcademy_db
 
 -- 1. Table (Account)
 create table Account
@@ -169,6 +169,7 @@ values
 (3,'Singapore Polytechnic','Professor',20,'Engineering','Master Degree'),
 (5,'Temasek Polytechnic','Senior Lecturer',15,'Information Technology','PhD Degree');
 
+-- Insert into Course
 INSERT INTO Course (CourseTitle, SmallDescription, Description, Label, Badge, Thumbnail, Creator)
 VALUES 
 (	'Generalized AI for Beginners', 
@@ -187,13 +188,23 @@ VALUES
 	null,
     'https://th.bing.com/th/id/OIP.P_3XeZcQ1lOx2bILTWvGgwHaEK?rs=1&pid=ImgDetMain',
     1
+),
+(	'Global Warming Awareness', 
+	'Understanding the impact of global warming on our planet',
+	'This course raises awareness about the causes and effects of global warming, exploring climate change science, environmental impacts, and mitigation strategies. Ideal for individuals interested in understanding and combating climate change.',
+	'Featured Course',
+	null,
+	'https://th.bing.com/th/id/OIP.WghgdKlu-ntLUxvHZU6LNgHaE8?rs=1&pid=ImgDetMain', 
+	1
 );
+
 -- Insert into SectionDetails
 INSERT INTO SectionDetails (SectionTitle, Video, Section_Course)
 VALUES 
-('Introduction to AI', 'intro_ai.mp4', 1),
-('Advanced AI', 'advanced_ai.mp4', 1),
-('Google AI Principles', 'google_ai_principles.mp4', 1);
+('Introduction to AI', 'https://www.youtube.com/embed/ad79nYk2keg?si=umL5NNgp_aqXYO3Z', 1),
+('Advanced AI', 'https://www.youtube.com/embed/mFnnlafy2yI?si=9wptdiQkxZjRy88G', 1),
+('Google AI Principles', 'https://www.youtube.com/embed/WKtmjgTCzxA?si=2tma1bcyuujKloYe', 1),
+('Getting Started with Python for Machine Learning', 'https://www.youtube.com/embed/7eh4d6sabA0?si=ZhH3Tl_9C6JJALE5', 2);
 
 -- Insert data into Quiz table
 INSERT INTO Quiz (QuizTitle, Section_Quiz, Course_Quiz)
@@ -293,11 +304,12 @@ VALUES
 ('Collect a small amount of data to make your model more efficient.', 'Collecting a small or large amount of data may not affect model performance.', 0, 16, 2);
 
 
--- Insert into Review
 INSERT INTO Review (ReviewText, Ratings, Review_Course, Review_Account)
 VALUES 
 ('This is an excellent course for beginners. The content is well-structured and easy to understand.', 4.5, 1, 2),
-('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4);
+('This course provides a good foundation, though it could use more advanced topics.', 4.0, 1, 4),
+('Very informative and well-paced. The practical examples were very helpful.', 4.8, 2, 2),
+('Great introduction to machine learning with Python. Clear explanations and useful exercises.', 4.7, 2, 4);
 
 
 --Insert into QnA table
@@ -315,5 +327,5 @@ VALUES
 ('What are the practical applications of Generalized AI?', 4, 1),
 
 -- Messages related to QnAId 2 ('Discussion Machine Learning')
-('What are the best practices for machine learning model evaluation?', 6, 2),
-('Can you recommend some advanced machine learning algorithms?', 8, 2);
+('What are the best practices for machine learning model evaluation?', 2, 2),
+('Can you recommend some advanced machine learning algorithms?', 4, 2);

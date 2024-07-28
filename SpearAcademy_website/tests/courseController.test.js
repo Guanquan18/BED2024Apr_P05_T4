@@ -1,5 +1,4 @@
-// courseController.test.js
-
+// Entirely Created By: Sairam (S10259930H)
 const courseController = require("../controllers/courseController");
 const Course = require("../models/course");
 

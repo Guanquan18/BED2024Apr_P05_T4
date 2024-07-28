@@ -43,16 +43,16 @@ body {
 .educator-navigation-sidebar a:hover {
   background-color:  #42459b;
   color: white;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   width: 90%;
 }
 
 .educator-navigation-sidebar a.active {
   background-color: #6F74FB;
   color: white;
-  border-top-right-radius:50px;
-  border-bottom-right-radius: 50px;
+  border-top-right-radius:10px;
+  border-bottom-right-radius: 10px;
   width: 90%;
 }
 
